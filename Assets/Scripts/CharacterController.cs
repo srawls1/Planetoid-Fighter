@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(OrbittingRigidBody)), RequireComponent(typeof(Animator))]
 public class CharacterController : MonoBehaviour
 {
-	[SerializeField] private int playerNumber;
+	public int playerNumber;
 
 	[Header("Running")]
 	[SerializeField] private float maxSpeed;
@@ -39,6 +39,11 @@ public class CharacterController : MonoBehaviour
 	private float lastAttack;
 	private bool m_facingRight;
 
+	public Color color
+	{
+		get; set;
+	}
+
 	private bool facingRight
 	{
 		get { return m_facingRight; }
@@ -70,6 +75,7 @@ public class CharacterController : MonoBehaviour
 
 	public void Die()
 	{
+		PlayerManager.instance.OnPlayerDied(this);
 		Destroy(gameObject);
 	}
 
