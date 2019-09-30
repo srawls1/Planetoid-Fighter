@@ -30,6 +30,7 @@ public class CharacterController : MonoBehaviour
 	private OrbittingRigidBody body;
 	private Animator animator;
 	private new Collider2D collider;
+	private new SpriteRenderer renderer;
 	private float acceleration;
 	private float timeLeftGround;
 	private float jumpQueuedUntil;
@@ -38,10 +39,16 @@ public class CharacterController : MonoBehaviour
 	private float lastShot;
 	private float lastAttack;
 	private bool m_facingRight;
+	private Color m_color;
 
 	public Color color
 	{
-		get; set;
+		get { return m_color; }
+		set
+		{
+			m_color = value;
+			renderer.color = value;
+		}
 	}
 
 	private bool facingRight
@@ -61,6 +68,7 @@ public class CharacterController : MonoBehaviour
 		body = GetComponent<OrbittingRigidBody>();
 		animator = GetComponent<Animator>();
 		collider = GetComponent<Collider2D>();
+		renderer = GetComponent<SpriteRenderer>();
 		facingRight = true;
 	}
 
@@ -81,8 +89,8 @@ public class CharacterController : MonoBehaviour
 
 	private void ApplyHorizontalAcceleration()
 	{
-		float input = Mathf.Round(Input.GetAxisRaw("Horizontal" + playerNumber));
-		float time = input == 0f ? timeToStop : timeToFullSpeed;
+		float input = Mathf.Round(Input.GetAxis("Horizontal" + playerNumber));
+		float time = Mathf.Approximately(input, 0f) ? timeToStop : timeToFullSpeed;
 
 		float horizontalSpeed = Mathf.SmoothDamp(body.horizontalSpeed, input * maxSpeed, ref acceleration, time);
 		body.horizontalSpeed = horizontalSpeed;

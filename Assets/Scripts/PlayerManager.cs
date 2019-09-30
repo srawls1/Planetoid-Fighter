@@ -57,14 +57,11 @@ public class PlayerManager : MonoBehaviour
 	}
 
 	[SerializeField] private Color[] playerColors;
+	[SerializeField] private int numControllers;
 
 	private bool[] hasPlayerJoined;
 	private Phase phase;
-
-	public List<PlayerData> players
-	{
-		get; private set;
-	}
+	private List<PlayerData> players;
 
 	public delegate void PlayerJoinedDelegate(PlayerData player);
 	public event PlayerJoinedDelegate OnPlayerJoined;
@@ -75,12 +72,18 @@ public class PlayerManager : MonoBehaviour
 	private void Initialize()
 	{
 		DontDestroyOnLoad(m_instance.gameObject);
-		hasPlayerJoined = new bool[playerColors.Length];
+		hasPlayerJoined = new bool[numControllers];
 		players = new List<PlayerData>();
 	}
 
 	public void StartListeningForJoin()
 	{
+		for (int i = 0; i < hasPlayerJoined.Length; ++i)
+		{
+			hasPlayerJoined[i] = false;
+		}
+
+		players.Clear();
 		phase = Phase.Joining;
 		StartCoroutine(ListenForJoin());
 	}
@@ -119,7 +122,7 @@ public class PlayerManager : MonoBehaviour
 	{
 		while (phase == Phase.Joining)
 		{
-			for (int i = 0; i < hasPlayerJoined.Length; ++i)
+			for (int i = 0; i < numControllers; ++i)
 			{
 				if (!hasPlayerJoined[i] && Input.GetButtonDown("Join" + i))
 				{
