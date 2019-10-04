@@ -26,6 +26,7 @@ public class CharacterController : MonoBehaviour
 
 	[Header("Attack")]
 	[SerializeField] private float attackCooldownTime;
+	[SerializeField] private SpriteRenderer attackHitbox;
 
 	private OrbittingRigidBody body;
 	private Animator animator;
@@ -48,6 +49,7 @@ public class CharacterController : MonoBehaviour
 		{
 			m_color = value;
 			renderer.color = value;
+			attackHitbox.color = value;
 		}
 	}
 
@@ -89,7 +91,7 @@ public class CharacterController : MonoBehaviour
 
 	private void ApplyHorizontalAcceleration()
 	{
-		float input = Mathf.Round(Input.GetAxis("Horizontal" + playerNumber));
+		float input = Mathf.Round(Input.GetAxisRaw("Horizontal" + playerNumber));
 		float time = Mathf.Approximately(input, 0f) ? timeToStop : timeToFullSpeed;
 
 		float horizontalSpeed = Mathf.SmoothDamp(body.horizontalSpeed, input * maxSpeed, ref acceleration, time);
@@ -184,6 +186,7 @@ public class CharacterController : MonoBehaviour
 			(facingRight ? transform.right : -transform.right) * spawnDistance;
 		KeepConsistentOrbitSpeed projectile = Instantiate(prefab, spawnPosition, transform.rotation);
 		projectile.facingRight = facingRight;
+		projectile.color = color;
 	}
 
 	private void CheckForAttack()

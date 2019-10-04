@@ -10,6 +10,7 @@ public class KeepConsistentOrbitSpeed : MonoBehaviour
 
 	private OrbittingRigidBody body;
 	private float verticalPosition;
+	private new SpriteRenderer renderer;
 
 	public bool facingRight
 	{
@@ -30,9 +31,22 @@ public class KeepConsistentOrbitSpeed : MonoBehaviour
 		}
 	}
 
+	public Color color
+	{
+		get
+		{
+			return renderer.color;
+		}
+		set
+		{
+			renderer.color = value;
+		}
+	}
+
 	private void Awake()
 	{
 		body = GetComponent<OrbittingRigidBody>();
+		renderer = GetComponent<SpriteRenderer>();
 	}
 
 	private void OnTriggerEnter2D(Collider2D other)

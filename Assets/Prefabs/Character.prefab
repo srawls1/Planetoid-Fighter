@@ -234,6 +234,7 @@ MonoBehaviour:
   spawnDistance: 1
   spawnDelayTime: 0.2
   attackCooldownTime: 0.5
+  attackHitbox: {fileID: 212541582109123982}
 --- !u!114 &114922840068000842
 MonoBehaviour:
   m_ObjectHideFlags: 1
