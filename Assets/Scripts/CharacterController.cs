@@ -26,11 +26,10 @@ public class CharacterController : MonoBehaviour
 
 	[Header("Attack")]
 	[SerializeField] private float attackCooldownTime;
-	[SerializeField] private SpriteRenderer attackHitbox;
 
 	private OrbittingRigidBody body;
 	private Animator animator;
-	private new Collider2D collider;
+	private new BoxCollider2D collider;
 	private new SpriteRenderer renderer;
 	private float acceleration;
 	private float timeLeftGround;
@@ -47,9 +46,11 @@ public class CharacterController : MonoBehaviour
 		get { return m_color; }
 		set
 		{
+			foreach (SpriteRenderer renderer in GetComponentsInChildren<SpriteRenderer>())
+			{
+				renderer.color = value;
+			}
 			m_color = value;
-			renderer.color = value;
-			attackHitbox.color = value;
 		}
 	}
 
@@ -69,7 +70,7 @@ public class CharacterController : MonoBehaviour
 		lastAttack = -attackCooldownTime;
 		body = GetComponent<OrbittingRigidBody>();
 		animator = GetComponent<Animator>();
-		collider = GetComponent<Collider2D>();
+		collider = GetComponent<BoxCollider2D>();
 		renderer = GetComponent<SpriteRenderer>();
 		facingRight = true;
 	}
@@ -143,9 +144,9 @@ public class CharacterController : MonoBehaviour
 
 	private void UpdateIsOnGround()
 	{
-		Vector2 bounds = collider.bounds.extents;
+		Vector2 bounds = collider.size;
 		// This raycast downward just beyond the extent of the character's collider will check if the character is standing on something
-		if (Physics2D.Raycast(transform.position, body.down, bounds.y + 0.05f).collider != null)
+		if (Physics2D.Raycast(transform.position, body.down, bounds.y + 0.1f).collider != null)
 		{
 			animator.SetBool("OnFloor", true);
 			// Update the time they left the ground to now. If they are not on the ground, this will have been last updated when they left.
