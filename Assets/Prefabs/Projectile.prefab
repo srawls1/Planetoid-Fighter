@@ -94,6 +94,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   accelerationDueToGravity: 0
+  keepRotation: 1
 --- !u!114 &114346078870510296
 MonoBehaviour:
   m_ObjectHideFlags: 1

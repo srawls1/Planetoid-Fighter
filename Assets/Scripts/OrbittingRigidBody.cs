@@ -9,6 +9,7 @@ public class OrbittingRigidBody : MonoBehaviour
 	private Transform orbitCenter;
 
 	public float accelerationDueToGravity;
+	public bool keepRotation;
 
 	public float horizontalSpeed
 	{
@@ -125,7 +126,10 @@ public class OrbittingRigidBody : MonoBehaviour
 	{
 		verticalSpeed -= accelerationDueToGravity * Time.fixedDeltaTime;
 		Vector2 up = -down;
-		transform.rotation = Quaternion.FromToRotation(Vector2.up, up);
+		if (keepRotation)
+		{
+			transform.rotation = Quaternion.FromToRotation(Vector2.up, up);
+		}
 	}
 
 	private void OnTriggerEnter2D(Collider2D collider)

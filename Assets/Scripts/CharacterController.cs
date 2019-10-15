@@ -30,7 +30,6 @@ public class CharacterController : MonoBehaviour
 	private OrbittingRigidBody body;
 	private Animator animator;
 	private new BoxCollider2D collider;
-	private new SpriteRenderer renderer;
 	private float acceleration;
 	private float timeLeftGround;
 	private float jumpQueuedUntil;
@@ -71,7 +70,6 @@ public class CharacterController : MonoBehaviour
 		body = GetComponent<OrbittingRigidBody>();
 		animator = GetComponent<Animator>();
 		collider = GetComponent<BoxCollider2D>();
-		renderer = GetComponent<SpriteRenderer>();
 		facingRight = true;
 	}
 
@@ -87,7 +85,7 @@ public class CharacterController : MonoBehaviour
 	public void Die()
 	{
 		PlayerManager.instance.OnPlayerDied(this);
-		Destroy(gameObject);
+		animator.SetTrigger("Death");
 	}
 
 	private void ApplyHorizontalAcceleration()
