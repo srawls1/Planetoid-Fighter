@@ -11,6 +11,9 @@ public class OrbittingRigidBody : MonoBehaviour
 	public float accelerationDueToGravity;
 	public bool keepRotation;
 
+	public delegate void CenterChangedDelegate();
+	public event CenterChangedDelegate OnOrbitCenterChanged;
+
 	public float horizontalSpeed
 	{
 		get
@@ -137,6 +140,10 @@ public class OrbittingRigidBody : MonoBehaviour
 		if (collider.gameObject.CompareTag("Planetoid"))
 		{
 			orbitCenter = collider.transform;
+			if (OnOrbitCenterChanged != null)
+			{
+				OnOrbitCenterChanged();
+			}
 		}
 	}
 }

@@ -11,6 +11,7 @@ public class KeepConsistentOrbitSpeed : MonoBehaviour
 	private OrbittingRigidBody body;
 	private float verticalPosition;
 	private new SpriteRenderer renderer;
+	private bool hasStarted;
 
 	public bool facingRight
 	{
@@ -47,6 +48,7 @@ public class KeepConsistentOrbitSpeed : MonoBehaviour
 	{
 		body = GetComponent<OrbittingRigidBody>();
 		renderer = GetComponent<SpriteRenderer>();
+		body.OnOrbitCenterChanged += UpdateOrbitVars;
 	}
 
 	private void OnTriggerEnter2D(Collider2D other)
@@ -58,19 +60,34 @@ public class KeepConsistentOrbitSpeed : MonoBehaviour
 		}
 	}
 
-	private IEnumerator Start()
+	private void Start()
 	{
-		yield return null;
-		float verticalPosition = body.verticalPosition;
+		Destroy(gameObject, duration);
+	}
 
-		for (float time = 0f; time < duration; time += Time.deltaTime)
+	private void UpdateOrbitVars()
+	{
+		verticalPosition = body.verticalPosition;
+
+		if (!hasStarted)
+		{
+			hasStarted = true;
+			StartCoroutine(KeepRightSpeed());
+		}
+		else
+		{
+			facingRight = body.horizontalSpeed > 0;
+		}
+	}
+
+	private IEnumerator KeepRightSpeed()
+	{
+		while (enabled)
 		{
 			body.horizontalSpeed = speed;
-			body.verticalSpeed = 0;
 			body.verticalPosition = verticalPosition;
+			body.verticalSpeed = 0f;
 			yield return null;
 		}
-
-		Destroy(gameObject);
 	}
 }

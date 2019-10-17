@@ -22,8 +22,8 @@ GameObject:
   - component: {fileID: 212595497312344626}
   - component: {fileID: 50009701783020500}
   - component: {fileID: 114136850750080054}
-  - component: {fileID: 60077848460843678}
   - component: {fileID: 114346078870510296}
+  - component: {fileID: 58928460125848064}
   m_Layer: 0
   m_Name: Projectile
   m_TagString: Untagged
@@ -64,8 +64,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!60 &60077848460843678
-PolygonCollider2D:
+--- !u!58 &58928460125848064
+CircleCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -76,12 +76,8 @@ PolygonCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
-  m_Points:
-    m_Paths:
-    - - {x: 0.5, y: -0.000000029802322}
-      - {x: 0, y: 0.5}
-      - {x: -0.5, y: 0}
-      - {x: -0.000000029802322, y: -0.5}
+  serializedVersion: 2
+  m_Radius: 0.1
 --- !u!114 &114136850750080054
 MonoBehaviour:
   m_ObjectHideFlags: 1
