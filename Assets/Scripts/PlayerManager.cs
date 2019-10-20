@@ -4,14 +4,16 @@ using UnityEngine;
 
 public struct PlayerData
 {
-	public PlayerData(int n, Color c)
+	public PlayerData(int n, Color c, bool d)
 	{
 		number = n;
 		color = c;
+		realDirectionInput = d;
 	}
 
 	public int number;
 	public Color color;
+	public bool realDirectionInput;
 }
 
 public class PlayerManager : MonoBehaviour
@@ -56,15 +58,15 @@ public class PlayerManager : MonoBehaviour
 		Playing
 	}
 
-	[SerializeField] private Color[] playerColors;
+	[SerializeField] private List<Color> playerColors;
 	[SerializeField] private int numControllers;
 
 	private bool[] hasPlayerJoined;
 	private Phase phase;
 	private List<PlayerData> players;
 
-	public delegate void PlayerJoinedDelegate(PlayerData player);
-	public event PlayerJoinedDelegate OnPlayerJoined;
+	public delegate void PlayersChangedDelegate(List<PlayerData> player);
+	public event PlayersChangedDelegate OnPlayersChanged;
 
 	public delegate void GameWonDelegate(PlayerData player);
 	public event GameWonDelegate OnGameWon;
@@ -84,6 +86,11 @@ public class PlayerManager : MonoBehaviour
 		}
 
 		players.Clear();
+		// if (OnPlayersChanged != null)
+		// {
+		// 	OnPlayersChanged(players);
+		// }
+
 		phase = Phase.Joining;
 		StartCoroutine(ListenForJoin());
 	}
@@ -100,6 +107,9 @@ public class PlayerManager : MonoBehaviour
 			CharacterController character = Instantiate(prefab, positions[i], Quaternion.identity);
 			character.playerNumber = players[i].number;
 			character.color = players[i].color;
+			character.realDirectionInput = players[i].realDirectionInput;
+			playerColors.Add(players[i].color);
+
 		}
 
 		phase = Phase.Playing;
@@ -118,6 +128,33 @@ public class PlayerManager : MonoBehaviour
 		}
 	}
 
+	public void ToggleRealDirection(int playerNumber)
+	{
+		int index = players.FindIndex((p) => p.number == playerNumber);
+		PlayerData player = players[index];
+		player.realDirectionInput = !player.realDirectionInput;
+		players[index] = player;
+		if (OnPlayersChanged != null)
+		{
+			OnPlayersChanged(players);
+		}
+	}
+
+	public void CancelJoin(int playerNumber)
+	{
+		int index = players.FindIndex((player) => player.number == playerNumber);
+		if (index >= 0)
+		{
+			hasPlayerJoined[playerNumber] = false;
+			playerColors.Add(players[index].color);
+			players.RemoveAt(index);
+			if (OnPlayersChanged != null)
+			{
+				OnPlayersChanged(players);
+			}
+		}
+	}
+
 	private IEnumerator ListenForJoin()
 	{
 		while (phase == Phase.Joining)
@@ -127,11 +164,12 @@ public class PlayerManager : MonoBehaviour
 				if (!hasPlayerJoined[i] && Input.GetButtonDown("Join" + i))
 				{
 					hasPlayerJoined[i] = true;
-					PlayerData player = new PlayerData(i, playerColors[players.Count]);
+					PlayerData player = new PlayerData(i, playerColors[0], false);
+					playerColors.RemoveAt(0);
 					players.Add(player);
-					if (OnPlayerJoined != null)
+					if (OnPlayersChanged != null)
 					{
-						OnPlayerJoined(player);
+						OnPlayersChanged(players);
 					}
 				}
 			}

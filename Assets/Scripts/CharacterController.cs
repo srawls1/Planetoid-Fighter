@@ -6,6 +6,7 @@ using UnityEngine;
 public class CharacterController : MonoBehaviour
 {
 	public int playerNumber;
+	public bool realDirectionInput;
 
 	[Header("Running")]
 	[SerializeField] private float maxSpeed;
@@ -90,7 +91,7 @@ public class CharacterController : MonoBehaviour
 
 	private void ApplyHorizontalAcceleration()
 	{
-		float input = Mathf.Round(Input.GetAxisRaw("Horizontal" + playerNumber));
+		float input = GetHorizontalInput();
 		float time = Mathf.Approximately(input, 0f) ? timeToStop : timeToFullSpeed;
 
 		float horizontalSpeed = Mathf.SmoothDamp(body.horizontalSpeed, input * maxSpeed, ref acceleration, time);
@@ -105,6 +106,21 @@ public class CharacterController : MonoBehaviour
 			facingRight = false;
 		}
 		animator.SetFloat("Speed", horizontalSpeed);
+	}
+
+	private float GetHorizontalInput()
+	{
+		if (realDirectionInput)
+		{
+			Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal" + playerNumber),
+										Input.GetAxisRaw("Vertical" + playerNumber));
+			float x = Vector2.Dot(input, transform.right);
+			return Mathf.Sign(x) * Mathf.Max(Mathf.Abs(input.x), Mathf.Abs(input.y));
+		}
+		else
+		{
+			return Mathf.Round(Input.GetAxisRaw("Horizontal" + playerNumber));
+		}
 	}
 
 	private void CheckForJump()
