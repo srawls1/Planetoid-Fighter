@@ -1115,6 +1115,9 @@ MonoBehaviour:
   spawnDistance: 1
   spawnDelayTime: 0.2
   attackCooldownTime: 0.5
+  screenShakeIntensity: 0.2
+  slowdownMinSpeed: 0.2
+  slowdownDuration: 0.1
 --- !u!114 &114971957266272650
 MonoBehaviour:
   m_ObjectHideFlags: 1

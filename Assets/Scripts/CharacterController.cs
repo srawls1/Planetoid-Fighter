@@ -28,6 +28,11 @@ public class CharacterController : MonoBehaviour
 	[Header("Attack")]
 	[SerializeField] private float attackCooldownTime;
 
+	[Header("Death Juice")]
+	[SerializeField] private float screenShakeIntensity;
+	[SerializeField] private float slowdownMinSpeed;
+	[SerializeField] private float slowdownDuration;
+
 	private OrbittingRigidBody body;
 	private Animator animator;
 	private new BoxCollider2D collider;
@@ -87,6 +92,36 @@ public class CharacterController : MonoBehaviour
 	{
 		PlayerManager.instance.OnPlayerDied(this);
 		animator.SetTrigger("Death");
+		StartCoroutine(DeathJuice());
+	}
+
+	private IEnumerator DeathJuice()
+	{
+		PlayDeathSound();
+		Coroutine pause = StartCoroutine(HitPause());
+		Coroutine shake = CameraMovement.instance.ScreenShake(screenShakeIntensity);
+		Coroutine effect = StartCoroutine(AfterEffect());
+
+		yield return shake;
+		yield return pause;
+		yield return effect;
+	}
+
+	private void PlayDeathSound()
+	{
+		// TODO
+	}
+
+	private IEnumerator HitPause()
+	{
+		Time.timeScale = slowdownMinSpeed;
+		yield return new WaitForSecondsRealtime(slowdownDuration);
+		Time.timeScale = 1f;
+	}
+
+	private IEnumerator AfterEffect()
+	{
+		yield break;
 	}
 
 	private void ApplyHorizontalAcceleration()
