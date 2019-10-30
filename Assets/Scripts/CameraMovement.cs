@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,6 +6,12 @@ public class CameraMovement : MonoBehaviour
 {
 	[SerializeField] private float shakeDecay;
 	[SerializeField] private float minShake;
+	[SerializeField] private float movementSmoothing;
+
+	private Camera cam;
+	private Transform camTransform;
+	private Dictionary<OrbittingRigidBody, OrbittingRigidBody.CenterChangedDelegate> planetChangeDelegates;
+	private Dictionary<OrbittingRigidBody, Collider2D> planetsByCharacter;
 
 	private static CameraMovement m_instance;
 	public static CameraMovement instance
@@ -21,34 +27,110 @@ public class CameraMovement : MonoBehaviour
 		}
 	}
 
+	private void Awake()
+	{
+		planetsByCharacter = new Dictionary<OrbittingRigidBody, Collider2D>();
+		planetChangeDelegates = new Dictionary<OrbittingRigidBody, OrbittingRigidBody.CenterChangedDelegate>();
+	}
+
+	public void RegisterCharacter(CharacterController character)
+	{
+		OrbittingRigidBody body = character.GetComponent<OrbittingRigidBody>();
+		planetsByCharacter.Add(body, null);
+		planetChangeDelegates.Add(body, () => UpdatePlanetoid(body));
+		body.OnOrbitCenterChanged += planetChangeDelegates[body];
+	}
+
+	public void UnregisterCharacter(CharacterController character)
+	{
+		OrbittingRigidBody body = character.GetComponent<OrbittingRigidBody>();
+		planetsByCharacter.Remove(body);
+		body.OnOrbitCenterChanged -= planetChangeDelegates[body];
+		planetChangeDelegates.Remove(body);
+	}
+
 	public Coroutine ScreenShake(float intensity)
 	{
 		return StartCoroutine(ScreenShakeImpl(intensity));
 	}
 
+	public Coroutine PanAndZoom(Vector2 focus, float zoomSize, float zoomTime, float restTime)
+	{
+		return StartCoroutine(PanAndZoomImpl(focus, zoomSize, zoomTime, restTime));
+	}
+
+	private void UpdatePlanetoid(OrbittingRigidBody body)
+	{
+		Collider2D gravityField = body.orbitCenter.GetComponent<Collider2D>();
+		planetsByCharacter[body] = gravityField;
+	}
+
 	private IEnumerator ScreenShakeImpl(float intensity)
 	{
-		Transform camera = Camera.main.transform;
-
 		while (intensity >= minShake)
 		{
-			camera.localPosition = Random.insideUnitCircle * intensity;
+			camTransform.localPosition = Random.insideUnitCircle * intensity;
 			intensity *= shakeDecay;
 			yield return null;
 		}
-		camera.localPosition = Vector2.zero;
+		camTransform.localPosition = Vector2.zero;
 	}
 
-	void Start () {
+	private IEnumerator PanAndZoomImpl(Vector2 focus, float zoomSize, float zoomTime, float restTime)
+	{
+		Vector2 startPos = transform.position;
+		float startSize = cam.orthographicSize;
+
+		for (float dt = 0f; dt < 1f; dt += Time.deltaTime / zoomTime)
+		{
+			transform.position = Vector2.Lerp(startPos, focus, dt);
+			cam.orthographicSize = Mathf.Lerp(startSize, zoomSize, dt);
+			yield return new WaitForEndOfFrame();
+		}
+
+		for (float dt = 0f; dt < 1f; dt += Time.deltaTime / restTime)
+		{
+			transform.position = focus;
+			cam.orthographicSize = zoomSize;
+			yield return new WaitForEndOfFrame();
+		}
+	}
+
+	void Start()
+	{
 		if (Camera.main.transform.parent != transform)
 		{
 			Debug.LogError("The main camera should be the child of the CameraMovement object");
 			enabled = false;
 		}
+		cam = Camera.main;
+		camTransform = cam.transform;
 	}
 
-	// Update is called once per frame
-	void Update () {
+	void Update()
+	{
+		float minX = float.MaxValue;
+		float maxX = float.MinValue;
+		float minY = float.MaxValue;
+		float maxY = float.MinValue;
 
+		foreach (KeyValuePair<OrbittingRigidBody, Collider2D> planet in planetsByCharacter)
+		{
+			Bounds b = planet.Value.bounds;
+			Vector2 min = b.min;
+			if (min.x < minX) minX = min.x;
+			if (min.y < minY) minY = min.y;
+			Vector2 max = b.max;
+			if (max.x > maxX) maxX = max.x;
+			if (max.y > maxY) maxY = max.y;
+		}
+
+		float width = maxX - minX;
+		float height = maxY - minY;
+		float size = Mathf.Max(height, width / cam.aspect) / 2;
+		Vector2 pos = new Vector2((maxX + minX) / 2, (maxY + minY) / 2);
+
+		transform.position = Vector2.Lerp(transform.position, pos, Time.deltaTime * movementSmoothing);
+		cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, size, Time.deltaTime * movementSmoothing);
 	}
 }

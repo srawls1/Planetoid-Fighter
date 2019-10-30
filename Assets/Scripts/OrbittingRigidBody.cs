@@ -6,13 +6,17 @@ using UnityEngine;
 public class OrbittingRigidBody : MonoBehaviour
 {
 	private Rigidbody2D body;
-	private Transform orbitCenter;
 
 	public float accelerationDueToGravity;
 	public bool keepRotation;
 
 	public delegate void CenterChangedDelegate();
 	public event CenterChangedDelegate OnOrbitCenterChanged;
+
+	public Transform orbitCenter
+	{
+		get; private set;
+	}
 
 	public float horizontalSpeed
 	{

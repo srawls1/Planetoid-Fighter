@@ -60,6 +60,11 @@ public class PlayerManager : MonoBehaviour
 
 	[SerializeField] private List<Color> playerColors;
 	[SerializeField] private int numControllers;
+	[SerializeField] private float gameEndZoomSize;
+	[SerializeField] private float gameEndZoomTime;
+	[SerializeField] private float gameEndRestDuration;
+	[SerializeField] private float gameEndPauseWait;
+	[SerializeField] private float gameEndPauseDuration;
 
 	private bool[] hasPlayerJoined;
 	private Phase phase;
@@ -121,10 +126,7 @@ public class PlayerManager : MonoBehaviour
 		players.RemoveAt(index);
 		if (players.Count == 1)
 		{
-			if (OnGameWon != null)
-			{
-				OnGameWon(players[0]);
-			}
+			StartCoroutine(GameEndJuice(character));
 		}
 	}
 
@@ -176,5 +178,28 @@ public class PlayerManager : MonoBehaviour
 
 			yield return null;
 		}
+	}
+
+	private IEnumerator GameEndJuice(CharacterController player)
+	{
+		Coroutine zoom = CameraMovement.instance.PanAndZoom(player.transform.position,
+			gameEndZoomSize, gameEndZoomTime, gameEndRestDuration);
+		Coroutine slowDown = StartCoroutine(SlowDownRoutine());
+
+		yield return zoom;
+		yield return slowDown;
+
+		if (OnGameWon != null)
+		{
+			OnGameWon(players[0]);
+		}
+	}
+
+	private IEnumerator SlowDownRoutine()
+	{
+		yield return new WaitForSeconds(gameEndPauseWait);
+		Time.timeScale = 0f;
+		yield return new WaitForSecondsRealtime(gameEndPauseDuration);
+		Time.timeScale = 1f;
 	}
 }

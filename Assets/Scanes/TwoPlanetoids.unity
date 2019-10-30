@@ -565,6 +565,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shakeDecay: 0.5
   minShake: 0.02
+  movementSmoothing: 2
 --- !u!4 &1880152924
 Transform:
   m_ObjectHideFlags: 0

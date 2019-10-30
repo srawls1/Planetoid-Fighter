@@ -79,6 +79,11 @@ public class CharacterController : MonoBehaviour
 		facingRight = true;
 	}
 
+	void Start()
+	{
+		CameraMovement.instance.RegisterCharacter(this);
+	}
+
 	void Update()
 	{
 		UpdateIsOnGround();
@@ -92,18 +97,19 @@ public class CharacterController : MonoBehaviour
 	{
 		PlayerManager.instance.OnPlayerDied(this);
 		animator.SetTrigger("Death");
+		CameraMovement.instance.UnregisterCharacter(this);
 		StartCoroutine(DeathJuice());
 	}
 
 	private IEnumerator DeathJuice()
 	{
 		PlayDeathSound();
-		Coroutine pause = StartCoroutine(HitPause());
+		//Coroutine pause = StartCoroutine(HitPause());
 		Coroutine shake = CameraMovement.instance.ScreenShake(screenShakeIntensity);
 		Coroutine effect = StartCoroutine(AfterEffect());
 
 		yield return shake;
-		yield return pause;
+		//yield return pause;
 		yield return effect;
 	}
 
@@ -187,8 +193,17 @@ public class CharacterController : MonoBehaviour
 
 		float jumpSpeed = Mathf.Sqrt(2f * jumpHeight * body.accelerationDueToGravity);
 		body.verticalSpeed = jumpSpeed;
-
 		animator.SetTrigger("Jump");
+		StartCoroutine(VariableJumpRoutine(jumpSpeed));
+	}
+
+	private IEnumerator VariableJumpRoutine(float jumpSpeed)
+	{
+		for (float dt = 0f; dt < variableHangTime && Input.GetButton("Jump" + playerNumber); dt += Time.deltaTime)
+		{
+			body.verticalSpeed = jumpSpeed;
+			yield return null;
+		}
 	}
 
 	private void UpdateIsOnGround()

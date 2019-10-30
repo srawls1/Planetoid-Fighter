@@ -754,6 +754,11 @@ MonoBehaviour:
   - {r: 1, g: 1, b: 1, a: 1}
   - {r: 0, g: 0, b: 0, a: 1}
   numControllers: 5
+  gameEndZoomSize: 2
+  gameEndZoomTime: 0.05
+  gameEndRestDuration: 0
+  gameEndPauseWait: 0.05
+  gameEndPauseDuration: 0.5
 --- !u!4 &744773363
 Transform:
   m_ObjectHideFlags: 0

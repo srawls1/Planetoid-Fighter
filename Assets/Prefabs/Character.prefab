@@ -1106,8 +1106,8 @@ MonoBehaviour:
   maxSpeed: 8.67
   timeToFullSpeed: 0.2
   timeToStop: 0.1
-  jumpHeight: 5
-  variableHangTime: 0
+  jumpHeight: 1.5
+  variableHangTime: 0.3
   coyoteTime: 0.1
   inputQueueTime: 0.1
   prefab: {fileID: 114346078870510296, guid: 6d40f46ab60fe4e96b149371bcf1ae4e, type: 2}
