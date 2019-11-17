@@ -7,11 +7,14 @@ public class KeepConsistentOrbitSpeed : MonoBehaviour
 {
 	[SerializeField] private float speed;
 	[SerializeField] private float duration;
+	[SerializeField] private float startupTime;
 
 	private OrbittingRigidBody body;
 	private float verticalPosition;
 	private new SpriteRenderer renderer;
+	private TrailRenderer trail;
 	private bool hasStarted;
+	private float startTime;
 
 	public bool facingRight
 	{
@@ -41,6 +44,8 @@ public class KeepConsistentOrbitSpeed : MonoBehaviour
 		set
 		{
 			renderer.color = value;
+			trail.startColor = value;
+			trail.endColor = value;
 		}
 	}
 
@@ -48,13 +53,15 @@ public class KeepConsistentOrbitSpeed : MonoBehaviour
 	{
 		body = GetComponent<OrbittingRigidBody>();
 		renderer = GetComponent<SpriteRenderer>();
+		trail = GetComponent<TrailRenderer>();
 		body.OnOrbitCenterChanged += UpdateOrbitVars;
+		startTime = Time.time;
 	}
 
 	private void OnTriggerEnter2D(Collider2D other)
 	{
 		CharacterController character = other.GetComponent<CharacterController>();
-		if (character != null)
+		if (Time.time > startTime + startupTime && character != null)
 		{
 			character.Die();
 		}
@@ -72,7 +79,7 @@ public class KeepConsistentOrbitSpeed : MonoBehaviour
 		if (!hasStarted)
 		{
 			hasStarted = true;
-			StartCoroutine(KeepRightSpeed());
+			body.keepRotation = true;
 		}
 		else
 		{
@@ -80,14 +87,17 @@ public class KeepConsistentOrbitSpeed : MonoBehaviour
 		}
 	}
 
-	private IEnumerator KeepRightSpeed()
+	private void Update()
 	{
-		while (enabled)
+		if (hasStarted)
 		{
-			body.horizontalSpeed = speed;
 			body.verticalPosition = verticalPosition;
 			body.verticalSpeed = 0f;
-			yield return null;
 		}
+		else if (Time.time > startTime + startupTime)
+		{
+			Destroy(gameObject);
+		}
+		body.horizontalSpeed = speed;
 	}
 }

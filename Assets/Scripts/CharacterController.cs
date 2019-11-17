@@ -106,7 +106,7 @@ public class CharacterController : MonoBehaviour
 		PlayDeathSound();
 		//Coroutine pause = StartCoroutine(HitPause());
 		Coroutine shake = CameraMovement.instance.ScreenShake(screenShakeIntensity);
-		Coroutine effect = StartCoroutine(AfterEffect());
+		Coroutine effect = CameraMovement.instance.ApplyPostProcessing();
 
 		yield return shake;
 		//yield return pause;
@@ -123,11 +123,6 @@ public class CharacterController : MonoBehaviour
 		Time.timeScale = slowdownMinSpeed;
 		yield return new WaitForSecondsRealtime(slowdownDuration);
 		Time.timeScale = 1f;
-	}
-
-	private IEnumerator AfterEffect()
-	{
-		yield break;
 	}
 
 	private void ApplyHorizontalAcceleration()
@@ -208,6 +203,8 @@ public class CharacterController : MonoBehaviour
 
 	private void UpdateIsOnGround()
 	{
+		animator.SetFloat("VerticalSpeed", body.verticalSpeed);
+
 		Vector2 bounds = collider.size;
 		// This raycast downward just beyond the extent of the character's collider will check if the character is standing on something
 		if (Physics2D.Raycast(transform.position, body.down, bounds.y + 0.1f).collider != null)

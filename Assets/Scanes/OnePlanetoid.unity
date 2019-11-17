@@ -195,6 +195,7 @@ GameObject:
   - component: {fileID: 418006043}
   - component: {fileID: 418006042}
   - component: {fileID: 418006041}
+  - component: {fileID: 418006046}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -270,6 +271,18 @@ Transform:
   m_Father: {fileID: 2125471832}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &418006046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 418006040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff26db721962cdf4a8edcdfa9a767d2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  profile: {fileID: 11400000, guid: d8d860eba1d61418f916edfc3091abd6, type: 2}
 --- !u!1 &768330500
 GameObject:
   m_ObjectHideFlags: 0
@@ -656,6 +669,11 @@ MonoBehaviour:
   shakeDecay: 0.5
   minShake: 0.02
   movementSmoothing: 2
+  baseProfile: {fileID: 11400000, guid: da67b64423687474b9f9c8061f29be64, type: 2}
+  juicyProfile: {fileID: 11400000, guid: 9bda671d20520417f849555b487d9e1c, type: 2}
+  processFadeInTime: 0.05
+  processFadeOutTime: 0.03
+  processRemainTime: 0
 --- !u!4 &2125471832
 Transform:
   m_ObjectHideFlags: 0

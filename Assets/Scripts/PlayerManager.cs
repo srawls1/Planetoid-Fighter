@@ -182,6 +182,7 @@ public class PlayerManager : MonoBehaviour
 
 	private IEnumerator GameEndJuice(CharacterController player)
 	{
+		PlayerData winner = players[0];
 		Coroutine zoom = CameraMovement.instance.PanAndZoom(player.transform.position,
 			gameEndZoomSize, gameEndZoomTime, gameEndRestDuration);
 		Coroutine slowDown = StartCoroutine(SlowDownRoutine());
@@ -191,7 +192,7 @@ public class PlayerManager : MonoBehaviour
 
 		if (OnGameWon != null)
 		{
-			OnGameWon(players[0]);
+			OnGameWon(winner);
 		}
 	}
 

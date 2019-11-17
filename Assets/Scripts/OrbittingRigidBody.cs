@@ -18,6 +18,8 @@ public class OrbittingRigidBody : MonoBehaviour
 		get; private set;
 	}
 
+	private Vector3 lastCenterPosition;
+
 	public float horizontalSpeed
 	{
 		get
@@ -127,6 +129,7 @@ public class OrbittingRigidBody : MonoBehaviour
 	private void Awake()
 	{
 		body = GetComponent<Rigidbody2D>();
+		OnOrbitCenterChanged += () => lastCenterPosition = orbitCenter.position;
 	}
 
 	private void FixedUpdate()
@@ -137,6 +140,10 @@ public class OrbittingRigidBody : MonoBehaviour
 		{
 			transform.rotation = Quaternion.FromToRotation(Vector2.up, up);
 		}
+
+		Vector3 movement = orbitCenter.position - lastCenterPosition;
+		lastCenterPosition = orbitCenter.position;
+		transform.position += movement;
 	}
 
 	private void OnTriggerEnter2D(Collider2D collider)

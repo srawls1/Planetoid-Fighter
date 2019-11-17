@@ -13,3 +13,5 @@ EditorBuildSettings:
     path: Assets/Scanes/TwoPlanetoids.unity
   - enabled: 1
     path: Assets/Scanes/FivePlanetoids.unity
+  - enabled: 1
+    path: Assets/Scanes/Comet.unity

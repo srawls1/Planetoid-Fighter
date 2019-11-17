@@ -1,12 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.PostProcessing;
 
 public class CameraMovement : MonoBehaviour
 {
 	[SerializeField] private float shakeDecay;
 	[SerializeField] private float minShake;
 	[SerializeField] private float movementSmoothing;
+
+	[SerializeField] private PostProcessingProfile baseProfile;
+	[SerializeField] private PostProcessingProfile juicyProfile;
+	[SerializeField] private float processFadeInTime;
+	[SerializeField] private float processFadeOutTime;
+	[SerializeField] private float processRemainTime;
 
 	private Camera cam;
 	private Transform camTransform;
@@ -59,6 +66,18 @@ public class CameraMovement : MonoBehaviour
 		return StartCoroutine(PanAndZoomImpl(focus, zoomSize, zoomTime, restTime));
 	}
 
+	public Coroutine ApplyPostProcessing()
+	{
+		return ApplyPostProcessing(baseProfile, juicyProfile,
+			processFadeInTime, processRemainTime, processFadeOutTime);
+	}
+
+	public Coroutine ApplyPostProcessing(PostProcessingProfile start, PostProcessingProfile end,
+		float applyTime, float remainTime, float returnTime)
+	{
+		return StartCoroutine(ApplyPostProcessingImpl(start, end, applyTime, remainTime, returnTime));
+	}
+
 	private void UpdatePlanetoid(OrbittingRigidBody body)
 	{
 		Collider2D gravityField = body.orbitCenter.GetComponent<Collider2D>();
@@ -96,6 +115,29 @@ public class CameraMovement : MonoBehaviour
 		}
 	}
 
+	private IEnumerator ApplyPostProcessingImpl(PostProcessingProfile start, PostProcessingProfile end,
+		float applyTime, float remainTime, float returnTime)
+	{
+		PostProcessingProfile profile = cam.GetComponent<PostProcessingBehaviour>().profile;
+
+		for (float dt = 0f; dt < 1f; dt += Time.deltaTime / applyTime)
+		{
+			Debug.Log("Lerping post processing");
+			profile.Lerp(start, end, dt);
+			yield return null;
+		}
+		profile.Lerp(start, end, 1f);
+
+		yield return new WaitForSeconds(remainTime);
+
+		for (float dt = 0f; dt < 1f; dt += Time.deltaTime / returnTime)
+		{
+			profile.Lerp(end, start, dt);
+			yield return null;
+		}
+		profile.Lerp(end, start, 1f);
+	}
+
 	void Start()
 	{
 		if (Camera.main.transform.parent != transform)
@@ -109,6 +151,11 @@ public class CameraMovement : MonoBehaviour
 
 	void Update()
 	{
+		if (planetsByCharacter.Count == 0)
+		{
+			return;
+		}
+
 		float minX = float.MaxValue;
 		float maxX = float.MinValue;
 		float minY = float.MaxValue;

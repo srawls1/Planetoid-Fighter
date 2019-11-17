@@ -6,6 +6,8 @@ public class AttackHitbox : MonoBehaviour
 {
 	private List<CharacterController> charactersToKill;
 
+	public bool facingRight;
+
 	private void Awake()
 	{
 		charactersToKill = new List<CharacterController>();
@@ -39,7 +41,7 @@ public class AttackHitbox : MonoBehaviour
 		KeepConsistentOrbitSpeed projectile = obj.GetComponent<KeepConsistentOrbitSpeed>();
 		if (projectile != null)
 		{
-			projectile.facingRight = !projectile.facingRight;
+			projectile.facingRight = facingRight;
 		}
 	}
 
