@@ -1,0 +1,108 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da9fa08259acd7a459e56572be12e9f7, type: 3}
+  m_Name: MacButtonImages
+  m_EditorClassIdentifier: 
+  buttonImageList:
+  - buttonName: joystick button 16
+    buttonSprite: {fileID: 21300022, guid: a117494ddac8d5842a628bc6639f2183, type: 3}
+  - buttonName: joystick button 17
+    buttonSprite: {fileID: 21300024, guid: a117494ddac8d5842a628bc6639f2183, type: 3}
+  - buttonName: joystick button 18
+    buttonSprite: {fileID: 21300008, guid: a117494ddac8d5842a628bc6639f2183, type: 3}
+  - buttonName: joystick button 19
+    buttonSprite: {fileID: 21300010, guid: a117494ddac8d5842a628bc6639f2183, type: 3}
+  - buttonName: joystick button 13
+    buttonSprite: {fileID: 21300034, guid: a117494ddac8d5842a628bc6639f2183, type: 3}
+  - buttonName: joystick button 14
+    buttonSprite: {fileID: 21300044, guid: a117494ddac8d5842a628bc6639f2183, type: 3}
+  - buttonName: joystick button 11
+    buttonSprite: {fileID: 21300002, guid: a117494ddac8d5842a628bc6639f2183, type: 3}
+  - buttonName: joystick button 12
+    buttonSprite: {fileID: 21300006, guid: a117494ddac8d5842a628bc6639f2183, type: 3}
+  - buttonName: a
+    buttonSprite: {fileID: 21300000, guid: 3a48291248364a3488fd228e91f25bbb, type: 3}
+  - buttonName: b
+    buttonSprite: {fileID: 21300000, guid: 875fcd4501ced56489f94eebd48fdc1e, type: 3}
+  - buttonName: c
+    buttonSprite: {fileID: 21300000, guid: 3f8a2533596d7984a87f896bb45f8beb, type: 3}
+  - buttonName: d
+    buttonSprite: {fileID: 21300000, guid: 9a4695d7af2aff744bb48af87b759a0e, type: 3}
+  - buttonName: e
+    buttonSprite: {fileID: 21300000, guid: 4ee3a66fa6e38544385da7c8af511db3, type: 3}
+  - buttonName: f
+    buttonSprite: {fileID: 21300000, guid: bcf562797b834824ca706108c5c02ba8, type: 3}
+  - buttonName: g
+    buttonSprite: {fileID: 21300000, guid: 638253338e6c22b4e9d9110e88684977, type: 3}
+  - buttonName: h
+    buttonSprite: {fileID: 21300000, guid: d8910d025e0218042bbe9289fda153eb, type: 3}
+  - buttonName: i
+    buttonSprite: {fileID: 21300000, guid: 9208657a5db6151449d5900a380385a2, type: 3}
+  - buttonName: j
+    buttonSprite: {fileID: 21300000, guid: cc8edbbed8b88cc4b82faf2898b3cce2, type: 3}
+  - buttonName: k
+    buttonSprite: {fileID: 21300000, guid: 6c7851aa39997ac4d8beecc059f47ed8, type: 3}
+  - buttonName: l
+    buttonSprite: {fileID: 21300000, guid: 343dfe8df780c3c4f8d6220f89cb86f7, type: 3}
+  - buttonName: m
+    buttonSprite: {fileID: 21300000, guid: b8180fcc275cf4f4fa709aa291534c53, type: 3}
+  - buttonName: n
+    buttonSprite: {fileID: 21300000, guid: dea5794b2db11884cabd24d93fa04e2b, type: 3}
+  - buttonName: o
+    buttonSprite: {fileID: 21300000, guid: 0ca273e0e77183c489139896f638d544, type: 3}
+  - buttonName: p
+    buttonSprite: {fileID: 21300000, guid: 71ffb46c43741b241ba0cd48678ada01, type: 3}
+  - buttonName: q
+    buttonSprite: {fileID: 21300000, guid: 4f61e1b31f2486d46993859f0805d3af, type: 3}
+  - buttonName: r
+    buttonSprite: {fileID: 21300000, guid: e4cf13aabd4df2843a518d65495232d1, type: 3}
+  - buttonName: s
+    buttonSprite: {fileID: 21300000, guid: 6bf31c92d20efba44818fc19777fe472, type: 3}
+  - buttonName: t
+    buttonSprite: {fileID: 21300000, guid: 5b1e10987dce114469cf441402cfb181, type: 3}
+  - buttonName: u
+    buttonSprite: {fileID: 21300000, guid: 403dc0b76481a20459dca5f21991ef03, type: 3}
+  - buttonName: v
+    buttonSprite: {fileID: 21300000, guid: d7aa511c11ca1914ca4253e0c761a829, type: 3}
+  - buttonName: w
+    buttonSprite: {fileID: 21300000, guid: 2120eea85cb4532459475ce9c186ada4, type: 3}
+  - buttonName: x
+    buttonSprite: {fileID: 21300000, guid: 0d94c24bc8d9b8e499531cffcb64fe61, type: 3}
+  - buttonName: y
+    buttonSprite: {fileID: 21300000, guid: d582906cbc9ceef4d83389c848121c12, type: 3}
+  - buttonName: z
+    buttonSprite: {fileID: 21300000, guid: 9f65bf2125f17c54190f1e9383a2bd25, type: 3}
+  - buttonName: 0
+    buttonSprite: {fileID: 21300000, guid: c269b967128374a478ea928261b41be3, type: 3}
+  - buttonName: 1
+    buttonSprite: {fileID: 21300000, guid: dba3b95ca4bfc6f499c0fbb33c9ac348, type: 3}
+  - buttonName: 2
+    buttonSprite: {fileID: 21300000, guid: b4ff84afb2ed8b845b530b8b5a4f364b, type: 3}
+  - buttonName: 3
+    buttonSprite: {fileID: 21300000, guid: 8908794a59c6ccf4586a4d170431e45f, type: 3}
+  - buttonName: 4
+    buttonSprite: {fileID: 21300000, guid: d09ebd56e35a228409e917633f67a1bc, type: 3}
+  - buttonName: 5
+    buttonSprite: {fileID: 21300000, guid: 8d9cfd6b1f7216b42895983b40727d98, type: 3}
+  - buttonName: 6
+    buttonSprite: {fileID: 21300000, guid: 0bf83af8a088c1d4d8df7d6257c5ea2f, type: 3}
+  - buttonName: 7
+    buttonSprite: {fileID: 21300000, guid: 121e12b203cbf8f43a10354b38585747, type: 3}
+  - buttonName: 8
+    buttonSprite: {fileID: 21300000, guid: 1576fb8324b232f4eaf0ea601de57853, type: 3}
+  - buttonName: 9
+    buttonSprite: {fileID: 21300000, guid: 8dd4eb701e64f84438f580c104e4b09e, type: 3}
+  - buttonName: mouse 0
+    buttonSprite: {fileID: 21300000, guid: ab361f17835a23e469d75e84febd0198, type: 3}
+  - buttonName: mouse 1
+    buttonSprite: {fileID: 21300000, guid: ec84939c679732f4ababbc2fcedd5709, type: 3}
+  - buttonName: space
+    buttonSprite: {fileID: 21300000, guid: fe072ebf989aff342a92f6abc6a6804f, type: 3}
