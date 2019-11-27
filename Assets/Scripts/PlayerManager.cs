@@ -2,18 +2,42 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public struct PlayerData
+[System.Serializable]
+public class ButtonMapping
 {
-	public PlayerData(int n, Color c, bool d)
+	public bool realDirectionInput;
+	public string jumpButton;
+	public string meleeButton;
+	public string shootButton;
+
+	public ButtonMapping(bool d, string j, string m, string s)
+	{
+		realDirectionInput = d;
+		jumpButton = j;
+		meleeButton = m;
+		shootButton = s;
+	}
+}
+
+public class PlayerData
+{
+	public PlayerData(int n, Color c, ButtonMapping controls)
 	{
 		number = n;
 		color = c;
-		realDirectionInput = d;
+		realDirectionInput = controls.realDirectionInput;
+		jumpButton = controls.jumpButton;
+		meleeButton = controls.meleeButton;
+		shootButton = controls.shootButton;
 	}
 
 	public int number;
 	public Color color;
+	public bool alive;
 	public bool realDirectionInput;
+	public string jumpButton;
+	public string meleeButton;
+	public string shootButton;
 }
 
 public class PlayerManager : MonoBehaviour
@@ -60,6 +84,7 @@ public class PlayerManager : MonoBehaviour
 
 	[SerializeField] private List<Color> playerColors;
 	[SerializeField] private int numControllers;
+	[SerializeField] private ControlMapping defaultControls;
 	[SerializeField] private float gameEndZoomSize;
 	[SerializeField] private float gameEndZoomTime;
 	[SerializeField] private float gameEndRestDuration;
@@ -83,18 +108,23 @@ public class PlayerManager : MonoBehaviour
 		players = new List<PlayerData>();
 	}
 
-	public void StartListeningForJoin()
+	public List<int> GetAllPlayerNumbers()
 	{
-		for (int i = 0; i < hasPlayerJoined.Length; ++i)
+		List<int> playerNums = new List<int>(players.Count);
+		for (int i = 0; i < players.Count; ++i)
 		{
-			hasPlayerJoined[i] = false;
+			playerNums.Add(players[i].number);
 		}
 
-		players.Clear();
-		// if (OnPlayersChanged != null)
-		// {
-		// 	OnPlayersChanged(players);
-		// }
+		return playerNums;
+	}
+
+	public void StartListeningForJoin()
+	{
+		if (OnPlayersChanged != null)
+		{
+			OnPlayersChanged(players);
+		}
 
 		phase = Phase.Joining;
 		StartCoroutine(ListenForJoin());
@@ -110,11 +140,8 @@ public class PlayerManager : MonoBehaviour
 		for (int i = 0; i < players.Count; ++i)
 		{
 			CharacterController character = Instantiate(prefab, positions[i], Quaternion.identity);
-			character.playerNumber = players[i].number;
-			character.color = players[i].color;
-			character.realDirectionInput = players[i].realDirectionInput;
-			playerColors.Add(players[i].color);
-
+			character.data = players[i];
+			players[i].alive = true;
 		}
 
 		phase = Phase.Playing;
@@ -123,8 +150,18 @@ public class PlayerManager : MonoBehaviour
 	public void OnPlayerDied(CharacterController character)
 	{
 		int index = players.FindIndex((playerData) => playerData.number == character.playerNumber);
-		players.RemoveAt(index);
-		if (players.Count == 1)
+		players[index].alive = false;
+
+		int aliveCount = 0;
+		for (int i = 0; i < players.Count; ++i)
+		{
+			if (players[i].alive)
+			{
+				++aliveCount;
+			}
+		}
+
+		if (aliveCount == 1)
 		{
 			StartCoroutine(GameEndJuice(character));
 		}
@@ -135,7 +172,36 @@ public class PlayerManager : MonoBehaviour
 		int index = players.FindIndex((p) => p.number == playerNumber);
 		PlayerData player = players[index];
 		player.realDirectionInput = !player.realDirectionInput;
-		players[index] = player;
+		if (OnPlayersChanged != null)
+		{
+			OnPlayersChanged(players);
+		}
+	}
+
+	public void SetJumpButton(int playerNumber, string jumpButton)
+	{
+		int index = players.FindIndex((p) => p.number == playerNumber);
+		players[index].jumpButton = jumpButton;
+		if (OnPlayersChanged != null)
+		{
+			OnPlayersChanged(players);
+		}
+	}
+
+	public void SetMeleeButton(int playerNumber, string meleeButton)
+	{
+		int index = players.FindIndex((p) => p.number == playerNumber);
+		players[index].meleeButton = meleeButton;
+		if (OnPlayersChanged != null)
+		{
+			OnPlayersChanged(players);
+		}
+	}
+
+	public void SetShootButton(int playerNumber, string shootButton)
+	{
+		int index = players.FindIndex((p) => p.number == playerNumber);
+		players[index].shootButton = shootButton;
 		if (OnPlayersChanged != null)
 		{
 			OnPlayersChanged(players);
@@ -166,7 +232,8 @@ public class PlayerManager : MonoBehaviour
 				if (!hasPlayerJoined[i] && Input.GetButtonDown("Join" + i))
 				{
 					hasPlayerJoined[i] = true;
-					PlayerData player = new PlayerData(i, playerColors[0], false);
+					ButtonMapping buttons = defaultControls.GetMapping(i);
+					PlayerData player = new PlayerData(i, playerColors[0], buttons);
 					playerColors.RemoveAt(0);
 					players.Add(player);
 					if (OnPlayersChanged != null)
@@ -182,7 +249,7 @@ public class PlayerManager : MonoBehaviour
 
 	private IEnumerator GameEndJuice(CharacterController player)
 	{
-		PlayerData winner = players[0];
+		PlayerData winner = players.Find(p => p.alive);
 		Coroutine zoom = CameraMovement.instance.PanAndZoom(player.transform.position,
 			gameEndZoomSize, gameEndZoomTime, gameEndRestDuration);
 		Coroutine slowDown = StartCoroutine(SlowDownRoutine());

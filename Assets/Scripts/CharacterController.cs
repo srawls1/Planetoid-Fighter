@@ -5,9 +5,6 @@ using UnityEngine;
 [RequireComponent(typeof(OrbittingRigidBody)), RequireComponent(typeof(Animator))]
 public class CharacterController : MonoBehaviour
 {
-	public int playerNumber;
-	public bool realDirectionInput;
-
 	[Header("Running")]
 	[SerializeField] private float maxSpeed;
 	[SerializeField] private float timeToFullSpeed;
@@ -44,19 +41,26 @@ public class CharacterController : MonoBehaviour
 	private float lastShot;
 	private float lastAttack;
 	private bool m_facingRight;
-	private Color m_color;
+	private PlayerData m_data;
 
-	public Color color
+	public PlayerData data
 	{
-		get { return m_color; }
+		get { return m_data; }
 		set
 		{
+			m_data = value;
+
+			Color color = value.color;
 			foreach (SpriteRenderer renderer in GetComponentsInChildren<SpriteRenderer>())
 			{
-				renderer.color = value;
+				renderer.color = color;
 			}
-			m_color = value;
 		}
+	}
+
+	public int playerNumber
+	{
+		get { return data.number; }
 	}
 
 	private bool facingRight
@@ -146,7 +150,7 @@ public class CharacterController : MonoBehaviour
 
 	private float GetHorizontalInput()
 	{
-		if (realDirectionInput)
+		if (data.realDirectionInput)
 		{
 			Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal" + playerNumber),
 										Input.GetAxisRaw("Vertical" + playerNumber));
@@ -163,14 +167,14 @@ public class CharacterController : MonoBehaviour
 	{
 		if (IsOnGround())
 		{
-			if (Input.GetButtonDown("Jump" + playerNumber) || jumpQueuedUntil > Time.time) // Either they just pressed the jump button, or they just landed and a jump was queued
+			if (Input.GetKeyDown(data.jumpButton) || jumpQueuedUntil > Time.time) // Either they just pressed the jump button, or they just landed and a jump was queued
 			{
 				Jump();
 			}
 		}
 		else // Can't jump. Just queue the input in case we're about to land
 		{
-			if (Input.GetButtonDown("Jump" + playerNumber))
+			if (Input.GetKeyDown(data.jumpButton))
 			{
 				jumpQueuedUntil = Time.time + inputQueueTime;
 			}
@@ -194,7 +198,7 @@ public class CharacterController : MonoBehaviour
 
 	private IEnumerator VariableJumpRoutine(float jumpSpeed)
 	{
-		for (float dt = 0f; dt < variableHangTime && Input.GetButton("Jump" + playerNumber); dt += Time.deltaTime)
+		for (float dt = 0f; dt < variableHangTime && Input.GetKey(data.jumpButton); dt += Time.deltaTime)
 		{
 			body.verticalSpeed = jumpSpeed;
 			yield return null;
@@ -223,14 +227,14 @@ public class CharacterController : MonoBehaviour
 	{
 		if (Time.time > lastShot + shotCooldownTime)
 		{
-			if (Input.GetButtonDown("Fire" + playerNumber) || shotQueuedUntil > Time.time)
+			if (Input.GetKeyDown(data.shootButton) || shotQueuedUntil > Time.time)
 			{
 				StartCoroutine(Shoot());
 			}
 		}
 		else
 		{
-			if (Input.GetButtonDown("Fire" + playerNumber))
+			if (Input.GetKeyDown(data.shootButton))
 			{
 				shotQueuedUntil = Time.time + inputQueueTime;
 			}
@@ -248,21 +252,21 @@ public class CharacterController : MonoBehaviour
 			(facingRight ? transform.right : -transform.right) * spawnDistance;
 		KeepConsistentOrbitSpeed projectile = Instantiate(prefab, spawnPosition, transform.rotation);
 		projectile.facingRight = facingRight;
-		projectile.color = color;
+		projectile.color = data.color;
 	}
 
 	private void CheckForAttack()
 	{
 		if (Time.time > lastAttack + attackCooldownTime)
 		{
-			if (Input.GetButtonDown("Attack" + playerNumber) || attackQueuedUntil > Time.time)
+			if (Input.GetKeyDown(data.meleeButton) || attackQueuedUntil > Time.time)
 			{
 				StartCoroutine(Attack());
 			}
 		}
 		else
 		{
-			if (Input.GetButtonDown("Attack" + playerNumber))
+			if (Input.GetKeyDown(data.meleeButton))
 			{
 				attackQueuedUntil = Time.time + inputQueueTime;
 			}

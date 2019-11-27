@@ -11,6 +11,7 @@ public class CameraMovement : MonoBehaviour
 
 	[SerializeField] private PostProcessingProfile baseProfile;
 	[SerializeField] private PostProcessingProfile juicyProfile;
+	[SerializeField] private float chromaticAberrationIntensity = 3f;
 	[SerializeField] private float processFadeInTime;
 	[SerializeField] private float processFadeOutTime;
 	[SerializeField] private float processRemainTime;
@@ -36,6 +37,9 @@ public class CameraMovement : MonoBehaviour
 
 	private void Awake()
 	{
+		ChromaticAberrationModel.Settings aberration = juicyProfile.chromaticAberration.settings;
+		aberration.intensity = chromaticAberrationIntensity;
+		juicyProfile.chromaticAberration.settings = aberration;
 		planetsByCharacter = new Dictionary<OrbittingRigidBody, Collider2D>();
 		planetChangeDelegates = new Dictionary<OrbittingRigidBody, OrbittingRigidBody.CenterChangedDelegate>();
 	}

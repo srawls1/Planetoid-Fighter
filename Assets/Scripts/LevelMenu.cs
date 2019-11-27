@@ -6,58 +6,110 @@ using UnityEngine.UI;
 
 public class LevelMenu : MonoBehaviour
 {
-	[SerializeField] private Text[] joinTexts;
-	[SerializeField] private PlayerMenu[] playerMenus;
-	[SerializeField] private Button[] levelButtons;
+	[SerializeField] private GameObject previousScreen;
+	[SerializeField] private int numColumns;
+	[SerializeField] private int numRows;
 
-	private int numPlayers;
+	private LevelMenuButton[] levelButtons;
+	private List<int> playerNumbers;
+	private int selectedX;
+	private int selectedY;
 
-	private void Start()
+	private Dictionary<int, int> previousHorizontals;
+	private Dictionary<int, int> previousVerticals;
+
+	private void Awake()
 	{
-		PlayerManager.instance.OnPlayersChanged += PlayersChangedCallback;
-		PlayerManager.instance.StartListeningForJoin();
-	}
-
-	private void OnDestroy()
-	{
-		PlayerManager.instance.OnPlayersChanged -= PlayersChangedCallback;
-	}
-
-	private void PlayersChangedCallback(List<PlayerData> players)
-	{
-		for (int i = 0; i < players.Count; ++i)
+		levelButtons = GetComponentsInChildren<LevelMenuButton>();
+		for (int y = 0; y < numRows; ++y)
 		{
-			joinTexts[i].gameObject.SetActive(false);
-			playerMenus[i].gameObject.SetActive(true);
-			playerMenus[i].playerNumber = players[i].number;
-			playerMenus[i].color = players[i].color;
-			playerMenus[i].realDirectionInput = players[i].realDirectionInput;
-		}
-		for (int i = players.Count; i < joinTexts.Length; ++i)
-		{
-			joinTexts[i].gameObject.SetActive(true);
-			playerMenus[i].gameObject.SetActive(false);
-		}
-
-		if (players.Count >= 2)
-		{
-			for (int i = 0; i < levelButtons.Length; ++i)
+			for (int x = 0; x < numColumns; ++x)
 			{
-				levelButtons[i].interactable = true;
+				LevelMenuButton child = GetChild(x, y);
+				child.x = x;
+				child.y = y;
 			}
 		}
-		else
+		previousHorizontals = new Dictionary<int, int>();
+		previousVerticals = new Dictionary<int, int>();
+	}
+
+	private void OnEnable()
+	{
+		playerNumbers = PlayerManager.instance.GetAllPlayerNumbers();
+		previousHorizontals.Clear();
+		previousVerticals.Clear();
+
+		for (int i = 0; i < playerNumbers.Count; ++i)
 		{
-			for (int i = 0; i < levelButtons.Length; ++i)
-			{
-				levelButtons[i].interactable = false;
-			}
+			previousHorizontals[playerNumbers[i]] = 0;
+			previousVerticals[playerNumbers[i]] = 0;
 		}
+	}
+
+	private void Update()
+	{
+		for (int i = 0; i < playerNumbers.Count; ++i)
+		{
+			if (Input.GetButtonDown("Join" + playerNumbers[i]))
+			{
+				GetChild(selectedX, selectedY).SelectLevel();
+				return;
+			}
+			if (Input.GetButtonDown("Cancel" + playerNumbers[i]))
+			{
+				GoBack();
+				return;
+			}
+
+			int x = Mathf.RoundToInt(Input.GetAxisRaw("Horizontal" + playerNumbers[i]));
+			int y = Mathf.RoundToInt(Input.GetAxisRaw("Vertical" + playerNumbers[i]));
+
+			int newX = selectedX + ((x == previousHorizontals[playerNumbers[i]]) ? 0 : x);
+			int newY = selectedY + ((y == previousVerticals[playerNumbers[i]]) ? 0 : y);
+
+			if (newX < 0) newX += numColumns;
+			if (newY < 0) newY += numRows;
+			newX %= numColumns;
+			newY %= numRows;
+
+			SelectChild(newX, newY);
+			previousHorizontals[playerNumbers[i]] = x;
+			previousVerticals[playerNumbers[i]] = y;
+		}
+	}
+
+	public void SelectChild(int x, int y)
+	{
+		LevelMenuButton currentSelected = GetChild(selectedX, selectedY);
+		if (currentSelected != null)
+		{
+			if (currentSelected.state == LevelMenuButton.State.Pressed)
+			{
+				return;
+			}
+
+			currentSelected.state = LevelMenuButton.State.Idle;
+		}
+
+		selectedX = x;
+		selectedY = y;
+		GetChild(x, y).state = LevelMenuButton.State.Hovered;
+	}
+
+	public void GoBack()
+	{
+		gameObject.SetActive(false);
+		previousScreen.SetActive(true);
 	}
 
 	public void LoadScene(string sceneName)
 	{
-		PlayerManager.instance.StopListeningForJoin();
 		SceneManager.LoadScene(sceneName);
+	}
+
+	private LevelMenuButton GetChild(int x, int y)
+	{
+		return levelButtons[y * numColumns + x];
 	}
 }
