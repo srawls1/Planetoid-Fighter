@@ -51,10 +51,16 @@ public class CharacterController : MonoBehaviour
 			m_data = value;
 
 			Color color = value.color;
-			foreach (SpriteRenderer renderer in GetComponentsInChildren<SpriteRenderer>())
+			foreach (SpriteRenderer renderer in GetComponentsInChildren<SpriteRenderer>(true))
 			{
 				renderer.color = color;
 			}
+			foreach (AttackHitbox attack in GetComponentsInChildren<AttackHitbox>(true))
+			{
+				attack.color = color;
+			}
+
+			GetComponentInChildren<StompHitbox>(true).color = color;
 		}
 	}
 
@@ -108,12 +114,12 @@ public class CharacterController : MonoBehaviour
 	private IEnumerator DeathJuice()
 	{
 		PlayDeathSound();
-		//Coroutine pause = StartCoroutine(HitPause());
+		Coroutine pause = StartCoroutine(HitPause());
 		Coroutine shake = CameraMovement.instance.ScreenShake(screenShakeIntensity);
 		Coroutine effect = CameraMovement.instance.ApplyPostProcessing();
 
 		yield return shake;
-		//yield return pause;
+		yield return pause;
 		yield return effect;
 	}
 
@@ -124,8 +130,11 @@ public class CharacterController : MonoBehaviour
 
 	private IEnumerator HitPause()
 	{
-		Time.timeScale = slowdownMinSpeed;
-		yield return new WaitForSecondsRealtime(slowdownDuration);
+		for (float dt = 0f; dt < slowdownDuration; dt += Time.unscaledDeltaTime)
+		{
+			Time.timeScale = slowdownMinSpeed;
+			yield return null;
+		}
 		Time.timeScale = 1f;
 	}
 

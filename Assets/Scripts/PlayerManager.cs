@@ -266,8 +266,11 @@ public class PlayerManager : MonoBehaviour
 	private IEnumerator SlowDownRoutine()
 	{
 		yield return new WaitForSeconds(gameEndPauseWait);
-		Time.timeScale = 0f;
-		yield return new WaitForSecondsRealtime(gameEndPauseDuration);
+		for (float dt = 0f; dt < gameEndPauseDuration; dt += Time.unscaledDeltaTime)
+		{
+			Time.timeScale = 0f;
+			yield return null;
+		}
 		Time.timeScale = 1f;
 	}
 }

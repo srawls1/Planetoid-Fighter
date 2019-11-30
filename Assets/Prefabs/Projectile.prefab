@@ -210,6 +210,8 @@ MonoBehaviour:
   speed: 10
   duration: 5
   startupTime: 0.1
+  contactParticle: {fileID: 198700905509277114, guid: 8a7acf31ab3bd4c6b94e6f3fd12424f9,
+    type: 2}
 --- !u!212 &212595497312344626
 SpriteRenderer:
   m_ObjectHideFlags: 1

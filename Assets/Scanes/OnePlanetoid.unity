@@ -671,6 +671,7 @@ MonoBehaviour:
   movementSmoothing: 2
   baseProfile: {fileID: 11400000, guid: da67b64423687474b9f9c8061f29be64, type: 2}
   juicyProfile: {fileID: 11400000, guid: 9bda671d20520417f849555b487d9e1c, type: 2}
+  chromaticAberrationIntensity: 3
   processFadeInTime: 0.05
   processFadeOutTime: 0.03
   processRemainTime: 0

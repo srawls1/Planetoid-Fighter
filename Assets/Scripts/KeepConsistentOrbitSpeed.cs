@@ -8,6 +8,7 @@ public class KeepConsistentOrbitSpeed : MonoBehaviour
 	[SerializeField] private float speed;
 	[SerializeField] private float duration;
 	[SerializeField] private float startupTime;
+	[SerializeField] private ParticleSystem contactParticle;
 
 	private OrbittingRigidBody body;
 	private float verticalPosition;
@@ -64,6 +65,12 @@ public class KeepConsistentOrbitSpeed : MonoBehaviour
 		if (Time.time > startTime + startupTime && character != null)
 		{
 			character.Die();
+			ParticleSystem particle = Instantiate(contactParticle, character.transform.position, Quaternion.identity);
+			ParticleSystem.MainModule main = particle.main;
+			main.startColor = color;
+			ParticleSystem.TrailModule trail = particle.trails;
+			particle.Play();
+			trail.colorOverTrail = color;
 		}
 	}
 

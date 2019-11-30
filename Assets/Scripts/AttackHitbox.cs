@@ -1,12 +1,18 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class AttackHitbox : MonoBehaviour
 {
+	[SerializeField] private ParticleSystem contactParticle;
+	[SerializeField] private float deflectSlowdownSpeed;
+	[SerializeField] private float deflectSlowdownDuration;
+
 	private List<CharacterController> charactersToKill;
 
 	public bool facingRight;
+	public Color color;
 
 	private void Awake()
 	{
@@ -42,7 +48,27 @@ public class AttackHitbox : MonoBehaviour
 		if (projectile != null)
 		{
 			projectile.facingRight = facingRight;
+			ParticleSystem particle = Instantiate(contactParticle, projectile.transform.position, Quaternion.identity);
+			ParticleSystem.MainModule main = particle.main;
+			main.startColor = color;
+			ParticleSystem.TrailModule trail = particle.trails;
+			trail.colorOverTrail = color;
+			particle.Play();
+			projectile.color = color;
+			PlayerManager.instance.StartCoroutine(Slowdown());
 		}
+	}
+
+	private IEnumerator Slowdown()
+	{
+		for (float dt = 0f; dt < deflectSlowdownDuration; dt += Time.unscaledDeltaTime)
+		{
+			Debug.Log("Setting timescale low; dt =" + dt);
+			Time.timeScale = deflectSlowdownSpeed;
+			yield return null;
+		}
+		Debug.Log("Setting timescale back to 1");
+		Time.timeScale = 1f;
 	}
 
 	private void CheckKillPlayer(Collider2D obj)
@@ -51,6 +77,12 @@ public class AttackHitbox : MonoBehaviour
 		if (character != null && character != GetComponentInParent<CharacterController>())
 		{
 			Debug.Log("Adding character to kill: " + character);
+			ParticleSystem particle = Instantiate(contactParticle, character.transform.position, Quaternion.identity);
+			ParticleSystem.MainModule main = particle.main;
+			main.startColor = color;
+			ParticleSystem.TrailModule trail = particle.trails;
+			trail.colorOverTrail = color;
+			particle.Play();
 			charactersToKill.Add(character);
 		}
 	}

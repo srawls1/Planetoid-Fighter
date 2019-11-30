@@ -1014,6 +1014,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bounceOffSpeed: 10
+  contactParticle: {fileID: 198700905509277114, guid: 8a7acf31ab3bd4c6b94e6f3fd12424f9,
+    type: 2}
+  color: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &114256573148410886
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1051,6 +1054,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8939dff5422df4ae49a3b2f1a38c9d61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  contactParticle: {fileID: 198700905509277114, guid: 8a7acf31ab3bd4c6b94e6f3fd12424f9,
+    type: 2}
+  deflectSlowdownSpeed: 0.1
+  deflectSlowdownDuration: 0.6
+  facingRight: 0
+  color: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &114448599469762254
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1101,8 +1110,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eff1630fba3d344fabfc0b0cb01c0e62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerNumber: 0
-  realDirectionInput: 1
   maxSpeed: 8.67
   timeToFullSpeed: 0.2
   timeToStop: 0.1
