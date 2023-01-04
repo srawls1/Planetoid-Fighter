@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.PostProcessing;
+//using UnityEngine.PostProcessing;
 
 public class CameraMovement : MonoBehaviour
 {
@@ -9,8 +9,8 @@ public class CameraMovement : MonoBehaviour
 	[SerializeField] private float minShake;
 	[SerializeField] private float movementSmoothing;
 
-	[SerializeField] private PostProcessingProfile baseProfile;
-	[SerializeField] private PostProcessingProfile juicyProfile;
+	//[SerializeField] private PostProcessingProfile baseProfile;
+	//[SerializeField] private PostProcessingProfile juicyProfile;
 	[SerializeField] private float chromaticAberrationIntensity = 3f;
 	[SerializeField] private float processFadeInTime;
 	[SerializeField] private float processFadeOutTime;
@@ -37,9 +37,9 @@ public class CameraMovement : MonoBehaviour
 
 	private void Awake()
 	{
-		ChromaticAberrationModel.Settings aberration = juicyProfile.chromaticAberration.settings;
-		aberration.intensity = chromaticAberrationIntensity;
-		juicyProfile.chromaticAberration.settings = aberration;
+		//ChromaticAberrationModel.Settings aberration = juicyProfile.chromaticAberration.settings;
+		//aberration.intensity = chromaticAberrationIntensity;
+		//juicyProfile.chromaticAberration.settings = aberration;
 		planetsByCharacter = new Dictionary<OrbittingRigidBody, Collider2D>();
 		planetChangeDelegates = new Dictionary<OrbittingRigidBody, OrbittingRigidBody.CenterChangedDelegate>();
 	}
@@ -70,17 +70,17 @@ public class CameraMovement : MonoBehaviour
 		return StartCoroutine(PanAndZoomImpl(focus, zoomSize, zoomTime, restTime));
 	}
 
-	public Coroutine ApplyPostProcessing()
-	{
-		return ApplyPostProcessing(baseProfile, juicyProfile,
-			processFadeInTime, processRemainTime, processFadeOutTime);
-	}
+	//public Coroutine ApplyPostProcessing()
+	//{
+	//	return ApplyPostProcessing(baseProfile, juicyProfile,
+	//		processFadeInTime, processRemainTime, processFadeOutTime);
+	//}
 
-	public Coroutine ApplyPostProcessing(PostProcessingProfile start, PostProcessingProfile end,
-		float applyTime, float remainTime, float returnTime)
-	{
-		return StartCoroutine(ApplyPostProcessingImpl(start, end, applyTime, remainTime, returnTime));
-	}
+	//public Coroutine ApplyPostProcessing(PostProcessingProfile start, PostProcessingProfile end,
+	//	float applyTime, float remainTime, float returnTime)
+	//{
+	//	return StartCoroutine(ApplyPostProcessingImpl(start, end, applyTime, remainTime, returnTime));
+	//}
 
 	private void UpdatePlanetoid(OrbittingRigidBody body)
 	{
@@ -119,28 +119,28 @@ public class CameraMovement : MonoBehaviour
 		}
 	}
 
-	private IEnumerator ApplyPostProcessingImpl(PostProcessingProfile start, PostProcessingProfile end,
-		float applyTime, float remainTime, float returnTime)
-	{
-		PostProcessingProfile profile = cam.GetComponent<PostProcessingBehaviour>().profile;
+	//private IEnumerator ApplyPostProcessingImpl(PostProcessingProfile start, PostProcessingProfile end,
+	//	float applyTime, float remainTime, float returnTime)
+	//{
+	//	PostProcessingProfile profile = cam.GetComponent<PostProcessingBehaviour>().profile;
 
-		for (float dt = 0f; dt < 1f; dt += Time.deltaTime / applyTime)
-		{
-			Debug.Log("Lerping post processing");
-			profile.Lerp(start, end, dt);
-			yield return null;
-		}
-		profile.Lerp(start, end, 1f);
+	//	for (float dt = 0f; dt < 1f; dt += Time.deltaTime / applyTime)
+	//	{
+	//		Debug.Log("Lerping post processing");
+	//		profile.Lerp(start, end, dt);
+	//		yield return null;
+	//	}
+	//	profile.Lerp(start, end, 1f);
 
-		yield return new WaitForSeconds(remainTime);
+	//	yield return new WaitForSeconds(remainTime);
 
-		for (float dt = 0f; dt < 1f; dt += Time.deltaTime / returnTime)
-		{
-			profile.Lerp(end, start, dt);
-			yield return null;
-		}
-		profile.Lerp(end, start, 1f);
-	}
+	//	for (float dt = 0f; dt < 1f; dt += Time.deltaTime / returnTime)
+	//	{
+	//		profile.Lerp(end, start, dt);
+	//		yield return null;
+	//	}
+	//	profile.Lerp(end, start, 1f);
+	//}
 
 	void Start()
 	{

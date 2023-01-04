@@ -11,12 +11,16 @@ sysinfo.txt
 /Assets/AssetStoreTools*
 *.apk
 *.unitypackage
- 
+/[Pp]ackages/
+/[Ll]ogs/
+/[Uu]serSettings/
+
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
 # ===================================== #
 [Ee]xported[Oo]bj/
 .vs/
+.vsconfig
 /*.userprefs
 /*.csproj
 /*.pidb

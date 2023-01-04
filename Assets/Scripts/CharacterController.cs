@@ -5,16 +5,6 @@ using UnityEngine;
 [RequireComponent(typeof(OrbittingRigidBody)), RequireComponent(typeof(Animator))]
 public class CharacterController : MonoBehaviour
 {
-	[Header("Running")]
-	[SerializeField] private float maxSpeed;
-	[SerializeField] private float timeToFullSpeed;
-	[SerializeField] private float timeToStop;
-
-	[Header("Jumping")]
-	[SerializeField] private float jumpHeight;
-	[SerializeField] private float variableHangTime;
-	[SerializeField] private float coyoteTime;
-	[SerializeField] private float inputQueueTime;
 
 	[Header("Projectile")]
 	[SerializeField] private KeepConsistentOrbitSpeed prefab;
@@ -24,18 +14,14 @@ public class CharacterController : MonoBehaviour
 
 	[Header("Attack")]
 	[SerializeField] private float attackCooldownTime;
+	[SerializeField] private float inputQueueTime;
 
 	[Header("Death Juice")]
 	[SerializeField] private float screenShakeIntensity;
 	[SerializeField] private float slowdownMinSpeed;
 	[SerializeField] private float slowdownDuration;
 
-	private OrbittingRigidBody body;
 	private Animator animator;
-	private new BoxCollider2D collider;
-	private float acceleration;
-	private float timeLeftGround;
-	private float jumpQueuedUntil;
 	private float attackQueuedUntil;
 	private float shotQueuedUntil;
 	private float lastShot;
@@ -54,10 +40,6 @@ public class CharacterController : MonoBehaviour
 			foreach (SpriteRenderer renderer in GetComponentsInChildren<SpriteRenderer>(true))
 			{
 				renderer.color = color;
-			}
-			foreach (AttackHitbox attack in GetComponentsInChildren<AttackHitbox>(true))
-			{
-				attack.color = color;
 			}
 
 			GetComponentInChildren<StompHitbox>(true).color = color;
@@ -83,9 +65,7 @@ public class CharacterController : MonoBehaviour
 	{
 		lastShot = -shotCooldownTime;
 		lastAttack = -attackCooldownTime;
-		body = GetComponent<OrbittingRigidBody>();
 		animator = GetComponent<Animator>();
-		collider = GetComponent<BoxCollider2D>();
 		facingRight = true;
 	}
 
@@ -96,9 +76,6 @@ public class CharacterController : MonoBehaviour
 
 	void Update()
 	{
-		UpdateIsOnGround();
-		CheckForJump();
-		ApplyHorizontalAcceleration();
 		CheckForShoot();
 		CheckForAttack();
 	}
@@ -116,11 +93,11 @@ public class CharacterController : MonoBehaviour
 		PlayDeathSound();
 		Coroutine pause = StartCoroutine(HitPause());
 		Coroutine shake = CameraMovement.instance.ScreenShake(screenShakeIntensity);
-		Coroutine effect = CameraMovement.instance.ApplyPostProcessing();
+		//Coroutine effect = CameraMovement.instance.ApplyPostProcessing();
 
 		yield return shake;
 		yield return pause;
-		yield return effect;
+		//yield return effect;
 	}
 
 	private void PlayDeathSound()
@@ -136,100 +113,6 @@ public class CharacterController : MonoBehaviour
 			yield return null;
 		}
 		Time.timeScale = 1f;
-	}
-
-	private void ApplyHorizontalAcceleration()
-	{
-		float input = GetHorizontalInput();
-		float time = Mathf.Approximately(input, 0f) ? timeToStop : timeToFullSpeed;
-
-		float horizontalSpeed = Mathf.SmoothDamp(body.horizontalSpeed, input * maxSpeed, ref acceleration, time);
-		body.horizontalSpeed = horizontalSpeed;
-
-		if (input > 0.1f)
-		{
-			facingRight = true;
-		}
-		if (input < -0.1f)
-		{
-			facingRight = false;
-		}
-		animator.SetFloat("Speed", horizontalSpeed);
-	}
-
-	private float GetHorizontalInput()
-	{
-		if (data.realDirectionInput)
-		{
-			Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal" + playerNumber),
-										Input.GetAxisRaw("Vertical" + playerNumber));
-			float x = Vector2.Dot(input, transform.right);
-			return Mathf.Sign(x) * Mathf.Max(Mathf.Abs(input.x), Mathf.Abs(input.y));
-		}
-		else
-		{
-			return Mathf.Round(Input.GetAxisRaw("Horizontal" + playerNumber));
-		}
-	}
-
-	private void CheckForJump()
-	{
-		if (IsOnGround())
-		{
-			if (Input.GetKeyDown(data.jumpButton) || jumpQueuedUntil > Time.time) // Either they just pressed the jump button, or they just landed and a jump was queued
-			{
-				Jump();
-			}
-		}
-		else // Can't jump. Just queue the input in case we're about to land
-		{
-			if (Input.GetKeyDown(data.jumpButton))
-			{
-				jumpQueuedUntil = Time.time + inputQueueTime;
-			}
-		}
-	}
-
-	private bool IsOnGround()
-	{
-		return timeLeftGround + coyoteTime > Time.time; // This means we are either on the ground, or still within the coyote time window
-	}
-
-	private void Jump()
-	{
-		jumpQueuedUntil = Time.time - Time.deltaTime; // Unqueue the jump input by setting it into the past
-
-		float jumpSpeed = Mathf.Sqrt(2f * jumpHeight * body.accelerationDueToGravity);
-		body.verticalSpeed = jumpSpeed;
-		animator.SetTrigger("Jump");
-		StartCoroutine(VariableJumpRoutine(jumpSpeed));
-	}
-
-	private IEnumerator VariableJumpRoutine(float jumpSpeed)
-	{
-		for (float dt = 0f; dt < variableHangTime && Input.GetKey(data.jumpButton); dt += Time.deltaTime)
-		{
-			body.verticalSpeed = jumpSpeed;
-			yield return null;
-		}
-	}
-
-	private void UpdateIsOnGround()
-	{
-		animator.SetFloat("VerticalSpeed", body.verticalSpeed);
-
-		Vector2 bounds = collider.size;
-		// This raycast downward just beyond the extent of the character's collider will check if the character is standing on something
-		if (Physics2D.Raycast(transform.position, body.down, bounds.y + 0.1f).collider != null)
-		{
-			animator.SetBool("OnFloor", true);
-			// Update the time they left the ground to now. If they are not on the ground, this will have been last updated when they left.
-			timeLeftGround = Time.time;
-		}
-		else
-		{
-			animator.SetBool("OnFloor", false);
-		}
 	}
 
 	private void CheckForShoot()
