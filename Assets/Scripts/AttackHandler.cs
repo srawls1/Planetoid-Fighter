@@ -28,7 +28,7 @@ public class AttackHandler : MonoBehaviour
 		inputProxy = GetComponent<PlanetoidGameInputProxy>();
 		animator = GetComponent<Animator>();
 		time = GetComponent<RelativeTime>();
-		gun = GetComponentInChildren<AbstractGun>();
+		gun = GetComponentInChildren<AbstractGun>(true);
 	}
 
 	private void Update()

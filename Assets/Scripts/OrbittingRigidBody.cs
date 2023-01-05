@@ -141,9 +141,9 @@ public class OrbittingRigidBody : MonoBehaviour
 			transform.rotation = Quaternion.FromToRotation(Vector2.up, up);
 		}
 
-		Vector3 movement = orbitCenter.position - lastCenterPosition;
-		lastCenterPosition = orbitCenter.position;
-		transform.position += movement;
+		//Vector3 movement = orbitCenter.position - lastCenterPosition;
+		//lastCenterPosition = orbitCenter.position;
+		//transform.position += movement;
 	}
 
 	private void OnTriggerEnter2D(Collider2D collider)

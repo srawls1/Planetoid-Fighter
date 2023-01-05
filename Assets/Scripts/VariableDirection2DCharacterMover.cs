@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class VariableDirection2DCharacterMover : MonoBehaviour, CharacterMover
 {
+	[SerializeField] private bool automaticallyRotateYaw;
+
 	private Rigidbody2D body;
-	private float yaw;
+	public float yaw;
 
 	private Vector2 m_down = Vector2.down;
 	public Vector2 down
@@ -37,6 +39,10 @@ public class VariableDirection2DCharacterMover : MonoBehaviour, CharacterMover
 			float verticalSpeed = Vector2.Dot(velocity, up);
 			return new Vector2(horizontalSpeed, verticalSpeed);
 		}
+		set
+		{
+			body.velocity = Quaternion.Euler(0f, 0f, Vector2.SignedAngle(Vector2.up, up)) * value;
+		}
 	}
 
 	private void Awake()
@@ -46,13 +52,16 @@ public class VariableDirection2DCharacterMover : MonoBehaviour, CharacterMover
 
 	public void Move(Vector3 movement)
 	{
-		if (movement.x > 0.05)
+		if (automaticallyRotateYaw)
 		{
-			yaw = 0f;
-		}
-		else if (movement.x < -0.05)
-		{
-			yaw = 180f;
+			if (movement.x > 0.05)
+			{
+				yaw = 0f;
+			}
+			else if (movement.x < -0.05)
+			{
+				yaw = 180f;
+			}
 		}
 
 		Vector3 verticalMovement = movement.y * up;
