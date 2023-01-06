@@ -40,41 +40,8 @@ public class PlayerData
 	public string shootButton;
 }
 
-public class PlayerManager : MonoBehaviour
+public class PlayerManager : Singleton<PlayerManager>
 {
-	#region Singleton Instance
-
-	private static PlayerManager m_instance;
-	public static PlayerManager instance
-	{
-		get
-		{
-			if (m_instance == null)
-			{
-				m_instance = FindObjectOfType<PlayerManager>();
-				m_instance.Initialize();
-			}
-
-			return m_instance;
-		}
-	}
-
-	void Awake()
-	{
-		if (m_instance == null)
-		{
-			m_instance = this;
-			Initialize();
-		}
-		else if (m_instance != this)
-		{
-			Debug.LogWarning("More than one player manager in the scene. Destroying one.");
-			Destroy(gameObject);
-		}
-	}
-
-	#endregion // Singleton Instance
-
 	private enum Phase
 	{
 		Joining,
@@ -101,12 +68,20 @@ public class PlayerManager : MonoBehaviour
 	public delegate void GameWonDelegate(PlayerData player);
 	public event GameWonDelegate OnGameWon;
 
-	private void Initialize()
+	#region Singleton Implementation
+
+	protected override void Init()
 	{
-		DontDestroyOnLoad(m_instance.gameObject);
 		hasPlayerJoined = new bool[numControllers];
 		players = new List<PlayerData>();
 	}
+
+	protected override PlayerManager GetThis()
+	{
+		return this;
+	}
+
+	#endregion // Singleton Implementation
 
 	public List<int> GetAllPlayerNumbers()
 	{
@@ -135,36 +110,36 @@ public class PlayerManager : MonoBehaviour
 		phase = Phase.Spawning;
 	}
 
-	public void SpawnCharacters(CharacterController prefab, List<Vector2> positions)
+	public void SpawnCharacters(GameObject characterPrefab, List<Vector2> positions)
 	{
 		for (int i = 0; i < players.Count; ++i)
 		{
-			CharacterController character = Instantiate(prefab, positions[i], Quaternion.identity);
-			character.data = players[i];
+			GameObject character = Instantiate(characterPrefab, positions[i], Quaternion.identity);
+			//character.data = players[i];
 			players[i].alive = true;
 		}
 
 		phase = Phase.Playing;
 	}
 
-	public void OnPlayerDied(CharacterController character)
+	public void OnPlayerDied(GameObject character)
 	{
-		int index = players.FindIndex((playerData) => playerData.number == character.playerNumber);
-		players[index].alive = false;
+		//int index = players.FindIndex((playerData) => playerData.number == character.playerNumber);
+		//players[index].alive = false;
 
-		int aliveCount = 0;
-		for (int i = 0; i < players.Count; ++i)
-		{
-			if (players[i].alive)
-			{
-				++aliveCount;
-			}
-		}
+		//int aliveCount = 0;
+		//for (int i = 0; i < players.Count; ++i)
+		//{
+		//	if (players[i].alive)
+		//	{
+		//		++aliveCount;
+		//	}
+		//}
 
-		if (aliveCount == 1)
-		{
-			StartCoroutine(GameEndJuice(character));
-		}
+		//if (aliveCount == 1)
+		//{
+		//	StartCoroutine(GameEndJuice(character));
+		//}
 	}
 
 	public void ToggleRealDirection(int playerNumber)
@@ -247,7 +222,7 @@ public class PlayerManager : MonoBehaviour
 		}
 	}
 
-	private IEnumerator GameEndJuice(CharacterController player)
+	private IEnumerator GameEndJuice(GameObject player)
 	{
 		PlayerData winner = players.Find(p => p.alive);
 		Coroutine zoom = CameraMovement.instance.PanAndZoom(player.transform.position,

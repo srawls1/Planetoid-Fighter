@@ -8,7 +8,7 @@ using System;
 public class PlayerSpawner : MonoBehaviour
 {
 	[SerializeField] private Text winText;
-	[SerializeField] private CharacterController characterPrefab;
+	[SerializeField] private GameObject characterPrefab;
 	[SerializeField] private Transform[] spawnLocations;
 	[SerializeField] private float returnToMenuDelay;
 	[SerializeField] private string sceneName;
