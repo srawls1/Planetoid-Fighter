@@ -26,7 +26,7 @@ public class CharacterController : MonoBehaviour
 				renderer.color = color;
 			}
 
-			GetComponentInChildren<StompHitbox>(true).color = color;
+			//GetComponentInChildren<StompHitbox>(true).color = color;
 		}
 	}
 
