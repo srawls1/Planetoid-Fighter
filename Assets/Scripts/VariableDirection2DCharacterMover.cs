@@ -1,6 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
+
+public class DirectionModifier : IComparable<DirectionModifier>
+{
+	public int priority { get; private set; }
+	public Func<Vector2, Vector2> down;
+
+	public DirectionModifier(int priority, Func<Vector2, Vector2> down)
+	{
+		this.priority = priority;
+		this.down = down;
+	}
+
+	public int CompareTo(DirectionModifier other)
+	{
+		return priority.CompareTo(other.priority);
+	}
+}
 
 public class VariableDirection2DCharacterMover : MonoBehaviour, CharacterMover
 {
@@ -8,18 +24,19 @@ public class VariableDirection2DCharacterMover : MonoBehaviour, CharacterMover
 
 	private Rigidbody2D body;
 	public float yaw;
+	private PriorityQueue<DirectionModifier> modifiers;
 
 	private Vector2 m_down = Vector2.down;
 	public Vector2 down
 	{
 		get { return m_down; }
-		set { m_down = value.normalized; }
+		private set { m_down = value; }
 	}
 
 	public Vector2 up
 	{
 		get { return -m_down; }
-		set { down = -value; }
+		private set { down = -value; }
 	}
 
 	public Vector2 right
@@ -48,6 +65,22 @@ public class VariableDirection2DCharacterMover : MonoBehaviour, CharacterMover
 	private void Awake()
 	{
 		body = GetComponent<Rigidbody2D>();
+		modifiers = new LinkedListPriorityQueue<DirectionModifier>();
+	}
+
+	private void Update()
+	{
+		down = GetDownAtPosition(transform.position);
+	}
+
+	public void AddDirectionModifier(DirectionModifier modifier)
+	{
+		modifiers.Add(modifier);
+	}
+
+	public void RemoveDirectionModifier(DirectionModifier modifier)
+	{
+		modifiers.Remove(modifier);
 	}
 
 	public void Move(Vector3 movement)
@@ -66,8 +99,28 @@ public class VariableDirection2DCharacterMover : MonoBehaviour, CharacterMover
 
 		Vector3 verticalMovement = movement.y * up;
 		Vector3 horizontalMovement = movement.x * right;
-		body.MovePosition(transform.position + verticalMovement + horizontalMovement);
+
+		Vector3 halfHorizontal = horizontalMovement / 2;
+		Vector3 downAtDestination = GetDownAtPosition(transform.position + horizontalMovement + verticalMovement);
+		Vector3 rightAtDestination = Vector3.Cross(downAtDestination, Vector3.back);
+		Vector3 secondHalfHorizontal = movement.x / 2 * rightAtDestination;
+		//float angleBetweenDowns = Vector2.SignedAngle(downAtDestination, down);
+		//Vector3 correction = halfHorizontal.magnitude * Mathf.Sin(angleBetweenDowns * Mathf.Deg2Rad) * downAtDestination;
+
+		body.MovePosition(transform.position + verticalMovement + halfHorizontal + secondHalfHorizontal);
 		transform.rotation = Quaternion.Euler(0f, 0f, Vector2.SignedAngle(Vector2.up, up)) *
 			Quaternion.AngleAxis(yaw, Vector3.up);
+	}
+
+	private Vector2 GetDownAtPosition(Vector2 position)
+	{
+		if (modifiers.Count > 0)
+		{
+			return modifiers.Peek().down(position).normalized;
+		}
+		else
+		{
+			return Vector2.down;
+		}
 	}
 }

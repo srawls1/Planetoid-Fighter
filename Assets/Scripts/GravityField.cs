@@ -4,19 +4,14 @@ using UnityEngine;
 
 public class GravityField : MonoBehaviour
 {
-	private List<VariableDirection2DCharacterMover> characterMoversInGravitationalPull;
+	[SerializeField] private int priority;
+
+	private DirectionModifier directionModifier;
 
 	private void Awake()
 	{
-		characterMoversInGravitationalPull = new List<VariableDirection2DCharacterMover>();
-	}
-
-	private void Update()
-	{
-		for (int i = 0; i < characterMoversInGravitationalPull.Count; ++i)
-		{
-			characterMoversInGravitationalPull[i].up = GetUpVector(characterMoversInGravitationalPull[i].transform.position);
-		}
+		directionModifier = new DirectionModifier(priority, (position) =>
+			(Vector2)transform.position - position);
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision)
@@ -24,7 +19,7 @@ public class GravityField : MonoBehaviour
 		VariableDirection2DCharacterMover mover = collision.GetComponent<VariableDirection2DCharacterMover>();
 		if (mover)
 		{
-			characterMoversInGravitationalPull.Add(mover);
+			mover.AddDirectionModifier(directionModifier);
 		}
 	}
 
@@ -33,7 +28,7 @@ public class GravityField : MonoBehaviour
 		VariableDirection2DCharacterMover mover = collision.GetComponent<VariableDirection2DCharacterMover>();
 		if (mover)
 		{
-			characterMoversInGravitationalPull.Remove(mover);
+			mover.RemoveDirectionModifier(directionModifier);
 		}
 	}
 
