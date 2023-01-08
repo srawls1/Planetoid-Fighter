@@ -5,15 +5,28 @@ using Cinemachine;
 
 public class Juice : Singleton<Juice>
 {
+	#region Editor Fields
+
 	[SerializeField] private float hitStopMinSpeed;
 	[SerializeField] private float hitStopDuration;
 	[SerializeField] private float longHitStopDuration;
 	[SerializeField] private float processFadeInTime;
 	[SerializeField] private float processFadeOutTime;
 	[SerializeField] private float processRemainTime;
+	[SerializeField] private int zoomPriority;
+	[SerializeField] private float zoomRestTime;
+	[SerializeField] private CinemachineVirtualCamera zoomCam;
+
+	#endregion // Editor Fields
+
+	#region Private Fields
 
 	private PostProcessVolume volume;
 	private CinemachineImpulseSource impulseSource;
+
+	#endregion // Private Fields
+
+	#region Singleton Implementation
 
 	protected override void Init()
 	{
@@ -26,10 +39,14 @@ public class Juice : Singleton<Juice>
 		return this;
 	}
 
-	//public Coroutine PanAndZoom(Vector2 focus, float zoomSize, float zoomTime, float restTime)
-	//{
-	//	return StartCoroutine(PanAndZoomImpl(focus, zoomSize, zoomTime, restTime));
-	//}
+	#endregion // Singleton Implementation
+
+	#region Public Functions
+
+	public Coroutine PanAndZoom(Transform focus)
+	{
+		return StartCoroutine(PanAndZoomImpl(focus));
+	}
 
 	public Coroutine ApplyPostProcessing()
 	{
@@ -51,31 +68,23 @@ public class Juice : Singleton<Juice>
 		return StartCoroutine(HitStopImpl(hitStopMinSpeed, longHitStopDuration));
 	}
 
-	//private IEnumerator PanAndZoomImpl(Vector2 focus, float zoomSize, float zoomTime, float restTime)
-	//{
-	//	Vector2 startPos = transform.position;
-	//	float startSize = cam.orthographicSize;
+	#endregion // Public Functions
 
-	//	for (float dt = 0f; dt < 1f; dt += Time.deltaTime / zoomTime)
-	//	{
-	//		transform.position = Vector2.Lerp(startPos, focus, dt);
-	//		cam.orthographicSize = Mathf.Lerp(startSize, zoomSize, dt);
-	//		yield return new WaitForEndOfFrame();
-	//	}
+	#region Private Functions
 
-	//	for (float dt = 0f; dt < 1f; dt += Time.deltaTime / restTime)
-	//	{
-	//		transform.position = focus;
-	//		cam.orthographicSize = zoomSize;
-	//		yield return new WaitForEndOfFrame();
-	//	}
-	//}
+	private IEnumerator PanAndZoomImpl(Transform focus)
+	{
+		int previousPriority = zoomCam.Priority;
+		zoomCam.transform.position = focus.position;
+		zoomCam.Priority = zoomPriority;
+		yield return new WaitForSeconds(zoomRestTime);
+		zoomCam.Priority = previousPriority;
+	}
 
 	private IEnumerator ApplyPostProcessingImpl()
 	{
 		for (float dt = 0f; dt < 1f; dt += Time.deltaTime / processFadeInTime)
 		{
-			Debug.Log("Lerping post processing");
 			volume.weight = dt;
 			yield return null;
 		}
@@ -101,4 +110,6 @@ public class Juice : Singleton<Juice>
 		}
 		Time.timeScale = 1f;
 	}
+
+	#endregion // Private Functions
 }

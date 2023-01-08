@@ -3,9 +3,6 @@ using UnityEngine;
 
 public class DeathCallbacks : MonoBehaviour
 {
-	public float slowdownDuration;
-	public float slowdownMinSpeed;
-
 	private Animator animator;
 
 	private void Awake()
@@ -31,7 +28,6 @@ public class DeathCallbacks : MonoBehaviour
 
 		yield return pause;
 		yield return effect;
-		yield break;
 	}
 
 	//private void PlayDeathSound()

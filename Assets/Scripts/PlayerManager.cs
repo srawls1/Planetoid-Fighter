@@ -221,11 +221,10 @@ public class PlayerManager : Singleton<PlayerManager>
 	private IEnumerator GameEndJuice(GameObject player)
 	{
 		PlayerData winner = players.Find(p => p.alive);
-		//Coroutine zoom = CameraMovement.instance.PanAndZoom(player.transform.position,
-		//	gameEndZoomSize, gameEndZoomTime, gameEndRestDuration);
+		Coroutine zoom = Juice.instance.PanAndZoom(player.transform);
 		Coroutine slowDown = StartCoroutine(SlowDownRoutine());
 
-		//yield return zoom;
+		yield return zoom;
 		yield return slowDown;
 
 		winText.gameObject.SetActive(true);
