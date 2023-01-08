@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public class ButtonMapping
@@ -57,6 +59,9 @@ public class PlayerManager : Singleton<PlayerManager>
 	[SerializeField] private float gameEndRestDuration;
 	[SerializeField] private float gameEndPauseWait;
 	[SerializeField] private float gameEndPauseDuration;
+	[SerializeField] private float returnToMenuDelay;
+	[SerializeField] private string sceneName;
+	[SerializeField] private Text winText;
 
 	private bool[] hasPlayerJoined;
 	private Phase phase;
@@ -64,9 +69,6 @@ public class PlayerManager : Singleton<PlayerManager>
 
 	public delegate void PlayersChangedDelegate(List<PlayerData> player);
 	public event PlayersChangedDelegate OnPlayersChanged;
-
-	public delegate void GameWonDelegate(PlayerData player);
-	public event GameWonDelegate OnGameWon;
 
 	#region Singleton Implementation
 
@@ -110,16 +112,10 @@ public class PlayerManager : Singleton<PlayerManager>
 		phase = Phase.Spawning;
 	}
 
-	public void SpawnCharacters(GameObject characterPrefab, List<Vector2> positions)
+	public void StartBattle(GameObject characterPrefab, List<Vector2> positions)
 	{
-		for (int i = 0; i < players.Count; ++i)
-		{
-			GameObject character = Instantiate(characterPrefab, positions[i], Quaternion.identity);
-			//character.data = players[i];
-			players[i].alive = true;
-		}
-
 		phase = Phase.Playing;
+		PlayerSpawner.instance.SpawnAllPlayers();
 	}
 
 	public void OnPlayerDied(GameObject character)
@@ -225,17 +221,19 @@ public class PlayerManager : Singleton<PlayerManager>
 	private IEnumerator GameEndJuice(GameObject player)
 	{
 		PlayerData winner = players.Find(p => p.alive);
-		Coroutine zoom = CameraMovement.instance.PanAndZoom(player.transform.position,
-			gameEndZoomSize, gameEndZoomTime, gameEndRestDuration);
+		//Coroutine zoom = CameraMovement.instance.PanAndZoom(player.transform.position,
+		//	gameEndZoomSize, gameEndZoomTime, gameEndRestDuration);
 		Coroutine slowDown = StartCoroutine(SlowDownRoutine());
 
-		yield return zoom;
+		//yield return zoom;
 		yield return slowDown;
 
-		if (OnGameWon != null)
-		{
-			OnGameWon(winner);
-		}
+		winText.gameObject.SetActive(true);
+		winText.text = string.Format("P{0} Wins", winner.number);
+		winText.color = winner.color;
+
+		yield return new WaitForSeconds(returnToMenuDelay);
+		SceneManager.LoadScene(sceneName);
 	}
 
 	private IEnumerator SlowDownRoutine()

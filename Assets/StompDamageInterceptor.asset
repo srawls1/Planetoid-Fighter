@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: StompDamageInterceptor
   m_EditorClassIdentifier: 
   m_priority: 0
-  bounceOffSpeed: 3
+  bounceOffSpeed: 10
   contactParticle: {fileID: 198700905509277114, guid: 8a7acf31ab3bd4c6b94e6f3fd12424f9,
     type: 3}

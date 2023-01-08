@@ -1,46 +1,49 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-using System;
 
-public class PlayerSpawner : MonoBehaviour
+public class PlayerSpawner : Singleton<PlayerSpawner>
 {
-	[SerializeField] private Text winText;
+	#region Editor Fields
+
 	[SerializeField] private GameObject characterPrefab;
-	[SerializeField] private Transform[] spawnLocations;
-	[SerializeField] private float returnToMenuDelay;
-	[SerializeField] private string sceneName;
 
-	private void Awake()
+	#endregion // Editor Fields
+
+	private List<SpawnPoint> spawnPoints;
+
+	#region Singleton Implementation
+
+	protected override void Init()
 	{
-		List<Vector2> spawnPositions = new List<Vector2>(spawnLocations.Length);
-		for (int i = 0; i < spawnLocations.Length; ++i)
-		{
-			spawnPositions.Add(spawnLocations[i].position);
-		}
-
-		PlayerManager.instance.SpawnCharacters(characterPrefab, spawnPositions);
-		PlayerManager.instance.OnGameWon += OnGameWon;
+		spawnPoints = new List<SpawnPoint>();
 	}
 
-	private void OnDestroy()
+	protected override PlayerSpawner GetThis()
 	{
-		PlayerManager.instance.OnGameWon -= OnGameWon;
+		return this;
 	}
 
-	private void OnGameWon(PlayerData player)
+	#endregion // Singleton Implementation
+
+	public void RegisterSpawnPoint(SpawnPoint spawnPoint)
 	{
-		winText.gameObject.SetActive(true);
-		winText.text = string.Format("P{0} Wins", player.number);
-		winText.color = player.color;
-		StartCoroutine(DelayedReturnToMenu());
+		spawnPoints.Add(spawnPoint);
 	}
 
-	private IEnumerator DelayedReturnToMenu()
+	public void SpawnAllPlayers()
 	{
-		yield return new WaitForSeconds(returnToMenuDelay);
-		SceneManager.LoadScene(sceneName);
+
+	}
+
+	public void RespawnPlayer(PlayerData player)
+	{
+
+	}
+
+	private void SpawnPlayer(PlayerData player, SpawnPoint spawnPoint)
+	{
+		GameObject character = Instantiate(characterPrefab, spawnPoint.transform.position, Quaternion.identity);
+		//character.data = players[i];
+		//players[i].alive = true;
 	}
 }

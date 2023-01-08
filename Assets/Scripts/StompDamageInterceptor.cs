@@ -3,13 +3,23 @@
 [CreateAssetMenu]
 public class StompDamageInterceptor : DamageInterceptorScriptableObject {
 
+	#region Editor Fields
+
 	[SerializeField] private float bounceOffSpeed;
 	[SerializeField] private ParticleSystem contactParticle;
+
+	#endregion // Editor Fields
+
+	#region Public Functions
 
 	public override void Process(Damage.Builder builder)
 	{
 		builder.WithEffect(DamageEffect);
 	}
+
+	#endregion // Public Functions
+
+	#region Private Functions
 
 	private void DamageEffect(Damage damage)
 	{
@@ -21,7 +31,9 @@ public class StompDamageInterceptor : DamageInterceptorScriptableObject {
 		//trail.colorOverTrail = color;
 		particle.Play();
 
-		MyCharacterController controller = damage.hitbox.GetComponent<MyCharacterController>();
+		MyCharacterController controller = damage.hitbox.GetComponentInParent<MyCharacterController>();
 		controller.verticalVelocity = bounceOffSpeed;
 	}
+
+	#endregion // Private Functions
 }

@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class DeathCallbacks : MonoBehaviour
 {
+	public float slowdownDuration;
+	public float slowdownMinSpeed;
+
 	private Animator animator;
 
 	private void Awake()
@@ -16,35 +19,23 @@ public class DeathCallbacks : MonoBehaviour
 	{
 		//PlayerManager.instance.OnPlayerDied(this);
 		animator.SetBool("Dead", true);
-		//CameraMovement.instance.UnregisterCharacter(this);
+		//PlayDeathSound();
 		StartCoroutine(DeathJuice());
 	}
 
 	private IEnumerator DeathJuice()
 	{
-		//PlayDeathSound();
-		//Coroutine pause = StartCoroutine(HitPause());
-		//Coroutine shake = CameraMovement.instance.ScreenShake(screenShakeIntensity);
-		//Coroutine effect = CameraMovement.instance.ApplyPostProcessing();
+		Coroutine pause = Juice.instance.HitStop();
+		Coroutine effect = Juice.instance.ApplyPostProcessing();
+		Juice.instance.ScreenShake();
 
-		//yield return shake;
-		//yield return pause;
-		//yield return effect;
+		yield return pause;
+		yield return effect;
 		yield break;
 	}
 
 	//private void PlayDeathSound()
 	//{
 	//	// TODO
-	//}
-
-	//private IEnumerator HitPause()
-	//{
-	//	for (float dt = 0f; dt < slowdownDuration; dt += Time.unscaledDeltaTime)
-	//	{
-	//		Time.timeScale = slowdownMinSpeed;
-	//		yield return null;
-	//	}
-	//	Time.timeScale = 1f;
 	//}
 }

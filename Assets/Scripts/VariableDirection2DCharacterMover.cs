@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 
+#region DirectionModifier Class
+
 public class DirectionModifier : IComparable<DirectionModifier>
 {
 	public int priority { get; private set; }
@@ -18,13 +20,25 @@ public class DirectionModifier : IComparable<DirectionModifier>
 	}
 }
 
+#endregion // DirectionModifier Class
+
 public class VariableDirection2DCharacterMover : MonoBehaviour, CharacterMover
 {
+	#region Editor Fields
+
 	[SerializeField] private bool automaticallyRotateYaw;
+
+	#endregion // Editor Fields
+
+	#region Private Fields
 
 	private Rigidbody2D body;
 	public float yaw;
 	private PriorityQueue<DirectionModifier> modifiers;
+
+	#endregion // Private Fields
+
+	#region Properties
 
 	private Vector2 m_down = Vector2.down;
 	public Vector2 down
@@ -62,6 +76,10 @@ public class VariableDirection2DCharacterMover : MonoBehaviour, CharacterMover
 		}
 	}
 
+	#endregion // Properties
+
+	#region Unity Functions
+
 	private void Awake()
 	{
 		body = GetComponent<Rigidbody2D>();
@@ -72,6 +90,10 @@ public class VariableDirection2DCharacterMover : MonoBehaviour, CharacterMover
 	{
 		down = GetDownAtPosition(transform.position);
 	}
+
+	#endregion // Unity Functions
+
+	#region Public Functions
 
 	public void AddDirectionModifier(DirectionModifier modifier)
 	{
@@ -104,13 +126,15 @@ public class VariableDirection2DCharacterMover : MonoBehaviour, CharacterMover
 		Vector3 downAtDestination = GetDownAtPosition(transform.position + horizontalMovement + verticalMovement);
 		Vector3 rightAtDestination = Vector3.Cross(downAtDestination, Vector3.back);
 		Vector3 secondHalfHorizontal = movement.x / 2 * rightAtDestination;
-		//float angleBetweenDowns = Vector2.SignedAngle(downAtDestination, down);
-		//Vector3 correction = halfHorizontal.magnitude * Mathf.Sin(angleBetweenDowns * Mathf.Deg2Rad) * downAtDestination;
 
 		body.MovePosition(transform.position + verticalMovement + halfHorizontal + secondHalfHorizontal);
 		transform.rotation = Quaternion.Euler(0f, 0f, Vector2.SignedAngle(Vector2.up, up)) *
 			Quaternion.AngleAxis(yaw, Vector3.up);
 	}
+
+	#endregion // Public Functions
+
+	#region Private Functions
 
 	private Vector2 GetDownAtPosition(Vector2 position)
 	{
@@ -123,4 +147,6 @@ public class VariableDirection2DCharacterMover : MonoBehaviour, CharacterMover
 			return Vector2.down;
 		}
 	}
+
+	#endregion // Private Functions
 }
