@@ -20,7 +20,7 @@ public class ControlMapping : ScriptableObject
 			string jumpButton = ReconstructJoystickButton(playerNumber, joystickMapping.jumpButton);
 			string meleeButton = ReconstructJoystickButton(playerNumber, joystickMapping.meleeButton);
 			string shootButton = ReconstructJoystickButton(playerNumber, joystickMapping.shootButton);
-			return new ButtonMapping(joystickMapping.realDirectionInput, jumpButton, meleeButton, shootButton);
+			return new ButtonMapping(jumpButton, meleeButton, shootButton);
 		}
 	}
 

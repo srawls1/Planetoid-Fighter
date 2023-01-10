@@ -1,9 +1,21 @@
-using System.Collections;
 using UnityEngine;
 
 public class DeathCallbacks : MonoBehaviour
 {
 	private Animator animator;
+
+	private PlayerData m_data;
+	public PlayerData data
+	{
+		get { return m_data; }
+		set
+		{
+			m_data = value;
+			// set name text
+			// set control mappings
+			// set color
+		}
+	}
 
 	private void Awake()
 	{
@@ -14,24 +26,14 @@ public class DeathCallbacks : MonoBehaviour
 
 	private void DeathCallback()
 	{
-		//PlayerManager.instance.OnPlayerDied(this);
+		PlayerManager.instance.OnPlayerDied(gameObject, m_data);
 		animator.SetBool("Dead", true);
-		//PlayDeathSound();
-		StartCoroutine(DeathJuice());
+		PlayDeathSound();
+		Juice.instance.GameEndJuice(transform);
 	}
 
-	private IEnumerator DeathJuice()
+	private void PlayDeathSound()
 	{
-		Coroutine pause = Juice.instance.HitStop();
-		Coroutine effect = Juice.instance.ApplyPostProcessing();
-		Juice.instance.ScreenShake();
-
-		yield return pause;
-		yield return effect;
+		// TODO
 	}
-
-	//private void PlayDeathSound()
-	//{
-	//	// TODO
-	//}
 }

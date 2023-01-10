@@ -9,7 +9,13 @@ public class PlayerSpawner : Singleton<PlayerSpawner>
 
 	#endregion // Editor Fields
 
+	#region Private Fields
+
 	private List<SpawnPoint> spawnPoints;
+	private List<PlayerData> spawnedPlayerDatas;
+	private List<GameObject> spawnedPlayerGameObjects;
+
+	#endregion // Private Fields
 
 	#region Singleton Implementation
 
@@ -25,25 +31,75 @@ public class PlayerSpawner : Singleton<PlayerSpawner>
 
 	#endregion // Singleton Implementation
 
+	#region Public Functions
+
 	public void RegisterSpawnPoint(SpawnPoint spawnPoint)
 	{
 		spawnPoints.Add(spawnPoint);
 	}
 
-	public void SpawnAllPlayers()
+	public void SpawnAllPlayers(List<PlayerData> playerDatas)
 	{
-
+		for (int i = 0; i < playerDatas.Count && i < spawnPoints.Count; ++i)
+		{
+			SpawnPlayer(playerDatas[i], spawnPoints[i]);
+		}
+		if (spawnPoints.Count < playerDatas.Count)
+		{
+			Debug.LogError("There are more players than spawn points. Was not able to spawn all of them.");
+		}
 	}
 
 	public void RespawnPlayer(PlayerData player)
 	{
+		int playerIndex = spawnedPlayerDatas.IndexOf(player);
+		spawnedPlayerDatas.RemoveAt(playerIndex);
+		spawnedPlayerGameObjects.RemoveAt(playerIndex);
+		SpawnPoint farthestSpawnPoint = GetFarthestSpawnPoint();
+		SpawnPlayer(player, farthestSpawnPoint);
+	}
 
+	#endregion // Public Functions
+
+	#region Private Functions
+
+	private SpawnPoint GetFarthestSpawnPoint()
+	{
+		float farthestDistance = 0f;
+		SpawnPoint farthestSpawnPoint = null;
+		for (int spawnPointIndex = 0; spawnPointIndex < spawnPoints.Count; ++spawnPointIndex)
+		{
+			float closestCharacterToSpawnPointDistance = float.MaxValue;
+
+			for (int characterIndex = 0; characterIndex < spawnedPlayerGameObjects.Count; ++characterIndex)
+			{
+				float characterToSpawnPointDistance = Vector3.Distance(
+					spawnPoints[spawnPointIndex].transform.position,
+					spawnedPlayerGameObjects[characterIndex].transform.position);
+				if (characterToSpawnPointDistance < closestCharacterToSpawnPointDistance)
+				{
+					closestCharacterToSpawnPointDistance = characterToSpawnPointDistance;
+				}
+			}
+
+			if (closestCharacterToSpawnPointDistance > farthestDistance)
+			{
+				farthestDistance = closestCharacterToSpawnPointDistance;
+				farthestSpawnPoint = spawnPoints[spawnPointIndex];
+			}
+		}
+
+		return farthestSpawnPoint;
 	}
 
 	private void SpawnPlayer(PlayerData player, SpawnPoint spawnPoint)
 	{
 		GameObject character = Instantiate(characterPrefab, spawnPoint.transform.position, Quaternion.identity);
+		spawnedPlayerDatas.Add(player);
+		spawnedPlayerGameObjects.Add(character);
 		//character.data = players[i];
 		//players[i].alive = true;
 	}
+
+	#endregion // Private Functions
 }

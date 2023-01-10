@@ -1,75 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-
-[System.Serializable]
-public class ButtonMapping
-{
-	public bool realDirectionInput;
-	public string jumpButton;
-	public string meleeButton;
-	public string shootButton;
-
-	public ButtonMapping(bool d, string j, string m, string s)
-	{
-		realDirectionInput = d;
-		jumpButton = j;
-		meleeButton = m;
-		shootButton = s;
-	}
-}
-
-public class PlayerData
-{
-	public PlayerData(int n, Color c, ButtonMapping controls)
-	{
-		number = n;
-		color = c;
-		realDirectionInput = controls.realDirectionInput;
-		jumpButton = controls.jumpButton;
-		meleeButton = controls.meleeButton;
-		shootButton = controls.shootButton;
-	}
-
-	public int number;
-	public Color color;
-	public bool alive;
-	public bool realDirectionInput;
-	public string jumpButton;
-	public string meleeButton;
-	public string shootButton;
-}
 
 public class PlayerManager : Singleton<PlayerManager>
 {
-	private enum Phase
-	{
-		Joining,
-		Spawning,
-		Playing
-	}
-
-	[SerializeField] private List<Color> playerColors;
-	[SerializeField] private int numControllers;
-	[SerializeField] private ControlMapping defaultControls;
-	[SerializeField] private float gameEndZoomSize;
-	[SerializeField] private float gameEndZoomTime;
-	[SerializeField] private float gameEndRestDuration;
-	[SerializeField] private float gameEndPauseWait;
-	[SerializeField] private float gameEndPauseDuration;
-	[SerializeField] private float returnToMenuDelay;
-	[SerializeField] private string sceneName;
-	[SerializeField] private Text winText;
-
-	private bool[] hasPlayerJoined;
-	private Phase phase;
-	private List<PlayerData> players;
-
-	public delegate void PlayersChangedDelegate(List<PlayerData> player);
-	public event PlayersChangedDelegate OnPlayersChanged;
-
 	#region Singleton Implementation
 
 	protected override void Init()
@@ -84,6 +19,26 @@ public class PlayerManager : Singleton<PlayerManager>
 	}
 
 	#endregion // Singleton Implementation
+
+	private enum Phase
+	{
+		Joining,
+		Spawning,
+		Playing
+	}
+
+	[SerializeField] private List<Color> playerColors;
+	[SerializeField] private int numControllers;
+	[SerializeField] private ControlMapping defaultControls;
+	[SerializeField] private float returnToMenuDelay;
+	[SerializeField] private string sceneName;
+
+	private bool[] hasPlayerJoined;
+	private Phase phase;
+	private List<PlayerData> players;
+
+	public delegate void PlayersChangedDelegate(List<PlayerData> player);
+	public event PlayersChangedDelegate OnPlayersChanged;
 
 	public List<int> GetAllPlayerNumbers()
 	{
@@ -112,40 +67,37 @@ public class PlayerManager : Singleton<PlayerManager>
 		phase = Phase.Spawning;
 	}
 
-	public void StartBattle(GameObject characterPrefab, List<Vector2> positions)
+	public void StartBattle()
 	{
+		PlayerSpawner.instance.SpawnAllPlayers(players);
+		HUDManager.instance.ShowFightStart();
 		phase = Phase.Playing;
-		PlayerSpawner.instance.SpawnAllPlayers();
 	}
 
-	public void OnPlayerDied(GameObject character)
+	public void OnPlayerDied(GameObject character, PlayerData player)
 	{
-		//int index = players.FindIndex((playerData) => playerData.number == character.playerNumber);
-		//players[index].alive = false;
-
-		//int aliveCount = 0;
-		//for (int i = 0; i < players.Count; ++i)
-		//{
-		//	if (players[i].alive)
-		//	{
-		//		++aliveCount;
-		//	}
-		//}
-
-		//if (aliveCount == 1)
-		//{
-		//	StartCoroutine(GameEndJuice(character));
-		//}
-	}
-
-	public void ToggleRealDirection(int playerNumber)
-	{
-		int index = players.FindIndex((p) => p.number == playerNumber);
-		PlayerData player = players[index];
-		player.realDirectionInput = !player.realDirectionInput;
-		if (OnPlayersChanged != null)
+		int index = players.FindIndex((playerData) => playerData.number == player.number);
+		players[index].lives--;
+		if (players[index].lives > 0)
 		{
-			OnPlayersChanged(players);
+			// TODO: We'll want to give the player a choice of power-ups eventually here
+			PlayerSpawner.instance.RespawnPlayer(player);
+		}
+		else
+		{
+			int aliveCount = 0;
+			for (int i = 0; i < players.Count; ++i)
+			{
+				if (players[i].lives > 0)
+				{
+					++aliveCount;
+				}
+			}
+
+			if (aliveCount == 1)
+			{
+				StartCoroutine(GameEnd(character));
+			}
 		}
 	}
 
@@ -218,31 +170,14 @@ public class PlayerManager : Singleton<PlayerManager>
 		}
 	}
 
-	private IEnumerator GameEndJuice(GameObject player)
+	private IEnumerator GameEnd(GameObject player)
 	{
-		PlayerData winner = players.Find(p => p.alive);
-		Coroutine zoom = Juice.instance.PanAndZoom(player.transform);
-		Coroutine slowDown = StartCoroutine(SlowDownRoutine());
+		yield return Juice.instance.GameEndJuice(player.transform);
 
-		yield return zoom;
-		yield return slowDown;
-
-		winText.gameObject.SetActive(true);
-		winText.text = string.Format("P{0} Wins", winner.number);
-		winText.color = winner.color;
+		PlayerData winner = players.Find(p => p.lives > 0);
+		HUDManager.instance.ShowWinner(winner);
 
 		yield return new WaitForSeconds(returnToMenuDelay);
 		SceneManager.LoadScene(sceneName);
-	}
-
-	private IEnumerator SlowDownRoutine()
-	{
-		yield return new WaitForSeconds(gameEndPauseWait);
-		for (float dt = 0f; dt < gameEndPauseDuration; dt += Time.unscaledDeltaTime)
-		{
-			Time.timeScale = 0f;
-			yield return null;
-		}
-		Time.timeScale = 1f;
 	}
 }

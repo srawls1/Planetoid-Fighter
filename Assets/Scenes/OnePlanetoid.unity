@@ -1190,14 +1190,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49497f8ea51344eadae447fde96b34c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitStopMinSpeed: 0
+  hitStopMinSpeed: 0.05
   hitStopDuration: 0.01
   longHitStopDuration: 0.5
-  processFadeInTime: 0.05
-  processFadeOutTime: 0.05
+  processFadeInTime: 0.1
+  processFadeOutTime: 0.1
   processRemainTime: 0
   zoomPriority: 15
-  zoomRestTime: 0.5
+  zoomRestTime: 0.2
+  timeToZoomIn: 0.1
   zoomCam: {fileID: 164976402}
 --- !u!1 &1127961912
 GameObject:

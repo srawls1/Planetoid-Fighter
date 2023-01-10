@@ -95,11 +95,6 @@ public class PlayerMenu : MonoBehaviour
 		child.state = MenuItem.State.Hovered;
 	}
 
-	public void ToggleRealDirection()
-	{
-		PlayerManager.instance.ToggleRealDirection(playerNumber);
-	}
-
 	public void SetJumpButton(string buttonName)
 	{
 		PlayerManager.instance.SetJumpButton(playerNumber, buttonName);

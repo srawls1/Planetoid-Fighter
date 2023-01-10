@@ -15,6 +15,7 @@ public class Juice : Singleton<Juice>
 	[SerializeField] private float processRemainTime;
 	[SerializeField] private int zoomPriority;
 	[SerializeField] private float zoomRestTime;
+	[SerializeField] private float timeToZoomIn;
 	[SerializeField] private CinemachineVirtualCamera zoomCam;
 
 	#endregion // Editor Fields
@@ -68,6 +69,18 @@ public class Juice : Singleton<Juice>
 		return StartCoroutine(HitStopImpl(hitStopMinSpeed, longHitStopDuration));
 	}
 
+	public void DeathJuice()
+	{
+		HitStop();
+		ApplyPostProcessing();
+		ScreenShake();
+	}
+
+	public Coroutine GameEndJuice(Transform focus)
+	{
+		return StartCoroutine(GameEndJuiceImpl(focus));
+	}
+
 	#endregion // Public Functions
 
 	#region Private Functions
@@ -109,6 +122,18 @@ public class Juice : Singleton<Juice>
 			yield return null;
 		}
 		Time.timeScale = 1f;
+	}
+
+	private IEnumerator GameEndJuiceImpl(Transform focus)
+	{
+		Coroutine panAndZoom = PanAndZoom(focus);
+		Coroutine postProcessing = ApplyPostProcessing();
+		yield return new WaitForSeconds(timeToZoomIn);
+		Coroutine hitStop = LongHitStop();
+
+		yield return panAndZoom;
+		yield return hitStop;
+		yield return postProcessing;
 	}
 
 	#endregion // Private Functions
