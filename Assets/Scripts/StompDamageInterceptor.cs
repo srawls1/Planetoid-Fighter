@@ -25,10 +25,12 @@ public class StompDamageInterceptor : DamageInterceptorScriptableObject {
 	{
 		GameObject otherCharacter = damage.hurtbox.gameObject;
 		ParticleSystem particle = Instantiate(contactParticle, otherCharacter.transform.position, Quaternion.identity);
-		//ParticleSystem.MainModule main = particle.main;
-		//main.startColor = color;
-		//ParticleSystem.TrailModule trail = particle.trails;
-		//trail.colorOverTrail = color;
+		PlayerCharacter character = damage.hitbox.GetComponentInParent<PlayerCharacter>();
+		
+		ParticleSystem.MainModule main = particle.main;
+		main.startColor = character.player.color;
+		ParticleSystem.TrailModule trail = particle.trails;
+		trail.colorOverTrail = character.player.color;
 		particle.Play();
 
 		MyCharacterController controller = damage.hitbox.GetComponentInParent<MyCharacterController>();

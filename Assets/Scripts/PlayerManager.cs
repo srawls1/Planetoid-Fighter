@@ -33,20 +33,34 @@ public class PlayerManager : Singleton<PlayerManager>
 
 	[SerializeField] private Color[] playerColors;
 	[SerializeField] private int maxNumPlayers = 4;
+	[SerializeField] private int numberofLives = 3;
 	[SerializeField] private float returnToMenuDelay = 1.5f;
 	[SerializeField] private string sceneName;
 
 	#endregion // Editor Fields
 
+	#region Private Fields
+
 	private List<PlayerData> players;
+
+	#endregion // Private Fields
+
+	#region Events
 
 	public delegate void PlayersChangedDelegate(List<PlayerData> player);
 	public event PlayersChangedDelegate OnPlayersChanged;
+
+	#endregion // Events
 
 	#region Public Functions
 
 	public void JoinPlayer(Player rewiredPlayer)
 	{
+		if (players.Count == maxNumPlayers)
+		{
+			return;
+		}
+
 		PlayerData player = new PlayerData(rewiredPlayer, players.Count, playerColors[players.Count]);
 		players.Add(player);
 		rewiredPlayer.controllers.maps.SetMapsEnabled(false, JOIN_INPUT_MAP);
@@ -79,14 +93,19 @@ public class PlayerManager : Singleton<PlayerManager>
 	public void StartBattle()
 	{
 		PlayerSpawner.instance.SpawnAllPlayers(players);
+		for (int i = 0; i < players.Count; ++i)
+		{
+			players[i].rewiredPlayer.controllers.maps.SetMapsEnabled(false, MENU_INPUT_MAP);
+			players[i].rewiredPlayer.controllers.maps.SetMapsEnabled(true, GAMEPLAY_INPUT_MAP);
+			players[i].lives = numberofLives;
+		}
 		HUDManager.instance.ShowFightStart();
 	}
 
 	public void OnPlayerDied(GameObject character, PlayerData player)
 	{
-		int index = players.FindIndex((playerData) => playerData.number == player.number);
-		players[index].lives--;
-		if (players[index].lives > 0)
+		player.lives--;
+		if (player.lives > 0)
 		{
 			// TODO: We'll want to give the player a choice of power-ups eventually here
 			PlayerSpawner.instance.RespawnPlayer(player);

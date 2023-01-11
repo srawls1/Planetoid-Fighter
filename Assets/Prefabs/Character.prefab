@@ -1038,6 +1038,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ba3eb6d43213e7418f68a8a2fa27b9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  invincibilityTimeOnSpawn: 1
 --- !u!1 &1616545248907436
 GameObject:
   m_ObjectHideFlags: 0
@@ -1468,7 +1469,7 @@ GameObject:
   - component: {fileID: 50812256183025446}
   - component: {fileID: 61240890601977804}
   - component: {fileID: 114271082977062902}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}

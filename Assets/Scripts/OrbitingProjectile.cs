@@ -14,6 +14,8 @@ public class OrbitingProjectile : AbstractProjectile
 
 	private VariableDirection2DCharacterMover mover;
     private Rigidbody2D body;
+    private SpriteRenderer sprite;
+    private TrailRenderer trail;
     private RelativeTime time;
 
 	#endregion // Private Fields
@@ -24,6 +26,8 @@ public class OrbitingProjectile : AbstractProjectile
 	{
         mover = GetComponent<VariableDirection2DCharacterMover>();
         body = GetComponent<Rigidbody2D>();
+        sprite = GetComponent<SpriteRenderer>();
+        trail = GetComponent<TrailRenderer>();
         time = GetComponent<RelativeTime>();
     }
 
@@ -43,6 +47,10 @@ public class OrbitingProjectile : AbstractProjectile
 	{
         body.velocity = transform.right * speed;
         time.SetTimer(lifeSpan, () => ObjectRecycler.instance.RecycleObject(gameObject));
+        PlayerCharacter playerCharacter = instigator.GetComponentInParent<PlayerCharacter>();
+        sprite.color = playerCharacter.player.color;
+        trail.startColor = playerCharacter.player.color;
+        trail.endColor = playerCharacter.player.color;
 	}
 
 	#endregion // Projectile Implementation

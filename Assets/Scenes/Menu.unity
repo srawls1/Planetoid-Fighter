@@ -4152,7 +4152,16 @@ MonoBehaviour:
       _descriptiveName: Player0
       _startPlaying: 1
       _defaultJoystickMaps: []
-      _defaultMouseMaps: []
+      _defaultMouseMaps:
+      - _enabled: 0
+        _categoryId: 0
+        _layoutId: 0
+      - _enabled: 1
+        _categoryId: 1
+        _layoutId: 0
+      - _enabled: 0
+        _categoryId: 2
+        _layoutId: 0
       _defaultKeyboardMaps:
       - _enabled: 0
         _categoryId: 0

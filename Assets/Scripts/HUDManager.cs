@@ -30,14 +30,14 @@ public class HUDManager : Singleton<HUDManager>
 
 	public void ShowFightStart()
 	{
-		StartCoroutine(ShowFightStartImpl());
+		//StartCoroutine(ShowFightStartImpl());
 	}
 
 	public void ShowWinner(PlayerData winner)
 	{
-		winText.gameObject.SetActive(true);
-		winText.text = $"{winner.name} Wins";
-		winText.color = winner.color;
+		//winText.gameObject.SetActive(true);
+		//winText.text = $"{winner.name} Wins";
+		//winText.color = winner.color;
 	}
 
 	#endregion // Public Functions
