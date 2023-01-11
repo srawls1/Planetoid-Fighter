@@ -10,7 +10,7 @@ public class ShootButtonSelector : MenuItem
 
 	public override void RefreshDisplay(PlayerData data)
 	{
-		buttonImage.sprite = controlImages.GetButtonSprite(data.shootButton);
+		//buttonImage.sprite = controlImages.GetButtonSprite(data.shootButton);
 	}
 
 	public override void Select()

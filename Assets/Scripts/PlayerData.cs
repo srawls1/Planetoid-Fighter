@@ -1,39 +1,21 @@
-using System;
 using UnityEngine;
-
-[Serializable]
-public class ButtonMapping
-{
-	public string jumpButton;
-	public string meleeButton;
-	public string shootButton;
-
-	public ButtonMapping(string j, string m, string s)
-	{
-		jumpButton = j;
-		meleeButton = m;
-		shootButton = s;
-	}
-}
+using Rewired;
 
 public class PlayerData
 {
-	public PlayerData(int n, Color c, ButtonMapping controls)
+	public PlayerData(Player rewiredPlayer, int number, Color color)
 	{
-		number = n;
-		color = c;
-		jumpButton = controls.jumpButton;
-		meleeButton = controls.meleeButton;
-		shootButton = controls.shootButton;
+		this.rewiredPlayer = rewiredPlayer;
+		this.number = number;
+		name = $"Player {number}";
+		this.color = color;
 	}
 
+	public readonly Player rewiredPlayer;
 	public readonly int number;
 	public readonly string name;
 	public readonly Color color;
 	public int lives;
-	public string jumpButton;
-	public string meleeButton;
-	public string shootButton;
 
 	public override bool Equals(object obj)
 	{

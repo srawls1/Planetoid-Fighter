@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerMenu : MonoBehaviour
 {
 
-	[SerializeField] private Text text;
+	[SerializeField] private TextMeshProUGUI text;
 	[SerializeField] private Image controllerImage;
 	[SerializeField] private Sprite xboxController;
 	[SerializeField] private Sprite keyboardIcon;
@@ -23,9 +24,9 @@ public class PlayerMenu : MonoBehaviour
 		{
 			m_playerData = value;
 
-			int playerNumber = value.number;
-			text.text = string.Format("P{0} Joined", value);
-			controllerImage.sprite = playerNumber == 0 ?
+			text.text = value.name;
+			controllerImage.sprite =
+				value.rewiredPlayer.controllers.GetLastActiveController().type == Rewired.ControllerType.Keyboard ?
 				keyboardIcon : xboxController;
 
 			for (int i = 0; i < childItems.Length; ++i)

@@ -77,7 +77,6 @@ public class PlayerJoinMenu : MonoBehaviour
 
 	private void PlayersChangedCallback(List<PlayerData> players)
 	{
-		playerNumbers = PlayerManager.instance.GetAllPlayerNumbers();
 		for (int i = 0; i < players.Count; ++i)
 		{
 			joinTexts[i].SetActive(false);

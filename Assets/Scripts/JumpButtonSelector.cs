@@ -11,7 +11,7 @@ public class JumpButtonSelector : MenuItem
 
 	public override void RefreshDisplay(PlayerData data)
 	{
-		buttonImage.sprite = controlImages.GetButtonSprite(data.jumpButton);
+		//buttonImage.sprite = controlImages.GetButtonSprite(data.jumpButton);
 	}
 
 	public override void Select()

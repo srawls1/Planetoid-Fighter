@@ -10,7 +10,7 @@ public class MeleeButtonSelector : MenuItem
 
 	public override void RefreshDisplay(PlayerData data)
 	{
-		buttonImage.sprite = controlImages.GetButtonSprite(data.meleeButton);
+		//buttonImage.sprite = controlImages.GetButtonSprite(data.meleeButton);
 	}
 
 	public override void Select()

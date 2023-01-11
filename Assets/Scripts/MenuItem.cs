@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public abstract class MenuItem : MonoBehaviour
+public abstract class MenuItem : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler
 {
 	public enum State
 	{
@@ -17,7 +15,6 @@ public abstract class MenuItem : MonoBehaviour
 	[SerializeField] private Color hoverColor;
 	[SerializeField] private Color pressedColor;
 
-	private EventTrigger trigger;
 	protected PlayerMenu parentMenu;
 	private Image image;
 	private State m_state;
@@ -39,23 +36,12 @@ public abstract class MenuItem : MonoBehaviour
 
 	protected void Awake()
 	{
-		trigger = GetComponent<EventTrigger>();
 		parentMenu = GetComponentInParent<PlayerMenu>();
 		image = GetComponent<Image>();
 		state = State.Idle;
-
-		EventTrigger.Entry onEnter = new EventTrigger.Entry();
-		onEnter.callback.AddListener((eventData) => MouseEntered());
-		onEnter.eventID = EventTriggerType.PointerEnter;
-		trigger.triggers.Add(onEnter);
-
-		EventTrigger.Entry onClick = new EventTrigger.Entry();
-		onClick.callback.AddListener((eventData) => MouseClicked());
-		onClick.eventID = EventTriggerType.PointerClick;
-		trigger.triggers.Add(onClick);
 	}
 
-	protected void MouseEntered()
+	public void OnPointerEnter(PointerEventData eventData)
 	{
 		if (parentMenu.playerData.number == 0)
 		{
@@ -63,7 +49,7 @@ public abstract class MenuItem : MonoBehaviour
 		}
 	}
 
-	protected void MouseClicked()
+	public void OnPointerClick(PointerEventData eventData)
 	{
 		if (parentMenu.playerData.number == 0)
 		{

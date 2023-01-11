@@ -1,8 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+using Rewired;
 
 public class LevelMenu : MonoBehaviour
 {
@@ -11,12 +10,8 @@ public class LevelMenu : MonoBehaviour
 	[SerializeField] private int numRows;
 
 	private LevelMenuButton[] levelButtons;
-	private List<int> playerNumbers;
 	private int selectedX;
 	private int selectedY;
-
-	private Dictionary<int, int> previousHorizontals;
-	private Dictionary<int, int> previousVerticals;
 
 	private void Awake()
 	{
@@ -30,43 +25,29 @@ public class LevelMenu : MonoBehaviour
 				child.y = y;
 			}
 		}
-		previousHorizontals = new Dictionary<int, int>();
-		previousVerticals = new Dictionary<int, int>();
-	}
-
-	private void OnEnable()
-	{
-		playerNumbers = PlayerManager.instance.GetAllPlayerNumbers();
-		previousHorizontals.Clear();
-		previousVerticals.Clear();
-
-		for (int i = 0; i < playerNumbers.Count; ++i)
-		{
-			previousHorizontals[playerNumbers[i]] = 0;
-			previousVerticals[playerNumbers[i]] = 0;
-		}
 	}
 
 	private void Update()
 	{
-		for (int i = 0; i < playerNumbers.Count; ++i)
+		for (int i = 0; i < ReInput.players.playerCount; ++i)
 		{
-			if (Input.GetButtonDown("Join" + playerNumbers[i]))
+			Player player = ReInput.players.GetPlayer(i);
+			if (player.GetButtonDown("Select"))
 			{
 				GetChild(selectedX, selectedY).SelectLevel();
 				return;
 			}
-			if (Input.GetButtonDown("Cancel" + playerNumbers[i]))
+			if (player.GetButtonDown("Cancel"))
 			{
 				GoBack();
 				return;
 			}
 
-			int x = Mathf.RoundToInt(Input.GetAxisRaw("Horizontal" + playerNumbers[i]));
-			int y = Mathf.RoundToInt(Input.GetAxisRaw("Vertical" + playerNumbers[i]));
-
-			int newX = selectedX + ((x == previousHorizontals[playerNumbers[i]]) ? 0 : x);
-			int newY = selectedY + ((y == previousVerticals[playerNumbers[i]]) ? 0 : y);
+			Vector2Int directionInput = Vector2Int.RoundToInt(player.GetAxis2DRaw("Horizontal", "Vertical"));
+			Vector2Int previousInput = Vector2Int.RoundToInt(player.GetAxis2DRawPrev("Horizontal", "Vertical"));
+			
+			int newX = selectedX + ((directionInput.x == previousInput.x) ? 0 : directionInput.x);
+			int newY = selectedY + ((directionInput.y == previousInput.y) ? 0 : directionInput.y);
 
 			if (newX < 0) newX += numColumns;
 			if (newY < 0) newY += numRows;
@@ -74,8 +55,6 @@ public class LevelMenu : MonoBehaviour
 			newY %= numRows;
 
 			SelectChild(newX, newY);
-			previousHorizontals[playerNumbers[i]] = x;
-			previousVerticals[playerNumbers[i]] = y;
 		}
 	}
 

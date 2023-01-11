@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Rewired;
 
 public class PlayerManager : Singleton<PlayerManager>
 {
@@ -9,7 +10,6 @@ public class PlayerManager : Singleton<PlayerManager>
 
 	protected override void Init()
 	{
-		hasPlayerJoined = new bool[numControllers];
 		players = new List<PlayerData>();
 	}
 
@@ -20,6 +20,8 @@ public class PlayerManager : Singleton<PlayerManager>
 
 	#endregion // Singleton Implementation
 
+	#region Local Enum
+
 	private enum Phase
 	{
 		Joining,
@@ -27,32 +29,34 @@ public class PlayerManager : Singleton<PlayerManager>
 		Playing
 	}
 
-	[SerializeField] private List<Color> playerColors;
-	[SerializeField] private int numControllers;
-	[SerializeField] private ControlMapping defaultControls;
-	[SerializeField] private float returnToMenuDelay;
+	#endregion // Local Enum
+
+	#region String Constants
+
+	private const string JOIN_INPUT_MAP = "Joining";
+	private const string MENU_INPUT_MAP = "Menu";
+	private const string GAMEPLAY_INPUT_MAP = "Default";
+
+	#endregion // String Constants
+
+	#region Editor Fields
+
+	[SerializeField] private Color[] playerColors;
+	[SerializeField] private int maxNumPlayers = 4;
+	[SerializeField] private float returnToMenuDelay = 1.5f;
 	[SerializeField] private string sceneName;
 
-	private bool[] hasPlayerJoined;
+	#endregion // Editor Fields
+
 	private Phase phase;
 	private List<PlayerData> players;
 
 	public delegate void PlayersChangedDelegate(List<PlayerData> player);
 	public event PlayersChangedDelegate OnPlayersChanged;
 
-	public List<int> GetAllPlayerNumbers()
-	{
-		List<int> playerNums = new List<int>(players.Count);
-		for (int i = 0; i < players.Count; ++i)
-		{
-			playerNums.Add(players[i].number);
-		}
-
-		return playerNums;
-	}
-
 	public void StartListeningForJoin()
 	{
+		Debug.Log("StartListeningForJoin");
 		if (OnPlayersChanged != null)
 		{
 			OnPlayersChanged(players);
@@ -104,7 +108,7 @@ public class PlayerManager : Singleton<PlayerManager>
 	public void SetJumpButton(int playerNumber, string jumpButton)
 	{
 		int index = players.FindIndex((p) => p.number == playerNumber);
-		players[index].jumpButton = jumpButton;
+		//players[index].jumpButton = jumpButton;
 		if (OnPlayersChanged != null)
 		{
 			OnPlayersChanged(players);
@@ -114,7 +118,7 @@ public class PlayerManager : Singleton<PlayerManager>
 	public void SetMeleeButton(int playerNumber, string meleeButton)
 	{
 		int index = players.FindIndex((p) => p.number == playerNumber);
-		players[index].meleeButton = meleeButton;
+		//players[index].meleeButton = meleeButton;
 		if (OnPlayersChanged != null)
 		{
 			OnPlayersChanged(players);
@@ -124,7 +128,7 @@ public class PlayerManager : Singleton<PlayerManager>
 	public void SetShootButton(int playerNumber, string shootButton)
 	{
 		int index = players.FindIndex((p) => p.number == playerNumber);
-		players[index].shootButton = shootButton;
+		//players[index].shootButton = shootButton;
 		if (OnPlayersChanged != null)
 		{
 			OnPlayersChanged(players);
@@ -136,9 +140,12 @@ public class PlayerManager : Singleton<PlayerManager>
 		int index = players.FindIndex((player) => player.number == playerNumber);
 		if (index >= 0)
 		{
-			hasPlayerJoined[playerNumber] = false;
-			playerColors.Add(players[index].color);
+			PlayerData player = players[index];
 			players.RemoveAt(index);
+			Player rewiredPlayer = player.rewiredPlayer;
+			rewiredPlayer.controllers.maps.SetMapsEnabled(false, MENU_INPUT_MAP);
+			rewiredPlayer.controllers.maps.SetMapsEnabled(true, JOIN_INPUT_MAP);
+
 			if (OnPlayersChanged != null)
 			{
 				OnPlayersChanged(players);
@@ -146,19 +153,22 @@ public class PlayerManager : Singleton<PlayerManager>
 		}
 	}
 
+	#region Private Functions
+
 	private IEnumerator ListenForJoin()
 	{
 		while (phase == Phase.Joining)
 		{
-			for (int i = 0; i < numControllers; ++i)
+			for (int i = 0; i < ReInput.players.playerCount; ++i)
 			{
-				if (!hasPlayerJoined[i] && Input.GetButtonDown("Join" + i))
+				Player rewiredPlayer = ReInput.players.GetPlayer(i);
+				if (rewiredPlayer.GetButtonDown("JoinGame"))
 				{
-					hasPlayerJoined[i] = true;
-					ButtonMapping buttons = defaultControls.GetMapping(i);
-					PlayerData player = new PlayerData(i, playerColors[0], buttons);
-					playerColors.RemoveAt(0);
+					PlayerData player = new PlayerData(rewiredPlayer, i, playerColors[i]);
 					players.Add(player);
+					rewiredPlayer.controllers.maps.SetMapsEnabled(false, JOIN_INPUT_MAP);
+					rewiredPlayer.controllers.maps.SetMapsEnabled(true, MENU_INPUT_MAP);
+
 					if (OnPlayersChanged != null)
 					{
 						OnPlayersChanged(players);
@@ -180,4 +190,6 @@ public class PlayerManager : Singleton<PlayerManager>
 		yield return new WaitForSeconds(returnToMenuDelay);
 		SceneManager.LoadScene(sceneName);
 	}
+
+	#endregion // Private Functions
 }
