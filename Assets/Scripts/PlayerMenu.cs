@@ -1,21 +1,28 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
 public class PlayerMenu : MonoBehaviour
 {
+	#region Editor Fields
 
 	[SerializeField] private TextMeshProUGUI text;
 	[SerializeField] private Image controllerImage;
-	[SerializeField] private Sprite xboxController;
+	[SerializeField] private Sprite controllerIcon;
 	[SerializeField] private Sprite keyboardIcon;
+
+	#endregion // Editor Fields
+
+	#region Private Fields
 
 	private PlayerData m_playerData;
 	private Image background;
 	private MenuItem[] childItems;
 	private float previousVertical;
+
+	#endregion // Private Fields
+
+	#region Properties
 
 	public PlayerData playerData
 	{
@@ -27,7 +34,7 @@ public class PlayerMenu : MonoBehaviour
 			text.text = value.name;
 			controllerImage.sprite =
 				value.rewiredPlayer.controllers.GetLastActiveController().type == Rewired.ControllerType.Keyboard ?
-				keyboardIcon : xboxController;
+				keyboardIcon : controllerIcon;
 
 			for (int i = 0; i < childItems.Length; ++i)
 			{
@@ -40,10 +47,9 @@ public class PlayerMenu : MonoBehaviour
 		}
 	}
 
-	public int playerNumber
-	{
-		get { return playerData.number; }
-	}
+	#endregion // Properties
+
+	#region Unity Functions
 
 	void Awake()
 	{
@@ -63,7 +69,7 @@ public class PlayerMenu : MonoBehaviour
 
 	void Update()
 	{
-		float vertical = Input.GetAxisRaw("Vertical" + playerNumber);
+		float vertical = playerData.rewiredPlayer.GetAxisRaw("Vertical");
 		if (vertical > 0.1f && previousVertical < 0.1f)
 		{
 			SelectPreviousChild();
@@ -74,11 +80,15 @@ public class PlayerMenu : MonoBehaviour
 		}
 		previousVertical = vertical;
 
-		if (Input.GetButtonDown("Join" + playerNumber))
+		if (playerData.rewiredPlayer.GetButtonDown("Confirm"))
 		{
 			GetSelectedChild().Select();
 		}
 	}
+
+	#endregion // Unity Functions
+
+	#region Public Functions
 
 	public void SelectChild(MenuItem child)
 	{
@@ -96,25 +106,14 @@ public class PlayerMenu : MonoBehaviour
 		child.state = MenuItem.State.Hovered;
 	}
 
-	public void SetJumpButton(string buttonName)
-	{
-		PlayerManager.instance.SetJumpButton(playerNumber, buttonName);
-	}
-
-	public void SetMeleeButton(string buttonName)
-	{
-		PlayerManager.instance.SetMeleeButton(playerNumber, buttonName);
-	}
-
-	public void SetShootButton(string buttonName)
-	{
-		PlayerManager.instance.SetShootButton(playerNumber, buttonName);
-	}
-
 	public void CancelJoin()
 	{
-		PlayerManager.instance.CancelJoin(playerNumber);
+		PlayerManager.instance.CancelJoin(playerData.number);
 	}
+
+	#endregion // Public Functions
+
+	#region Private Functions
 
 	private void SelectNextChild()
 	{
@@ -155,4 +154,6 @@ public class PlayerMenu : MonoBehaviour
 
 		return -1;
 	}
+
+	#endregion // Private Functions
 }

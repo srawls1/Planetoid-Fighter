@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerSpawner : Singleton<PlayerSpawner>
@@ -22,6 +23,8 @@ public class PlayerSpawner : Singleton<PlayerSpawner>
 	protected override void Init()
 	{
 		spawnPoints = new List<SpawnPoint>();
+		spawnedPlayerDatas = new List<PlayerData>();
+		spawnedPlayerGameObjects = new List<GameObject>();
 	}
 
 	protected override PlayerSpawner GetThis()
@@ -30,6 +33,13 @@ public class PlayerSpawner : Singleton<PlayerSpawner>
 	}
 
 	#endregion // Singleton Implementation
+
+	private IEnumerator Start()
+	{
+		yield return null;
+		yield return null;
+		PlayerManager.instance.StartBattle();
+	}
 
 	#region Public Functions
 
@@ -97,6 +107,8 @@ public class PlayerSpawner : Singleton<PlayerSpawner>
 		GameObject character = Instantiate(characterPrefab, spawnPoint.transform.position, Quaternion.identity);
 		spawnedPlayerDatas.Add(player);
 		spawnedPlayerGameObjects.Add(character);
+		PlanetoidGameInputProxy inputProxy = character.GetComponent<PlanetoidGameInputProxy>();
+		inputProxy.rewiredPlayer = player.rewiredPlayer;
 		//character.data = players[i];
 		//players[i].alive = true;
 	}

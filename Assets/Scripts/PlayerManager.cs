@@ -10,6 +10,7 @@ public class PlayerManager : Singleton<PlayerManager>
 
 	protected override void Init()
 	{
+		DontDestroyOnLoad(gameObject);
 		players = new List<PlayerData>();
 	}
 
@@ -19,17 +20,6 @@ public class PlayerManager : Singleton<PlayerManager>
 	}
 
 	#endregion // Singleton Implementation
-
-	#region Local Enum
-
-	private enum Phase
-	{
-		Joining,
-		Spawning,
-		Playing
-	}
-
-	#endregion // Local Enum
 
 	#region String Constants
 
@@ -48,34 +38,48 @@ public class PlayerManager : Singleton<PlayerManager>
 
 	#endregion // Editor Fields
 
-	private Phase phase;
 	private List<PlayerData> players;
 
 	public delegate void PlayersChangedDelegate(List<PlayerData> player);
 	public event PlayersChangedDelegate OnPlayersChanged;
 
-	public void StartListeningForJoin()
+	#region Public Functions
+
+	public void JoinPlayer(Player rewiredPlayer)
 	{
-		Debug.Log("StartListeningForJoin");
+		PlayerData player = new PlayerData(rewiredPlayer, players.Count, playerColors[players.Count]);
+		players.Add(player);
+		rewiredPlayer.controllers.maps.SetMapsEnabled(false, JOIN_INPUT_MAP);
+		rewiredPlayer.controllers.maps.SetMapsEnabled(true, MENU_INPUT_MAP);
+
 		if (OnPlayersChanged != null)
 		{
 			OnPlayersChanged(players);
 		}
-
-		phase = Phase.Joining;
-		StartCoroutine(ListenForJoin());
 	}
 
-	public void StopListeningForJoin()
+	public void CancelJoin(int playerNumber)
 	{
-		phase = Phase.Spawning;
+		int index = players.FindIndex((player) => player.number == playerNumber);
+		if (index >= 0)
+		{
+			PlayerData player = players[index];
+			players.RemoveAt(index);
+			Player rewiredPlayer = player.rewiredPlayer;
+			rewiredPlayer.controllers.maps.SetMapsEnabled(false, MENU_INPUT_MAP);
+			rewiredPlayer.controllers.maps.SetMapsEnabled(true, JOIN_INPUT_MAP);
+
+			if (OnPlayersChanged != null)
+			{
+				OnPlayersChanged(players);
+			}
+		}
 	}
 
 	public void StartBattle()
 	{
 		PlayerSpawner.instance.SpawnAllPlayers(players);
 		HUDManager.instance.ShowFightStart();
-		phase = Phase.Playing;
 	}
 
 	public void OnPlayerDied(GameObject character, PlayerData player)
@@ -105,80 +109,9 @@ public class PlayerManager : Singleton<PlayerManager>
 		}
 	}
 
-	public void SetJumpButton(int playerNumber, string jumpButton)
-	{
-		int index = players.FindIndex((p) => p.number == playerNumber);
-		//players[index].jumpButton = jumpButton;
-		if (OnPlayersChanged != null)
-		{
-			OnPlayersChanged(players);
-		}
-	}
-
-	public void SetMeleeButton(int playerNumber, string meleeButton)
-	{
-		int index = players.FindIndex((p) => p.number == playerNumber);
-		//players[index].meleeButton = meleeButton;
-		if (OnPlayersChanged != null)
-		{
-			OnPlayersChanged(players);
-		}
-	}
-
-	public void SetShootButton(int playerNumber, string shootButton)
-	{
-		int index = players.FindIndex((p) => p.number == playerNumber);
-		//players[index].shootButton = shootButton;
-		if (OnPlayersChanged != null)
-		{
-			OnPlayersChanged(players);
-		}
-	}
-
-	public void CancelJoin(int playerNumber)
-	{
-		int index = players.FindIndex((player) => player.number == playerNumber);
-		if (index >= 0)
-		{
-			PlayerData player = players[index];
-			players.RemoveAt(index);
-			Player rewiredPlayer = player.rewiredPlayer;
-			rewiredPlayer.controllers.maps.SetMapsEnabled(false, MENU_INPUT_MAP);
-			rewiredPlayer.controllers.maps.SetMapsEnabled(true, JOIN_INPUT_MAP);
-
-			if (OnPlayersChanged != null)
-			{
-				OnPlayersChanged(players);
-			}
-		}
-	}
+	#endregion // Public Functions
 
 	#region Private Functions
-
-	private IEnumerator ListenForJoin()
-	{
-		while (phase == Phase.Joining)
-		{
-			for (int i = 0; i < ReInput.players.playerCount; ++i)
-			{
-				Player rewiredPlayer = ReInput.players.GetPlayer(i);
-				if (rewiredPlayer.GetButtonDown("JoinGame"))
-				{
-					PlayerData player = new PlayerData(rewiredPlayer, i, playerColors[i]);
-					players.Add(player);
-					rewiredPlayer.controllers.maps.SetMapsEnabled(false, JOIN_INPUT_MAP);
-					rewiredPlayer.controllers.maps.SetMapsEnabled(true, MENU_INPUT_MAP);
-
-					if (OnPlayersChanged != null)
-					{
-						OnPlayersChanged(players);
-					}
-				}
-			}
-
-			yield return null;
-		}
-	}
 
 	private IEnumerator GameEnd(GameObject player)
 	{

@@ -770,7 +770,6 @@ GameObject:
   - component: {fileID: 8397205412040289465}
   - component: {fileID: 669521763455581081}
   - component: {fileID: 1368430410839986487}
-  - component: {fileID: 895097893}
   - component: {fileID: 895097894}
   - component: {fileID: 895097895}
   - component: {fileID: 895097896}
@@ -937,24 +936,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   automaticallyRotateYaw: 1
   yaw: 0
---- !u!114 &895097893
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1530691027073448}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5cad84d2a6b4bb44bf196cb7ddb260f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  jumpBufferTime: 0.15
-  jumpAxisName: Jump
-  horizontalAxisName: Horizontal
-  verticalAxisName: Vertical
-  lookHorizontalAxisName: LookHorizontal
-  lookVerticalAxisName: LookVertical
 --- !u!114 &895097894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -998,6 +979,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e148bf50a0770984cbf5e16170b24849, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  jumpBufferTime: 0.15
+  horizontalAxisName: Horizontal
+  verticalAxisName: Vertical
+  jumpAxisName: Jump
   attackAxisName: Attack
   shootAxisName: Shoot
   inputBufferTime: 0.15
@@ -1053,8 +1038,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ba3eb6d43213e7418f68a8a2fa27b9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slowdownDuration: 0
-  slowdownMinSpeed: 0
 --- !u!1 &1616545248907436
 GameObject:
   m_ObjectHideFlags: 0
@@ -1702,7 +1685,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &4193710814365998255
@@ -1964,6 +1947,6 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0

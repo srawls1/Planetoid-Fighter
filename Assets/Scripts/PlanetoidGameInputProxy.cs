@@ -1,9 +1,13 @@
 using UnityEngine;
+using Rewired;
 
-public class PlanetoidGameInputProxy : MonoBehaviour
+public class PlanetoidGameInputProxy : PlayerInputProxy
 {
 	#region Editor Fields
 
+	[SerializeField] private string horizontalAxisName = "Horizontal";
+	[SerializeField] private string verticalAxisName = "Vertical";
+	[SerializeField] private string jumpAxisName = "Jump";
 	[SerializeField] private string attackAxisName = "Attack";
     [SerializeField] private string shootAxisName = "Shoot";
 	[SerializeField] private float inputBufferTime = 0.1f;
@@ -19,10 +23,21 @@ public class PlanetoidGameInputProxy : MonoBehaviour
 
 	#endregion // Private Fields
 
+	#region Properties
+
+	public Player rewiredPlayer { get; set; }
+
+	#endregion // Properties
+
 	#region Unity Functions
 
-	private void Update()
+	new protected void Update()
 	{
+		if (rewiredPlayer == null)
+		{
+			return;
+		}
+		UpdateButtonValue(jumpAxisName, ref jumpPressed, ref jumpBufferTimeDelta);
         UpdateButtonValue(attackAxisName, ref attackPressed, ref attackBufferTimeDelta);
 		UpdateButtonValue(shootAxisName, ref shootPressed, ref shootBufferTimeDelta);
 	}
@@ -30,6 +45,29 @@ public class PlanetoidGameInputProxy : MonoBehaviour
 	#endregion // Unity Functions
 
 	#region Public Functions
+
+	public override bool JumpHeld()
+	{
+		if (rewiredPlayer == null)
+		{
+			return false;
+		}
+		return rewiredPlayer.GetButton(jumpAxisName);
+	}
+
+	public override Vector2 Movement()
+	{
+		if (rewiredPlayer == null)
+		{
+			return Vector2.zero;
+		}
+		return rewiredPlayer.GetAxis2DRaw(horizontalAxisName, verticalAxisName);
+	}
+
+	public override Vector2 Look()
+	{
+		return Vector2.zero;
+	}
 
 	public bool Attack()
 	{
@@ -69,7 +107,7 @@ public class PlanetoidGameInputProxy : MonoBehaviour
 		else
 		{
 			bufferTimeDelta = inputBufferTime;
-			pressed = Input.GetButtonDown(axisName);
+			pressed = rewiredPlayer.GetButtonDown(axisName);
 		}
 	}
 

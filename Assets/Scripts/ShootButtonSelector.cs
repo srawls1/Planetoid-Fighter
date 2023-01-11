@@ -21,22 +21,22 @@ public class ShootButtonSelector : MenuItem
 
 	private IEnumerator SelectRoutine()
 	{
-		List<string> buttonsToCheck = controlImages.ListButtonNames(parentMenu.playerNumber);
+		//List<string> buttonsToCheck = controlImages.ListButtonNames(parentMenu.playerNumber);
 		yield return null;
 
-		while (state == State.Pressed)
-		{
-			for (int i = 0; i < buttonsToCheck.Count; ++i)
-			{
-				if (Input.GetKeyDown(buttonsToCheck[i]))
-				{
-					parentMenu.SetShootButton(buttonsToCheck[i]);
-					state = State.Hovered;
-					break;
-				}
-			}
+		//while (state == State.Pressed)
+		//{
+		//	for (int i = 0; i < buttonsToCheck.Count; ++i)
+		//	{
+		//		if (Input.GetKeyDown(buttonsToCheck[i]))
+		//		{
+		//			//parentMenu.SetShootButton(buttonsToCheck[i]);
+		//			state = State.Hovered;
+		//			break;
+		//		}
+		//	}
 
-			yield return null;
-		}
+		//	yield return null;
+		//}
 	}
 }

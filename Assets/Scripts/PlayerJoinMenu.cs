@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Rewired;
 
 public class PlayerJoinMenu : MonoBehaviour
 {
+	#region Editor Fields
+
 	[SerializeField] private GameObject[] joinTexts;
 	[SerializeField] private PlayerMenu[] playerMenus;
 	[SerializeField] private Button advanceButton;
@@ -12,40 +15,43 @@ public class PlayerJoinMenu : MonoBehaviour
 	[SerializeField] private float exitButtonHoldDuration;
 	[SerializeField] private Slider exitSlider;
 
-	//private int numPlayers;
-	private List<int> playerNumbers;
+	#endregion // Editor Fields
 
-	private void Awake()
-	{
-		playerNumbers = new List<int>();
-	}
+	#region Unity Functions
 
 	private void OnEnable()
 	{
 		PlayerManager.instance.OnPlayersChanged += PlayersChangedCallback;
-		PlayerManager.instance.StartListeningForJoin();
 	}
 
 	private void OnDisable()
 	{
 		PlayerManager.instance.OnPlayersChanged -= PlayersChangedCallback;
-		PlayerManager.instance.StopListeningForJoin();
 	}
 
 	private void Update()
 	{
-		for (int i = 0; i < playerNumbers.Count; ++i)
+		for (int i = 0; i < ReInput.players.playerCount; ++i)
 		{
-			if (playerNumbers.Count > 1 && Input.GetButtonDown("Start" + playerNumbers[i]))
+			Player rewiredPlayer = ReInput.players.GetPlayer(i);
+			if (rewiredPlayer.GetButtonDown("JoinGame"))
+			{
+				PlayerManager.instance.JoinPlayer(rewiredPlayer);
+			}
+			if (advanceButton.interactable && rewiredPlayer.GetButtonDown("Start"))
 			{
 				Advance();
 			}
-			if (Input.GetButtonDown("Cancel" + playerNumbers[i]))
+			if (rewiredPlayer.GetButtonDown("Cancel"))
 			{
-				StartCoroutine(StartExit(playerNumbers[i]));
+				StartCoroutine(StartExit(rewiredPlayer));
 			}
 		}
 	}
+
+	#endregion // Unity Functions
+
+	#region Public Functions
 
 	public void Advance()
 	{
@@ -59,12 +65,16 @@ public class PlayerJoinMenu : MonoBehaviour
 		Application.Quit();
 	}
 
-	private IEnumerator StartExit(int playerNumber)
+	#endregion // Public Functions
+
+	#region Private Functions
+
+	private IEnumerator StartExit(Player rewiredPlayer)
 	{
 		for (float dt = 0f; dt < exitButtonHoldDuration; dt += Time.deltaTime)
 		{
 			exitSlider.value = dt / exitButtonHoldDuration;
-			if (!Input.GetButton("Cancel" + playerNumber))
+			if (!rewiredPlayer.GetButton("Cancel"))
 			{
 				exitSlider.value = 0f;
 				yield break;
@@ -98,4 +108,6 @@ public class PlayerJoinMenu : MonoBehaviour
 			advanceButton.interactable = false;
 		}
 	}
+
+	#endregion // Private Functions
 }

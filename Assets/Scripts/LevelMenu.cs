@@ -32,7 +32,7 @@ public class LevelMenu : MonoBehaviour
 		for (int i = 0; i < ReInput.players.playerCount; ++i)
 		{
 			Player player = ReInput.players.GetPlayer(i);
-			if (player.GetButtonDown("Select"))
+			if (player.GetButtonDown("Confirm"))
 			{
 				GetChild(selectedX, selectedY).SelectLevel();
 				return;

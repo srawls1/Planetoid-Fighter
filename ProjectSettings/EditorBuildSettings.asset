@@ -6,12 +6,21 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scanes/Menu.unity
+    path: Assets/Scenes/Menu.unity
+    guid: 98dc40d0b6f884ac5ac8a8d0828b0b25
   - enabled: 1
-    path: Assets/Scanes/OnePlanetoid.unity
+    path: Assets/Scenes/OnePlanetoid.unity
+    guid: 99962ce758d5f42bdbff0989732d106a
   - enabled: 1
-    path: Assets/Scanes/TwoPlanetoids.unity
+    path: Assets/Scenes/TwoPlanetoids.unity
+    guid: 41d217c65cf424697a3568c8e23c65cb
   - enabled: 1
-    path: Assets/Scanes/FivePlanetoids.unity
+    path: Assets/Scenes/FivePlanetoids.unity
+    guid: 6d6a8afad99d243dab06b7d608c1fadf
   - enabled: 1
-    path: Assets/Scanes/Comet.unity
+    path: Assets/Scenes/Comet.unity
+    guid: 86f8722b2033a4e858a088d56c3ae71d
+  - enabled: 1
+    path: Assets/Scenes/BootScene.unity
+    guid: 40a2c9016c6024d459368512ff0a2e3c
+  m_configObjects: {}
