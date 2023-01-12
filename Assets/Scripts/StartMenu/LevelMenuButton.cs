@@ -16,7 +16,7 @@ public class LevelMenuButton : MonoBehaviour
 	[SerializeField] private Color baseColor;
 	[SerializeField] private Color hoverColor;
 	[SerializeField] private Color pressedColor;
-	[SerializeField] private string sceneName;
+	[SerializeField] private SceneReference scene;
 
 	private EventTrigger trigger;
 	protected LevelMenu parentMenu;
@@ -71,6 +71,6 @@ public class LevelMenuButton : MonoBehaviour
 
 	public void SelectLevel()
 	{
-		parentMenu.LoadScene(sceneName);
+		parentMenu.LoadScene(scene);
 	}
 }

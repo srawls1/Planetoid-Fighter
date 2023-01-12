@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerSpawner : Singleton<PlayerSpawner>
@@ -33,15 +32,6 @@ public class PlayerSpawner : Singleton<PlayerSpawner>
 	}
 
 	#endregion // Singleton Implementation
-
-	//<temp>
-	private IEnumerator Start()
-	{
-		yield return null;
-		yield return null;
-		PlayerManager.instance.StartBattle();
-	}
-	//</temp>
 
 	#region Public Functions
 

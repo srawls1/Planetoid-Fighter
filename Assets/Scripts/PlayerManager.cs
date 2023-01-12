@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using Rewired;
 
 public class PlayerManager : Singleton<PlayerManager>
@@ -10,7 +9,6 @@ public class PlayerManager : Singleton<PlayerManager>
 
 	protected override void Init()
 	{
-		DontDestroyOnLoad(gameObject);
 		players = new List<PlayerData>();
 	}
 
@@ -35,7 +33,6 @@ public class PlayerManager : Singleton<PlayerManager>
 	[SerializeField] private int maxNumPlayers = 4;
 	[SerializeField] private int numberofLives = 3;
 	[SerializeField] private float returnToMenuDelay = 1.5f;
-	[SerializeField] private string sceneName;
 
 	#endregion // Editor Fields
 
@@ -107,8 +104,8 @@ public class PlayerManager : Singleton<PlayerManager>
 		player.lives--;
 		if (player.lives > 0)
 		{
-			// TODO: We'll want to give the player a choice of power-ups eventually here
-			PlayerSpawner.instance.RespawnPlayer(player);
+			HandlePowerupAndRespawn(player);
+			
 		}
 		else
 		{
@@ -132,6 +129,12 @@ public class PlayerManager : Singleton<PlayerManager>
 
 	#region Private Functions
 
+	private void HandlePowerupAndRespawn(PlayerData player)
+	{
+		// TODO: We'll want to give the player a choice of power-ups eventually here
+		PlayerSpawner.instance.RespawnPlayer(player);
+	}
+
 	private IEnumerator GameEnd(GameObject player)
 	{
 		yield return Juice.instance.GameEndJuice(player.transform);
@@ -140,7 +143,15 @@ public class PlayerManager : Singleton<PlayerManager>
 		HUDManager.instance.ShowWinner(winner);
 
 		yield return new WaitForSeconds(returnToMenuDelay);
-		SceneManager.LoadScene(sceneName);
+		yield return PlanetoidSceneManager.instance.LoadStartMenu();
+
+		OnPlayersChanged?.Invoke(players);
+
+		for (int i = 0; i < players.Count; ++i)
+		{
+			players[i].rewiredPlayer.controllers.maps.SetMapsEnabled(false, GAMEPLAY_INPUT_MAP);
+			players[i].rewiredPlayer.controllers.maps.SetMapsEnabled(true, MENU_INPUT_MAP);
+		}
 	}
 
 	#endregion // Private Functions

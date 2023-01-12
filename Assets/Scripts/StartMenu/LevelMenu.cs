@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+﻿using UnityEngine;
 using Rewired;
 
 public class LevelMenu : MonoBehaviour
@@ -82,9 +80,9 @@ public class LevelMenu : MonoBehaviour
 		previousScreen.SetActive(true);
 	}
 
-	public void LoadScene(string sceneName)
+	public void LoadScene(SceneReference scene)
 	{
-		SceneManager.LoadScene(sceneName);
+		PlanetoidSceneManager.instance.LoadMap(scene);
 	}
 
 	private LevelMenuButton GetChild(int x, int y)

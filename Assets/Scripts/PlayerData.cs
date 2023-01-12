@@ -3,6 +3,8 @@ using Rewired;
 
 public class PlayerData
 {
+	#region Constructor
+
 	public PlayerData(Player rewiredPlayer, int number, Color color)
 	{
 		this.rewiredPlayer = rewiredPlayer;
@@ -11,11 +13,19 @@ public class PlayerData
 		this.color = color;
 	}
 
+	#endregion // Constructor
+
+	#region Fields
+
 	public readonly Player rewiredPlayer;
 	public readonly int number;
-	public readonly string name;
-	public readonly Color color;
+	public string name;
+	public Color color;
 	public int lives;
+
+	#endregion // Fields
+
+	#region Equals and GetHashCode
 
 	public override bool Equals(object obj)
 	{
@@ -31,4 +41,6 @@ public class PlayerData
 	{
 		return number;
 	}
+
+	#endregion // Equals and GetHashCode
 }
