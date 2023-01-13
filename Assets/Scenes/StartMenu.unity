@@ -2715,7 +2715,7 @@ MonoBehaviour:
   pressedColor: {r: 0, g: 0, b: 0, a: 0}
   scene:
     sceneAsset: {fileID: 102900000, guid: 99962ce758d5f42bdbff0989732d106a, type: 3}
-    scenePath: Assets/Scenes/OnePlanetoid.unity
+    scenePath: Assets/Scenes/TinyEarth.unity
   x: 0
   y: 0
 --- !u!114 &839666618
@@ -2964,7 +2964,7 @@ MonoBehaviour:
   pressedColor: {r: 0, g: 0, b: 0, a: 0}
   scene:
     sceneAsset: {fileID: 102900000, guid: 41d217c65cf424697a3568c8e23c65cb, type: 3}
-    scenePath: Assets/Scenes/TwoPlanetoids.unity
+    scenePath: Assets/Scenes/Twins.unity
   x: 0
   y: 0
 --- !u!114 &906391404
@@ -4711,8 +4711,8 @@ MonoBehaviour:
   hoverColor: {r: 1, g: 1, b: 1, a: 1}
   pressedColor: {r: 0, g: 0, b: 0, a: 0}
   scene:
-    sceneAsset: {fileID: 102900000, guid: 86f8722b2033a4e858a088d56c3ae71d, type: 3}
-    scenePath: Assets/Scenes/Comet.unity
+    sceneAsset: {fileID: 102900000, guid: d3155a3bda952054b90aaafc5cf9a0d9, type: 3}
+    scenePath: Assets/Scenes/HollowEarth.unity
   x: 0
   y: 0
 --- !u!114 &1853266304

@@ -1,17 +1,24 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GravityField : MonoBehaviour
 {
+	#region Editor Fields
+
 	[SerializeField] private int priority;
+
+	#endregion // Editor Fields
+
+	#region Private Fields
 
 	private DirectionModifier directionModifier;
 
+	#endregion // Private Fields
+
+	#region Unity Functions
+
 	private void Awake()
 	{
-		directionModifier = new DirectionModifier(priority, (position) =>
-			(Vector2)transform.position - position);
+		directionModifier = new DirectionModifier(priority, (position) => -GetUpVector(position));
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision)
@@ -32,8 +39,14 @@ public class GravityField : MonoBehaviour
 		}
 	}
 
+	#endregion // Unity Functions
+
+	#region Protected Virtual Functions
+
 	protected virtual Vector2 GetUpVector(Vector3 position)
 	{
 		return Vector2.up;
 	}
+
+	#endregion // Protected Virtual Functions
 }
