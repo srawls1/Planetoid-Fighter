@@ -96,12 +96,14 @@ public class PlayerManager : Singleton<PlayerManager>
 			players[i].rewiredPlayer.controllers.maps.SetMapsEnabled(true, GAMEPLAY_INPUT_MAP);
 			players[i].lives = numberofLives;
 		}
+		HUDManager.instance.InitializeLivesDisplay(players);
 		HUDManager.instance.ShowFightStart();
 	}
 
 	public void OnPlayerDied(GameObject character, PlayerData player)
 	{
 		player.lives--;
+		HUDManager.instance.RefreshLives(player);
 		if (player.lives > 0)
 		{
 			HandlePowerupAndRespawn(player);

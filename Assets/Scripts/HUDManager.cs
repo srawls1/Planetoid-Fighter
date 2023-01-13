@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
@@ -9,6 +10,7 @@ public class HUDManager : Singleton<HUDManager>
 	[SerializeField] private TextMeshProUGUI fightStartText;
 	[SerializeField] private float fightStartTextDuration;
 	[SerializeField] private TextMeshProUGUI winText;
+	[SerializeField] private List<LivesDisplay> livesDisplays;
 
 	#endregion // Editor Fields
 
@@ -30,14 +32,33 @@ public class HUDManager : Singleton<HUDManager>
 
 	public void ShowFightStart()
 	{
-		//StartCoroutine(ShowFightStartImpl());
+		StartCoroutine(ShowFightStartImpl());
 	}
 
 	public void ShowWinner(PlayerData winner)
 	{
-		//winText.gameObject.SetActive(true);
-		//winText.text = $"{winner.name} Wins";
-		//winText.color = winner.color;
+		winText.gameObject.SetActive(true);
+		winText.text = $"{winner.name} Wins";
+		winText.color = winner.color;
+	}
+
+	public void InitializeLivesDisplay(List<PlayerData> players)
+	{
+		for (int i = 0; i < players.Count; ++i)
+		{
+			livesDisplays[i].player = players[i];
+		}
+		for (int i = players.Count; i < livesDisplays.Count; ++i)
+		{
+			livesDisplays[i].gameObject.SetActive(false);
+		}
+	}
+
+	public void RefreshLives(PlayerData player)
+	{
+		LivesDisplay livesDisplay = livesDisplays.Find((display) =>
+			player.Equals(display.player));
+		livesDisplay.RefreshLivesTicks();
 	}
 
 	#endregion // Public Functions
