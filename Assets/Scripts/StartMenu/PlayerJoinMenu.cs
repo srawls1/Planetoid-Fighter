@@ -40,7 +40,7 @@ public class PlayerJoinMenu : MonoBehaviour
 			}
 			if (advanceButton.interactable && rewiredPlayer.GetButtonDown("Start"))
 			{
-				Advance();
+				advanceButton.onClick.Invoke();
 			}
 			if (rewiredPlayer.GetButtonDown("Cancel"))
 			{
@@ -52,12 +52,6 @@ public class PlayerJoinMenu : MonoBehaviour
 	#endregion // Unity Functions
 
 	#region Public Functions
-
-	public void Advance()
-	{
-		gameObject.SetActive(false);
-		nextScreen.SetActive(true);
-	}
 
 	public void Quit()
 	{

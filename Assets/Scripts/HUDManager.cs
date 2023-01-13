@@ -42,10 +42,11 @@ public class HUDManager : Singleton<HUDManager>
 		winText.color = winner.color;
 	}
 
-	public void InitializeLivesDisplay(List<PlayerData> players)
+	public void InitializeLivesDisplay(List<PlayerData> players, int numberOfLives)
 	{
 		for (int i = 0; i < players.Count; ++i)
 		{
+			livesDisplays[i].maxLives = numberOfLives;
 			livesDisplays[i].player = players[i];
 		}
 		for (int i = players.Count; i < livesDisplays.Count; ++i)

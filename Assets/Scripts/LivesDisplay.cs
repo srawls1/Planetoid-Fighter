@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -36,7 +35,15 @@ public class LivesDisplay : MonoBehaviour
 	private int m_maxLives;
 	public int maxLives
 	{
-		get; set;
+		get { return m_maxLives; }
+		set
+		{
+			m_maxLives = value;
+			for (int i = maxLives; i < livesTicks.Count; ++i)
+			{
+				livesTicks[i].gameObject.SetActive(false);
+			}
+		}
 	}
 
 	#endregion // Properties

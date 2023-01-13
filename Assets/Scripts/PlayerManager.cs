@@ -96,7 +96,7 @@ public class PlayerManager : Singleton<PlayerManager>
 			players[i].rewiredPlayer.controllers.maps.SetMapsEnabled(true, GAMEPLAY_INPUT_MAP);
 			players[i].lives = numberofLives;
 		}
-		HUDManager.instance.InitializeLivesDisplay(players);
+		HUDManager.instance.InitializeLivesDisplay(players, numberofLives);
 		HUDManager.instance.ShowFightStart();
 	}
 

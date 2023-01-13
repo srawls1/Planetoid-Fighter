@@ -11,13 +11,15 @@ GameObject:
   - component: {fileID: 4240563707257640}
   - component: {fileID: 212595497312344626}
   - component: {fileID: 50009701783020500}
-  - component: {fileID: 114136850750080054}
   - component: {fileID: 58928460125848064}
   - component: {fileID: 96542848068997520}
   - component: {fileID: 3514103591232778119}
   - component: {fileID: 8714736111419666294}
   - component: {fileID: 6983661438877153838}
   - component: {fileID: 7372571593436941794}
+  - component: {fileID: 74073655392587752}
+  - component: {fileID: 8968671442940253833}
+  - component: {fileID: 7233879626175706287}
   m_Layer: 0
   m_Name: Projectile
   m_TagString: Untagged
@@ -113,20 +115,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &114136850750080054
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1053374534905138}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1bf5c0e65f1b64ff9876373e71dc22cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  accelerationDueToGravity: 0
-  keepRotation: 1
 --- !u!58 &58928460125848064
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -194,7 +182,7 @@ TrailRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1
+        value: 0.6918232
         inSlope: -0.0632822
         outSlope: -0.0632822
         tangentMode: 0
@@ -310,3 +298,43 @@ MonoBehaviour:
   direction: {x: 0, y: 0, z: 0}
   type: 0
   interceptorObjects: []
+--- !u!114 &74073655392587752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1053374534905138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82a8830a60112b84fb3f519f95a908bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  armorByTypeList: []
+  poise: 0
+  armorEffectObjects:
+  - {fileID: 11400000, guid: f3480943d20d18841b45c2ebd0c6bfc0, type: 2}
+--- !u!114 &8968671442940253833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1053374534905138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81bc5d7170860b244ab1dbfc0a6ba015, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7233879626175706287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1053374534905138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d589e416bacde2448cd6722f3951c21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

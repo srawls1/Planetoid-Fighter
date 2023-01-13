@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using Rewired;
 
 public class LevelMenu : MonoBehaviour
 {
+	[SerializeField] private Button backButton;
 	[SerializeField] private GameObject previousScreen;
 	[SerializeField] private int numColumns;
 	[SerializeField] private int numRows;
@@ -37,7 +39,7 @@ public class LevelMenu : MonoBehaviour
 			}
 			if (player.GetButtonDown("Cancel"))
 			{
-				GoBack();
+				backButton.onClick.Invoke();
 				return;
 			}
 
@@ -74,14 +76,9 @@ public class LevelMenu : MonoBehaviour
 		GetChild(x, y).state = LevelMenuButton.State.Hovered;
 	}
 
-	public void GoBack()
-	{
-		gameObject.SetActive(false);
-		previousScreen.SetActive(true);
-	}
-
 	public void LoadScene(SceneReference scene)
 	{
+		Debug.Log("LoadScene: " + scene.BuildIndex);
 		PlanetoidSceneManager.instance.LoadMap(scene);
 	}
 
