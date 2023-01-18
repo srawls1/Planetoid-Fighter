@@ -62,6 +62,18 @@ public class HUDManager : Singleton<HUDManager>
 		livesDisplay.RefreshLivesTicks();
 	}
 
+	public void ShowPowerupMenu(PlayerData player, List<Powerup> options)
+	{
+		LivesDisplay livesDisplay = livesDisplays.Find((display) => player.Equals(display.player));
+		livesDisplay.powerupOptions = options;
+	}
+
+	public void HidePowerupMenu(PlayerData player)
+	{
+		LivesDisplay livesDisplay = livesDisplays.Find((display) => player.Equals(display.player));
+		livesDisplay.powerupOptions = new List<Powerup>();
+	}
+
 	#endregion // Public Functions
 
 	#region Private Functions

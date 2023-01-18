@@ -20,7 +20,6 @@ public class PlanetoidGameInputProxy : PlayerInputProxy
     private bool shootPressed;
     private float attackBufferTimeDelta;
     private float shootBufferTimeDelta;
-	private Vector2 lastRealInput;
 	private Vector2 lastCorrectedInput;
 
 	#endregion // Private Fields
@@ -40,14 +39,9 @@ public class PlanetoidGameInputProxy : PlayerInputProxy
 			return;
 		}
 
-		Vector2 newRealInput = rewiredPlayer.GetAxis2DRaw(horizontalAxisName, verticalAxisName);
-		if (newRealInput != lastRealInput)
-		{
-			lastRealInput = newRealInput;
-			Vector3 right = Vector3.Cross(transform.up, Vector3.forward);
-			lastCorrectedInput = Vector2.right * Vector2.Dot(right, lastRealInput);
-		}
-
+		Vector2 realInput = rewiredPlayer.GetAxis2DRaw(horizontalAxisName, verticalAxisName);
+		Vector3 right = Vector3.Cross(transform.up, Vector3.forward);
+		lastCorrectedInput = Vector2.right * Vector2.Dot(right, realInput);
 
 		UpdateButtonValue(jumpAxisName, ref jumpPressed, ref jumpBufferTimeDelta);
         UpdateButtonValue(attackAxisName, ref attackPressed, ref attackBufferTimeDelta);

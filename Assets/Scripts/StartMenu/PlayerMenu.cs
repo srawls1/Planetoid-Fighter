@@ -32,9 +32,7 @@ public class PlayerMenu : MonoBehaviour
 			m_playerData = value;
 
 			text.text = value.name;
-			controllerImage.sprite =
-				value.rewiredPlayer.controllers.GetLastActiveController().type == Rewired.ControllerType.Keyboard ?
-				keyboardIcon : controllerIcon;
+			controllerImage.sprite = value.rewiredPlayer.controllers.hasKeyboard ? keyboardIcon : controllerIcon;
 
 			for (int i = 0; i < childItems.Length; ++i)
 			{

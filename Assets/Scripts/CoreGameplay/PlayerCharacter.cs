@@ -1,4 +1,4 @@
-using System;
+using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 
@@ -22,6 +22,12 @@ public class PlayerCharacter : MonoBehaviour
 			for (int i = 0; i < sprites.Length; ++i)
 			{
 				sprites[i].color = player.color;
+			}
+
+			IReadOnlyList<Powerup> powerups = player.GetPowerups();
+			for (int i = 0; i < powerups.Count; ++i)
+			{
+				powerups[i].ApplyPowerup(gameObject);
 			}
 		}
 	}

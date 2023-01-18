@@ -194,8 +194,11 @@ MonoBehaviour:
   - {r: 0.4901961, g: 0.65882355, b: 0.4901961, a: 1}
   - {r: 0.57254905, g: 0.24313727, b: 0.1254902, a: 1}
   maxNumPlayers: 4
-  numberofLives: 3
   returnToMenuDelay: 1.5
+  powerupOptions:
+  - {fileID: 11400000, guid: e77198225bcbd8f4f8dbdd3910580158, type: 2}
+  - {fileID: 11400000, guid: 8578ffbf04b56ae49916816ef69ac3c0, type: 2}
+  numberPowerupChoices: 3
 --- !u!4 &744773363
 Transform:
   m_ObjectHideFlags: 0

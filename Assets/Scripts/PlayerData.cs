@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using Rewired;
 
@@ -11,6 +12,7 @@ public class PlayerData
 		this.number = number;
 		name = $"Player {number}";
 		this.color = color;
+		this.powerups = new List<Powerup>();
 	}
 
 	#endregion // Constructor
@@ -22,8 +24,28 @@ public class PlayerData
 	public string name;
 	public Color color;
 	public int lives;
+	private List<Powerup> powerups;
 
 	#endregion // Fields
+
+	#region Public Functions
+
+	public void AddPowerup(Powerup powerup)
+	{
+		powerups.Add(powerup);
+	}
+
+	public void ClearPowerups()
+	{
+		powerups.Clear();
+	}
+
+	public IReadOnlyList<Powerup> GetPowerups()
+	{
+		return powerups;
+	}
+
+	#endregion // Public Functions
 
 	#region Equals and GetHashCode
 

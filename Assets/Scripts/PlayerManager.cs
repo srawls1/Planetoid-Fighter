@@ -31,8 +31,9 @@ public class PlayerManager : Singleton<PlayerManager>
 
 	[SerializeField] private Color[] playerColors;
 	[SerializeField] private int maxNumPlayers = 4;
-	[SerializeField] private int numberofLives = 3;
 	[SerializeField] private float returnToMenuDelay = 1.5f;
+	[SerializeField] private List<Powerup> powerupOptions;
+	[SerializeField] private int numberPowerupChoices = 3;
 
 	#endregion // Editor Fields
 
@@ -89,14 +90,15 @@ public class PlayerManager : Singleton<PlayerManager>
 
 	public void StartBattle()
 	{
+		int numberOfLives = SettingsManager.instance.lives;
 		PlayerSpawner.instance.SpawnAllPlayers(players);
 		for (int i = 0; i < players.Count; ++i)
 		{
 			players[i].rewiredPlayer.controllers.maps.SetMapsEnabled(false, MENU_INPUT_MAP);
 			players[i].rewiredPlayer.controllers.maps.SetMapsEnabled(true, GAMEPLAY_INPUT_MAP);
-			players[i].lives = numberofLives;
+			players[i].lives = numberOfLives;
 		}
-		HUDManager.instance.InitializeLivesDisplay(players, numberofLives);
+		HUDManager.instance.InitializeLivesDisplay(players, numberOfLives);
 		HUDManager.instance.ShowFightStart();
 	}
 
@@ -106,8 +108,7 @@ public class PlayerManager : Singleton<PlayerManager>
 		HUDManager.instance.RefreshLives(player);
 		if (player.lives > 0)
 		{
-			HandlePowerupAndRespawn(player);
-			
+			StartCoroutine(HandlePowerupAndRespawn(player));
 		}
 		else
 		{
@@ -131,17 +132,54 @@ public class PlayerManager : Singleton<PlayerManager>
 
 	#region Private Functions
 
-	private void HandlePowerupAndRespawn(PlayerData player)
+	private IEnumerator HandlePowerupAndRespawn(PlayerData player)
 	{
-		// TODO: We'll want to give the player a choice of power-ups eventually here
+		int currentPowerupCount = player.GetPowerups().Count;
+		List<Powerup> options = GetPowerupOptions(player);
+		
+		if (options.Count > 0)
+		{
+			player.rewiredPlayer.controllers.maps.SetMapsEnabled(false, GAMEPLAY_INPUT_MAP);
+			player.rewiredPlayer.controllers.maps.SetMapsEnabled(true, MENU_INPUT_MAP);
+			HUDManager.instance.ShowPowerupMenu(player, options);
+			yield return new WaitUntil(() => player.GetPowerups().Count > currentPowerupCount);
+			HUDManager.instance.HidePowerupMenu(player);
+			player.rewiredPlayer.controllers.maps.SetMapsEnabled(false, MENU_INPUT_MAP);
+			player.rewiredPlayer.controllers.maps.SetMapsEnabled(true, GAMEPLAY_INPUT_MAP);
+		}
+		
 		PlayerSpawner.instance.RespawnPlayer(player);
+	}
+
+	private List<Powerup> GetPowerupOptions(PlayerData player)
+	{
+		List<Powerup> powerupsCopy = new List<Powerup>(powerupOptions);
+		for (int i = 0; i < player.GetPowerups().Count; ++i)
+		{
+			powerupsCopy.Remove(player.GetPowerups()[i]);
+		}
+
+		List<Powerup> options = new List<Powerup>();
+		for (int i = 0; i < numberPowerupChoices; ++i)
+		{
+			if (powerupsCopy.Count == 0)
+			{
+				break;
+			}
+			int random = Random.Range(0, powerupsCopy.Count);
+			options.Add(powerupsCopy[random]);
+			powerupsCopy.RemoveAt(random);
+		}
+
+		return options;
 	}
 
 	private IEnumerator GameEnd(GameObject player)
 	{
+		PlayerData winner = players.Find(p => p.lives > 0);
+
 		yield return Juice.instance.GameEndJuice(player.transform);
 
-		PlayerData winner = players.Find(p => p.lives > 0);
 		HUDManager.instance.ShowWinner(winner);
 
 		yield return new WaitForSeconds(returnToMenuDelay);
@@ -153,6 +191,7 @@ public class PlayerManager : Singleton<PlayerManager>
 		{
 			players[i].rewiredPlayer.controllers.maps.SetMapsEnabled(false, GAMEPLAY_INPUT_MAP);
 			players[i].rewiredPlayer.controllers.maps.SetMapsEnabled(true, MENU_INPUT_MAP);
+			players[i].ClearPowerups();
 		}
 	}
 

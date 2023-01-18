@@ -33,6 +33,7 @@ public class VariableDirection2DCharacterMover : MonoBehaviour, CharacterMover
 	#region Private Fields
 
 	private Rigidbody2D body;
+	private MyCharacterController characterController;
 	public float yaw;
 	private PriorityQueue<DirectionModifier> modifiers;
 
@@ -83,12 +84,22 @@ public class VariableDirection2DCharacterMover : MonoBehaviour, CharacterMover
 	private void Awake()
 	{
 		body = GetComponent<Rigidbody2D>();
-		modifiers = new LinkedListPriorityQueue<DirectionModifier>();
+		characterController = GetComponent<MyCharacterController>();
+		modifiers = new ListPriorityQueue<DirectionModifier>();
 	}
 
 	private void Update()
 	{
-		down = GetDownAtPosition(transform.position);
+		Vector2 newDown = GetDownAtPosition(transform.position);
+		Quaternion deltaDownRotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(newDown, down));
+		if (characterController)
+		{
+			Vector3 correctedVelocity = deltaDownRotation * characterController.velocity;
+			characterController.verticalVelocity = correctedVelocity.y;
+			characterController.horizontalVelocity = new Vector2(correctedVelocity.x, correctedVelocity.z);
+		}
+
+		down = newDown;
 	}
 
 	#endregion // Unity Functions
