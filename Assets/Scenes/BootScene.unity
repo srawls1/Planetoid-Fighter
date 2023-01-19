@@ -196,7 +196,7 @@ MonoBehaviour:
   maxNumPlayers: 4
   returnToMenuDelay: 1.5
   powerupOptions:
-  - {fileID: 11400000, guid: e77198225bcbd8f4f8dbdd3910580158, type: 2}
+  - {fileID: 11400000, guid: 5e630f6f3a64cd24c8ef552152fa8a8f, type: 2}
   - {fileID: 11400000, guid: de1418b04e3102f45884b9c342070139, type: 2}
   - {fileID: 11400000, guid: af8c2dff702693a4b909ff36272629fe, type: 2}
   numberPowerupChoices: 3
