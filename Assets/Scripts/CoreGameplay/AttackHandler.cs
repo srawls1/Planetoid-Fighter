@@ -5,7 +5,6 @@ public class AttackHandler : MonoBehaviour
 {
 	#region Editor Fields
 
-	[SerializeField] private float shotCooldownTime;
 	[SerializeField] private float attackCooldownTime;
 
 	#endregion // Editor Fields
@@ -16,7 +15,6 @@ public class AttackHandler : MonoBehaviour
 	private Animator animator;
 	private RelativeTime time;
 	private AbstractGun gun;
-	private bool shotsInCooldown;
 	private bool attackInCooldown;
 
 	#endregion // Private Fields
@@ -44,7 +42,6 @@ public class AttackHandler : MonoBehaviour
 	public void ShootAnimatorCallback()
 	{
 		gun.BeginAttack();
-		gun.EndAttack();
 	}
 
 	#endregion // Public Functions
@@ -53,18 +50,22 @@ public class AttackHandler : MonoBehaviour
 
 	private void CheckForShoot()
 	{
-		if (inputProxy.Shoot() && !shotsInCooldown)
+		if (inputProxy.Shoot())
 		{
 			Shoot();
+		}
+		if (animator.GetBool("Shooting") && !inputProxy.ShootHeld())
+		{
+			animator.SetBool("Shooting", false);
+			gun.EndAttack();
 		}
 	}
 
 	private void Shoot()
 	{
 		inputProxy.ResetShoot();
-		shotsInCooldown = true;
-		time.SetTimer(shotCooldownTime, () => shotsInCooldown = false);
-		animator.SetTrigger("Shoot");		
+		animator.SetBool("Shooting", true);
+		animator.SetTrigger("Shoot");
 	}
 
 	private void CheckForAttack()

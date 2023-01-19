@@ -966,7 +966,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31be3ed176d5717489fa45869811e8b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shotCooldownTime: 1.5
   attackCooldownTime: 0.5
 --- !u!114 &895097896
 MonoBehaviour:
@@ -1816,8 +1815,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 798384d3707f3914799d0c19eaeff784, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  continuousFire: 0
-  cooldownTime: 0.5
+  m_continuousFire: 0
+  m_cooldownTime: 1.5
   bulletSpawnPoint: {fileID: 1781133044324802517}
   projectilePrefab: {fileID: 3514103591232778119, guid: 6d40f46ab60fe4e96b149371bcf1ae4e,
     type: 3}

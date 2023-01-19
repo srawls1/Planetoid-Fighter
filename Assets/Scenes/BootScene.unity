@@ -198,6 +198,7 @@ MonoBehaviour:
   powerupOptions:
   - {fileID: 11400000, guid: e77198225bcbd8f4f8dbdd3910580158, type: 2}
   - {fileID: 11400000, guid: 8578ffbf04b56ae49916816ef69ac3c0, type: 2}
+  - {fileID: 11400000, guid: af8c2dff702693a4b909ff36272629fe, type: 2}
   numberPowerupChoices: 3
 --- !u!4 &744773363
 Transform:

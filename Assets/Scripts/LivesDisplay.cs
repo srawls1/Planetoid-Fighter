@@ -84,7 +84,7 @@ public class LivesDisplay : MonoBehaviour
 				selectedPowerupCard.state = PowerupCard.State.Idle;
 			}
 
-			m_selectedPowerupIndex = Mathf.Clamp(value, 0, powerupOptions.Count - 1);
+			m_selectedPowerupIndex = Mathf.Max(Mathf.Min(value, powerupOptions.Count - 1), 0);
 
 			if (selectedPowerupCard != null)
 			{
