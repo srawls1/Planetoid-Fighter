@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84475def404e7d74faf66606cd366985, type: 3}
+  m_Name: FastBullet
+  m_EditorClassIdentifier: 
+  m_name: Fast Bullet
+  m_description: Your bullets fly much faster, but don't last as long.
+  m_sprite: {fileID: 1568362564, guid: 2e0890041f335e54c80e5831ae4bdda2, type: 3}
+  newProjectilePrefab: {fileID: 7615490503382947886, guid: a281ab30841023e4cac5fcf4932545d6,
+    type: 3}

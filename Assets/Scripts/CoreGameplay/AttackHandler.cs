@@ -54,7 +54,7 @@ public class AttackHandler : MonoBehaviour
 		{
 			Shoot();
 		}
-		if (animator.GetBool("Shooting") && !inputProxy.ShootHeld())
+		if (!inputProxy.ShootHeld())
 		{
 			animator.SetBool("Shooting", false);
 			gun.EndAttack();
