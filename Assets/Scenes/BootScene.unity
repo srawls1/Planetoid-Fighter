@@ -200,6 +200,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: de1418b04e3102f45884b9c342070139, type: 2}
   - {fileID: 11400000, guid: af8c2dff702693a4b909ff36272629fe, type: 2}
   - {fileID: 11400000, guid: d2ba02287aca3044e944a7166115d8c7, type: 2}
+  - {fileID: 11400000, guid: 698691e80bb80b6459be28c6ef4fb7ec, type: 2}
   numberPowerupChoices: 3
 --- !u!4 &744773363
 Transform:
