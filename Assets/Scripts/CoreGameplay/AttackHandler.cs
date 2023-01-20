@@ -5,7 +5,7 @@ public class AttackHandler : MonoBehaviour
 {
 	#region Editor Fields
 
-	[SerializeField] private float attackCooldownTime;
+	[SerializeField] private float m_attackCooldownTime;
 
 	#endregion // Editor Fields
 
@@ -18,6 +18,19 @@ public class AttackHandler : MonoBehaviour
 	private bool attackInCooldown;
 
 	#endregion // Private Fields
+
+	#region Properties
+
+	public float attackCooldownTime
+	{
+		get { return m_attackCooldownTime; }
+		set
+		{
+			m_attackCooldownTime = value;
+		}
+	}
+
+	#endregion // Properties
 
 	#region Unity Functions
 
