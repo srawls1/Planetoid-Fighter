@@ -10,11 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 84475def404e7d74faf66606cd366985, type: 3}
-  m_Name: BigBullet
+  m_Name: StationaryBullet
   m_EditorClassIdentifier: 
-  m_name: Big Bullet
-  m_description: Fire a bigger, slower bullet that can't be deflected, and kills
-    even tanky opponents in one hit.
-  m_sprite: {fileID: 21300000, guid: 02800fb9cff14da47a04572790384d8b, type: 3}
-  newProjectilePrefab: {fileID: 328060403223389638, guid: 3bf31099dd7fdb449b54c45547d69009,
+  m_name: Land Mine or Somethin'
+  m_description: Your bullet get bigger and stop moving completely!?
+  m_sprite: {fileID: 21300038, guid: a117494ddac8d5842a628bc6639f2183, type: 3}
+  newProjectilePrefab: {fileID: 7902350525509872980, guid: f6b9cdd44d53399498fcc0bd5c140caf,
     type: 3}
