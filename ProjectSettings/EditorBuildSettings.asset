@@ -38,4 +38,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/PillarsOfCreation.unity
     guid: 42be6f03965af9f4b919e188c183d456
+  - enabled: 1
+    path: Assets/Scenes/SquareEarth.unity
+    guid: ab6130bfc1a368c48bd24a5077e30857
   m_configObjects: {}

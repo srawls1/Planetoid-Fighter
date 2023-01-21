@@ -19,6 +19,6 @@ MonoBehaviour:
   - gameObjectName: SwordHitbox
     scaleFactor: {x: 2, y: 2, z: 1}
     translation: {x: 0.25, y: 0, z: 0}
-  - gameObjectName: RightHandSwordJoint
+  - gameObjectName: Root/ShoulderJoint/RightShoulderJoint/RightHandSwordJoint
     scaleFactor: {x: 2, y: 2, z: 1}
     translation: {x: 0, y: 0, z: 0}
