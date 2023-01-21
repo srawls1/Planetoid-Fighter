@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class LevelMenuButton : MonoBehaviour
+public class LevelMenuButton : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler
 {
 	public enum State
 	{
@@ -41,33 +41,22 @@ public class LevelMenuButton : MonoBehaviour
 
 	protected void Awake()
 	{
-		trigger = GetComponent<EventTrigger>();
 		parentMenu = GetComponentInParent<LevelMenu>();
 		image = GetComponent<Image>();
 		state = State.Idle;
-
-		EventTrigger.Entry onEnter = new EventTrigger.Entry();
-		onEnter.callback.AddListener((eventData) => MouseEntered());
-		onEnter.eventID = EventTriggerType.PointerEnter;
-		trigger.triggers.Add(onEnter);
-
-		EventTrigger.Entry onClick = new EventTrigger.Entry();
-		onClick.callback.AddListener((eventData) => MouseClicked());
-		onClick.eventID = EventTriggerType.PointerClick;
-		trigger.triggers.Add(onClick);
 	}
 
-	protected void MouseEntered()
+	public void OnPointerEnter(PointerEventData eventData)
 	{
 		parentMenu.SelectChild(x, y);
 	}
 
-	protected void MouseClicked()
+	public void OnPointerClick(PointerEventData eventData)
 	{
 		SelectLevel();
 	}
 
-	public void SelectLevel()
+	public virtual void SelectLevel()
 	{
 		parentMenu.LoadScene(scene);
 	}
