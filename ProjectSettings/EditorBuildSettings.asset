@@ -41,4 +41,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SquareEarth.unity
     guid: ab6130bfc1a368c48bd24a5077e30857
+  - enabled: 1
+    path: Assets/Scenes/TunneledEarth.unity
+    guid: deef9066c60560d44af6fbf92022694f
   m_configObjects: {}
