@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: BigSword
   m_EditorClassIdentifier: 
   m_name: Big Sword
-  m_description: Your sword gets twice as big. Still does the same damage.
+  m_description: Your sword gets twice as big.
   m_sprite: {fileID: 21300010, guid: a117494ddac8d5842a628bc6639f2183, type: 3}
+  m_exclusivePowerups: []
   scaleUpSpecs:
   - gameObjectName: SwordHitbox
     scaleFactor: {x: 2, y: 2, z: 1}

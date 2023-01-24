@@ -50,6 +50,7 @@ public class PlayerCharacter : MonoBehaviour
 
 	private void DeathCallback()
 	{
+		Debug.Log("DeathCallback: " + player.name);
 		PlayerManager.instance.OnPlayerDied(gameObject, m_player);
 		animator.SetBool("Dead", true);
 		PlayDeathSound();

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: QuickAttacks
   m_EditorClassIdentifier: 
   m_name: Quick Melee
-  m_description: Reduces cooldown times between melee attacks.
+  m_description: No more cooldown time between melee attacks.
   m_sprite: {fileID: 21300008, guid: a117494ddac8d5842a628bc6639f2183, type: 3}
+  m_exclusivePowerups: []
   newAttackCooldownTime: 0.1

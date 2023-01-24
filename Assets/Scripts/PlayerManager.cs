@@ -32,7 +32,6 @@ public class PlayerManager : Singleton<PlayerManager>
 	[SerializeField] private Color[] playerColors;
 	[SerializeField] private int maxNumPlayers = 4;
 	[SerializeField] private float returnToMenuDelay = 1.5f;
-	[SerializeField] private List<Powerup> powerupOptions;
 	[SerializeField] private int numberPowerupChoices = 3;
 
 	#endregion // Editor Fields
@@ -104,6 +103,8 @@ public class PlayerManager : Singleton<PlayerManager>
 
 	public void OnPlayerDied(GameObject character, PlayerData player)
 	{
+		Debug.Log("OnPlayerDied: " + player.name);
+
 		player.lives--;
 		HUDManager.instance.RefreshLives(player);
 		if (player.lives > 0)
@@ -134,6 +135,7 @@ public class PlayerManager : Singleton<PlayerManager>
 
 	private IEnumerator HandlePowerupAndRespawn(PlayerData player)
 	{
+		Debug.Log("HandlePowerupAndRespawn: " + player.name);
 		int currentPowerupCount = player.GetPowerups().Count;
 		List<Powerup> options = GetPowerupOptions(player);
 		
@@ -153,10 +155,12 @@ public class PlayerManager : Singleton<PlayerManager>
 
 	private List<Powerup> GetPowerupOptions(PlayerData player)
 	{
-		List<Powerup> powerupsCopy = new List<Powerup>(powerupOptions);
+		List<Powerup> powerupsCopy = SettingsManager.instance.GetAllEnabledPowerups();
 		for (int i = 0; i < player.GetPowerups().Count; ++i)
 		{
 			powerupsCopy.Remove(player.GetPowerups()[i]);
+			powerupsCopy.RemoveAll((powerup) =>
+				player.GetPowerups()[i].exclusivePowerups.Contains(powerup));
 		}
 
 		List<Powerup> options = new List<Powerup>();

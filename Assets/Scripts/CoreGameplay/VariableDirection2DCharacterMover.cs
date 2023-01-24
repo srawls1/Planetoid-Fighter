@@ -155,7 +155,7 @@ public class VariableDirection2DCharacterMover : MonoBehaviour, CharacterMover
 		}
 		else
 		{
-			return Vector2.down;
+			return -transform.up;
 		}
 	}
 

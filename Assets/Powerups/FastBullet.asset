@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: FastBullet
   m_EditorClassIdentifier: 
   m_name: Fast Bullet
-  m_description: Your bullets fly much faster, but don't last as long.
+  m_description: Your bullets fly much faster, but won't go any farther.
   m_sprite: {fileID: 1568362564, guid: 2e0890041f335e54c80e5831ae4bdda2, type: 3}
+  m_exclusivePowerups:
+  - {fileID: 11400000, guid: 698691e80bb80b6459be28c6ef4fb7ec, type: 2}
+  - {fileID: 11400000, guid: bfb32a73612741742bbe060d07d4f63e, type: 2}
   newProjectilePrefab: {fileID: 7615490503382947886, guid: a281ab30841023e4cac5fcf4932545d6,
     type: 3}

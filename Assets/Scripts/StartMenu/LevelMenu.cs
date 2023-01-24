@@ -4,14 +4,24 @@ using Rewired;
 
 public class LevelMenu : MonoBehaviour
 {
+	#region Editor Fields
+
 	[SerializeField] private Button backButton;
 	[SerializeField] private GameObject previousScreen;
 	[SerializeField] private int numColumns;
 	[SerializeField] private int numRows;
 
+	#endregion // Editor Fields
+
+	#region Private Fields
+
 	private LevelMenuButton[] levelButtons;
 	private int selectedX;
 	private int selectedY;
+
+	#endregion // Private Fields
+
+	#region Unity Functions
 
 	private void Awake()
 	{
@@ -21,6 +31,10 @@ public class LevelMenu : MonoBehaviour
 			for (int x = 0; x < numColumns; ++x)
 			{
 				LevelMenuButton child = GetChild(x, y);
+				if (child == null)
+				{
+					return;
+				}
 				child.x = x;
 				child.y = y;
 			}
@@ -47,16 +61,25 @@ public class LevelMenu : MonoBehaviour
 			Vector2Int previousInput = Vector2Int.RoundToInt(player.GetAxis2DRawPrev("Horizontal", "Vertical"));
 			
 			int newX = selectedX + ((directionInput.x == previousInput.x) ? 0 : directionInput.x);
-			int newY = selectedY + ((directionInput.y == previousInput.y) ? 0 : directionInput.y);
+			int newY = selectedY + ((directionInput.y == previousInput.y) ? 0 : -directionInput.y);
 
 			if (newX < 0) newX += numColumns;
 			if (newY < 0) newY += numRows;
 			newX %= numColumns;
 			newY %= numRows;
+			if (newY * numColumns + newX >= levelButtons.Length)
+			{
+				newX = 0;
+				newY = 0;
+			}
 
 			SelectChild(newX, newY);
 		}
 	}
+
+	#endregion // Unity Functions
+
+	#region Public Functions
 
 	public void SelectChild(int x, int y)
 	{
@@ -82,8 +105,19 @@ public class LevelMenu : MonoBehaviour
 		PlanetoidSceneManager.instance.LoadMap(scene);
 	}
 
+	#endregion // Public Functions
+
+	#region Private Functions
+
 	private LevelMenuButton GetChild(int x, int y)
 	{
-		return levelButtons[y * numColumns + x];
+		int index = y * numColumns + x;
+		if (index >= levelButtons.Length)
+		{
+			return null;
+		}
+		return levelButtons[index];
 	}
+
+	#endregion // Private Functions
 }

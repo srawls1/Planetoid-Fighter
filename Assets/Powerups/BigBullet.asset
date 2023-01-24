@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: BigBullet
   m_EditorClassIdentifier: 
   m_name: Big Bullet
-  m_description: Fire a bigger, slower bullet that can't be deflected, and kills
-    even tanky opponents in one hit.
+  m_description: Fire a bigger, slower bullet that can't be deflected.
   m_sprite: {fileID: 21300000, guid: 02800fb9cff14da47a04572790384d8b, type: 3}
+  m_exclusivePowerups:
+  - {fileID: 11400000, guid: d2ba02287aca3044e944a7166115d8c7, type: 2}
+  - {fileID: 11400000, guid: bfb32a73612741742bbe060d07d4f63e, type: 2}
   newProjectilePrefab: {fileID: 328060403223389638, guid: 3bf31099dd7fdb449b54c45547d69009,
     type: 3}

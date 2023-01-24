@@ -195,15 +195,6 @@ MonoBehaviour:
   - {r: 0.57254905, g: 0.24313727, b: 0.1254902, a: 1}
   maxNumPlayers: 4
   returnToMenuDelay: 1.5
-  powerupOptions:
-  - {fileID: 11400000, guid: 5e630f6f3a64cd24c8ef552152fa8a8f, type: 2}
-  - {fileID: 11400000, guid: de1418b04e3102f45884b9c342070139, type: 2}
-  - {fileID: 11400000, guid: af8c2dff702693a4b909ff36272629fe, type: 2}
-  - {fileID: 11400000, guid: d2ba02287aca3044e944a7166115d8c7, type: 2}
-  - {fileID: 11400000, guid: 698691e80bb80b6459be28c6ef4fb7ec, type: 2}
-  - {fileID: 11400000, guid: bfb32a73612741742bbe060d07d4f63e, type: 2}
-  - {fileID: 11400000, guid: 3bc28393abdbc2e46a1796aad5c74d1b, type: 2}
-  - {fileID: 11400000, guid: b33243b851e463d4e83684dbc66484c3, type: 2}
   numberPowerupChoices: 3
 --- !u!4 &744773363
 Transform:
@@ -318,7 +309,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_lives: 3
-  m_maxPossibleLives: 20
+  m_maxPossibleLives: 7
+  allPowerups:
+  - {fileID: 11400000, guid: 698691e80bb80b6459be28c6ef4fb7ec, type: 2}
+  - {fileID: 11400000, guid: b33243b851e463d4e83684dbc66484c3, type: 2}
+  - {fileID: 11400000, guid: de1418b04e3102f45884b9c342070139, type: 2}
+  - {fileID: 11400000, guid: d2ba02287aca3044e944a7166115d8c7, type: 2}
+  - {fileID: 11400000, guid: 3bc28393abdbc2e46a1796aad5c74d1b, type: 2}
+  - {fileID: 11400000, guid: af8c2dff702693a4b909ff36272629fe, type: 2}
+  - {fileID: 11400000, guid: bfb32a73612741742bbe060d07d4f63e, type: 2}
+  - {fileID: 11400000, guid: 5e630f6f3a64cd24c8ef552152fa8a8f, type: 2}
 --- !u!4 &835516311
 Transform:
   m_ObjectHideFlags: 0
