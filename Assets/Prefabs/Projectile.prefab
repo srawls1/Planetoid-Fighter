@@ -20,7 +20,7 @@ GameObject:
   - component: {fileID: 74073655392587752}
   - component: {fileID: 8968671442940253833}
   - component: {fileID: 7233879626175706287}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Projectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -297,7 +297,8 @@ MonoBehaviour:
   knockback: 0
   direction: {x: 0, y: 0, z: 0}
   type: 0
-  interceptorObjects: []
+  interceptorObjects:
+  - {fileID: 11400000, guid: 104cc6031ace3184d87ad40386c4c1e3, type: 2}
 --- !u!114 &74073655392587752
 MonoBehaviour:
   m_ObjectHideFlags: 0

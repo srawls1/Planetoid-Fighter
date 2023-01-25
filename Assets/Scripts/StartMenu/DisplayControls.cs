@@ -7,7 +7,7 @@ public class DisplayControls : MonoBehaviour
 {
 	#region Editor Fields
 
-	[SerializeField] private Toggle fullScreenToggle;
+	[SerializeField] private Image fullScreenCheckmark;
 	[SerializeField] private TMP_Dropdown resolutionDropdown;
 
 	#endregion // Editor Fields
@@ -22,8 +22,7 @@ public class DisplayControls : MonoBehaviour
 
 	private void Start()
 	{
-		fullScreenToggle.isOn = Screen.fullScreen;
-		fullScreenToggle.onValueChanged.AddListener((value) => Screen.fullScreen = value);
+		fullScreenCheckmark.gameObject.SetActive(Screen.fullScreen);
 
 		resolutionDropdown.ClearOptions();
 		resolutions = Screen.resolutions;
@@ -45,6 +44,17 @@ public class DisplayControls : MonoBehaviour
 	}
 
 	#endregion // Unity Functions
+
+	#region Public Functions
+
+	public void ToggleFullScreen()
+	{
+		bool newFullScreen = !Screen.fullScreen;
+		Screen.fullScreen = newFullScreen;
+		fullScreenCheckmark.gameObject.SetActive(newFullScreen);
+	}
+
+	#endregion // Public Functions
 
 	#region Private Functions
 

@@ -88,6 +88,11 @@ PrefabInstance:
       propertyPath: damage
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 7372571593436941794, guid: 6d40f46ab60fe4e96b149371bcf1ae4e,
+        type: 3}
+      propertyPath: interceptorObjects.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 74073655392587752, guid: 6d40f46ab60fe4e96b149371bcf1ae4e, type: 3}
     - {fileID: 8968671442940253833, guid: 6d40f46ab60fe4e96b149371bcf1ae4e, type: 3}
