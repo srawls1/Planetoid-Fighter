@@ -17,8 +17,8 @@ public class PlayerMenu : MonoBehaviour
 
 	private PlayerData m_playerData;
 	private Image background;
-	private MenuItem[] childItems;
-	private float previousVertical;
+	//private MenuItem[] childItems;
+	//private float previousVertical;
 
 	#endregion // Private Fields
 
@@ -34,10 +34,10 @@ public class PlayerMenu : MonoBehaviour
 			text.text = value.name;
 			controllerImage.sprite = value.rewiredPlayer.controllers.hasKeyboard ? keyboardIcon : controllerIcon;
 
-			for (int i = 0; i < childItems.Length; ++i)
-			{
-				childItems[i].RefreshDisplay(value);
-			}
+			//for (int i = 0; i < childItems.Length; ++i)
+			//{
+			//	childItems[i].RefreshDisplay(value);
+			//}
 
 			Color color = value.color;
 			background.color = new Color(color.r, color.g, color.b, background.color.a);
@@ -52,36 +52,36 @@ public class PlayerMenu : MonoBehaviour
 	void Awake()
 	{
 		background = GetComponent<Image>();
-		childItems = GetComponentsInChildren<MenuItem>();
+		//childItems = GetComponentsInChildren<MenuItem>();
 	}
 
 	private void Start()
 	{
-		SelectChild(childItems[0]);
+		//SelectChild(childItems[0]);
 	}
 
 	private void OnDisable()
 	{
-		SelectChild(childItems[0]);
+		//SelectChild(childItems[0]);
 	}
 
 	void Update()
 	{
-		float vertical = playerData.rewiredPlayer.GetAxisRaw("Vertical");
-		if (vertical > 0.1f && previousVertical < 0.1f)
-		{
-			SelectPreviousChild();
-		}
-		if (vertical < -0.1f && previousVertical > -0.1f)
-		{
-			SelectNextChild();
-		}
-		previousVertical = vertical;
+		//float vertical = playerData.rewiredPlayer.GetAxisRaw("Vertical");
+		//if (vertical > 0.1f && previousVertical < 0.1f)
+		//{
+		//	SelectPreviousChild();
+		//}
+		//if (vertical < -0.1f && previousVertical > -0.1f)
+		//{
+		//	SelectNextChild();
+		//}
+		//previousVertical = vertical;
 
-		if (playerData.rewiredPlayer.GetButtonDown("Confirm"))
-		{
-			GetSelectedChild().Select();
-		}
+		//if (playerData.rewiredPlayer.GetButtonDown("Confirm"))
+		//{
+		//	GetSelectedChild().Select();
+		//}
 	}
 
 	#endregion // Unity Functions
@@ -90,18 +90,30 @@ public class PlayerMenu : MonoBehaviour
 
 	public void SelectChild(MenuItem child)
 	{
-		MenuItem currentSelected = GetSelectedChild();
-		if (currentSelected != null)
-		{
-			if (currentSelected.state == MenuItem.State.Pressed)
-			{
-				return;
-			}
+		//MenuItem currentSelected = GetSelectedChild();
+		//if (currentSelected != null)
+		//{
+		//	if (currentSelected.state == MenuItem.State.Pressed)
+		//	{
+		//		return;
+		//	}
 
-			currentSelected.state = MenuItem.State.Idle;
-		}
-		
-		child.state = MenuItem.State.Hovered;
+		//	currentSelected.state = MenuItem.State.Idle;
+		//}
+
+		//child.state = MenuItem.State.Hovered;
+	}
+
+	public void SetColor(Color color)
+	{
+		playerData.color = color;
+		playerData = playerData;
+	}
+
+	public void SetName(string name)
+	{
+		playerData.name = name;
+		playerData = playerData;
 	}
 
 	public void CancelJoin()
@@ -113,45 +125,45 @@ public class PlayerMenu : MonoBehaviour
 
 	#region Private Functions
 
-	private void SelectNextChild()
-	{
-		int index = GetSelectedChildIndex();
-		++index;
-		index %= childItems.Length;
-		SelectChild(childItems[index]);
-	}
+	//private void SelectNextChild()
+	//{
+	//	int index = GetSelectedChildIndex();
+	//	++index;
+	//	index %= childItems.Length;
+	//	SelectChild(childItems[index]);
+	//}
 
-	private void SelectPreviousChild()
-	{
-		int index = GetSelectedChildIndex();
-		--index;
-		if (index < 0) index += childItems.Length;
-		SelectChild(childItems[index]);
-	}
+	//private void SelectPreviousChild()
+	//{
+	//	int index = GetSelectedChildIndex();
+	//	--index;
+	//	if (index < 0) index += childItems.Length;
+	//	SelectChild(childItems[index]);
+	//}
 
-	private MenuItem GetSelectedChild()
-	{
-		int index = GetSelectedChildIndex();
-		if (index < 0)
-		{
-			return null;
-		}
-		return childItems[GetSelectedChildIndex()];
-	}
+	//private MenuItem GetSelectedChild()
+	//{
+	//	int index = GetSelectedChildIndex();
+	//	if (index < 0)
+	//	{
+	//		return null;
+	//	}
+	//	return childItems[GetSelectedChildIndex()];
+	//}
 
-	private int GetSelectedChildIndex()
-	{
-		for (int i = 0; i < childItems.Length; ++i)
-		{
-			if (childItems[i].state == MenuItem.State.Hovered ||
-				childItems[i].state == MenuItem.State.Pressed)
-			{
-				return i;
-			}
-		}
+	//private int GetSelectedChildIndex()
+	//{
+	//	for (int i = 0; i < childItems.Length; ++i)
+	//	{
+	//		if (childItems[i].state == MenuItem.State.Hovered ||
+	//			childItems[i].state == MenuItem.State.Pressed)
+	//		{
+	//			return i;
+	//		}
+	//	}
 
-		return -1;
-	}
+	//	return -1;
+	//}
 
 	#endregion // Private Functions
 }
