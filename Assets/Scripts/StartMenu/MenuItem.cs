@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
-public abstract class MenuItem : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler
+public abstract class MenuItem : MonoBehaviour
 {
 	public enum State
 	{
@@ -39,22 +38,6 @@ public abstract class MenuItem : MonoBehaviour, IPointerEnterHandler, IPointerCl
 		parentMenu = GetComponentInParent<PlayerMenu>();
 		image = GetComponent<Image>();
 		state = State.Idle;
-	}
-
-	public void OnPointerEnter(PointerEventData eventData)
-	{
-		if (parentMenu.playerData.number == 0)
-		{
-			parentMenu.SelectChild(this);
-		}
-	}
-
-	public void OnPointerClick(PointerEventData eventData)
-	{
-		if (parentMenu.playerData.number == 0)
-		{
-			Select();
-		}
 	}
 
 	public abstract void Select();

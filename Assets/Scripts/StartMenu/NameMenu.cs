@@ -3,9 +3,19 @@ using TMPro;
 
 public class NameMenu : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI nameText;
+	#region Editor Fields
+
+	[SerializeField] private TextMeshProUGUI nameText;
+
+	#endregion // Editor Fields
+
+	#region Private Fields
 
 	private PlayerMenu parentMenu;
+
+	#endregion // Private Fields
+
+	#region Properties
 
 	private string m_playerName;
     public string playerName
@@ -18,6 +28,10 @@ public class NameMenu : MonoBehaviour
 		}
 	}
 
+	#endregion // Properties
+
+	#region Unity Functions
+
 	private void Awake()
 	{
 		parentMenu = GetComponentInParent<PlayerMenu>();
@@ -28,8 +42,14 @@ public class NameMenu : MonoBehaviour
 		playerName = parentMenu.playerData.name;
 	}
 
+	#endregion // Unity Functions
+
+	#region Public Functions
+
 	public void ConfirmName()
 	{
 		parentMenu.SetName(playerName);
 	}
+
+	#endregion // Public Functions
 }

@@ -3,12 +3,18 @@ using UnityEngine;
 
 public abstract class Powerup : ScriptableObject
 {
-    [SerializeField] private string m_name;
+	#region Editor Fields
+
+	[SerializeField] private string m_name;
     [SerializeField] private string m_description;
     [SerializeField] private Sprite m_sprite;
     [SerializeField] private List<Powerup> m_exclusivePowerups;
 
-    new public string name
+	#endregion // Editor Fields
+
+	#region Properties
+
+	new public string name
 	{
         get { return m_name; }
 	}
@@ -28,5 +34,11 @@ public abstract class Powerup : ScriptableObject
         get { return m_exclusivePowerups; }
 	}
 
-    public abstract void ApplyPowerup(GameObject character);
+	#endregion // Properties
+
+	#region Public Functions
+
+	public abstract void ApplyPowerup(GameObject character);
+
+	#endregion // Public Functions
 }

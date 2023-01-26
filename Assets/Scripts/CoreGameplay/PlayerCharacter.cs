@@ -15,7 +15,6 @@ public class PlayerCharacter : MonoBehaviour
 		set
 		{
 			m_player = value;
-			// set name text
 			PlanetoidGameInputProxy inputProxy = GetComponent<PlanetoidGameInputProxy>();
 			inputProxy.rewiredPlayer = player.rewiredPlayer;
 			SpriteRenderer[] sprites = GetComponentsInChildren<SpriteRenderer>(true);

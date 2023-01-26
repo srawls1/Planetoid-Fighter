@@ -2,7 +2,13 @@ using UnityEngine;
 
 public class Teleporter : MonoBehaviour
 {
+	#region Editor Fields
+
 	[SerializeField] private Transform destination;
+
+	#endregion // Editor Fields
+
+	#region Unity Functions
 
 	private void OnDrawGizmosSelected()
 	{
@@ -16,4 +22,6 @@ public class Teleporter : MonoBehaviour
 	{
 		collision.transform.position = destination.position;
 	}
+
+	#endregion // Unity Functions
 }

@@ -3,7 +3,13 @@ using UnityEngine.UI;
 
 public class ColorButton : MenuItem
 {
+	#region Editor Fields
+
 	[SerializeField] private Color color;
+
+	#endregion // Editor Fields
+
+	#region Public Functions
 
 	public override void RefreshDisplay(PlayerData data)
 	{
@@ -21,4 +27,6 @@ public class ColorButton : MenuItem
 	{
 		parentMenu.SetColor(color);
 	}
+
+	#endregion // Public Functions
 }
