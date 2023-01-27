@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: eaed58d8d7e8c814e908c7dd5528eec4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3a0419fff042d194f8cc43df37c0bc03, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -173,8 +173,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   text: {fileID: 5170355320440485466}
   controllerImage: {fileID: 114427853244760508}
-  controllerIcon: {fileID: 21300000, guid: eaed58d8d7e8c814e908c7dd5528eec4, type: 3}
-  keyboardIcon: {fileID: 21300000, guid: 970683b4288056441b44d8e5e30d9d72, type: 3}
+  controllerIcon: {fileID: 21300000, guid: 3a0419fff042d194f8cc43df37c0bc03, type: 3}
+  keyboardIcon: {fileID: 21300000, guid: ff98248dd81310948b476d1100614e8a, type: 3}
 --- !u!114 &4059468333546293563
 MonoBehaviour:
   m_ObjectHideFlags: 0

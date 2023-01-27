@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using Rewired;
 
@@ -8,7 +9,9 @@ public class ButtonRemapMenuItem : MenuItem
 	#region Editor Fields
 
 	[SerializeField] private TextMeshProUGUI actionNameText;
-    [SerializeField] private TextMeshProUGUI controlText;
+    [SerializeField] private Image controlImage;
+	[SerializeField] private InputElementSpriteMapping spriteMapping;
+	[SerializeField] private Sprite listeningSprite;
 
 	#endregion // Editor Fields
 
@@ -59,7 +62,7 @@ public class ButtonRemapMenuItem : MenuItem
         this.controllerMap = controllerMap;
         this.action = action;
         this.actionElementMap = actionElementMap;
-		controlText.text = actionElementMap.elementIdentifierName;
+		RefreshInputSprite();
 	}
 
 	public override void RefreshDisplay(PlayerData data)
@@ -91,19 +94,24 @@ public class ButtonRemapMenuItem : MenuItem
         );
 
         player.controllers.maps.SetMapsEnabled(false, "Menu");
-		controlText.text = "...";
+		controlImage.sprite = listeningSprite;
 	}
 
 	private void OnInputMapped(InputMapper.InputMappedEventData obj)
 	{
-		controlText.text = actionElementMap.elementIdentifierName;
+		RefreshInputSprite();
 		controlParentMenu.Refresh();
 	}
 
 	private void OnInputMappingStopped(InputMapper.StoppedEventData obj)
 	{
-		controlText.text = actionElementMap.elementIdentifierName;
+		RefreshInputSprite();
 		player.controllers.maps.SetMapsEnabled(true, "Menu");
+	}
+
+	private void RefreshInputSprite()
+	{
+		controlImage.sprite = spriteMapping.GetSprite(controllerMap.controllerType, actionElementMap.elementIdentifierName);
 	}
 
 	#endregion // Private Functions

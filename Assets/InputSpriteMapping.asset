@@ -1,0 +1,123 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e56c101b6c2991a41a15ec59fe302e1a, type: 3}
+  m_Name: InputSpriteMapping
+  m_EditorClassIdentifier: 
+  controllerSpriteMaps:
+  - controllerType: 2
+    elementSpritePairs:
+    - inputElementName: A
+      sprite: {fileID: 1551522487, guid: 6e0dffade9ae0ab4d8cd74346e1674d3, type: 3}
+    - inputElementName: B
+      sprite: {fileID: -1095634405, guid: 6e0dffade9ae0ab4d8cd74346e1674d3, type: 3}
+    - inputElementName: X
+      sprite: {fileID: -489855555, guid: 6e0dffade9ae0ab4d8cd74346e1674d3, type: 3}
+    - inputElementName: Y
+      sprite: {fileID: -1018439193, guid: 6e0dffade9ae0ab4d8cd74346e1674d3, type: 3}
+    - inputElementName: Right Trigger
+      sprite: {fileID: -1711293370, guid: 6e0dffade9ae0ab4d8cd74346e1674d3, type: 3}
+    - inputElementName: Left Trigger
+      sprite: {fileID: 713255091, guid: 6e0dffade9ae0ab4d8cd74346e1674d3, type: 3}
+    - inputElementName: Right Shoulder
+      sprite: {fileID: 568969046, guid: 6e0dffade9ae0ab4d8cd74346e1674d3, type: 3}
+    - inputElementName: Left Shoulder
+      sprite: {fileID: -246617701, guid: 6e0dffade9ae0ab4d8cd74346e1674d3, type: 3}
+    - inputElementName: Start
+      sprite: {fileID: 1940684038, guid: 6e0dffade9ae0ab4d8cd74346e1674d3, type: 3}
+    - inputElementName: Back
+      sprite: {fileID: 1729110465, guid: 6e0dffade9ae0ab4d8cd74346e1674d3, type: 3}
+  - controllerType: 0
+    elementSpritePairs:
+    - inputElementName: 0
+      sprite: {fileID: 21300000, guid: c269b967128374a478ea928261b41be3, type: 3}
+    - inputElementName: 1
+      sprite: {fileID: 21300000, guid: dba3b95ca4bfc6f499c0fbb33c9ac348, type: 3}
+    - inputElementName: 2
+      sprite: {fileID: 21300000, guid: b4ff84afb2ed8b845b530b8b5a4f364b, type: 3}
+    - inputElementName: 3
+      sprite: {fileID: 21300000, guid: 8908794a59c6ccf4586a4d170431e45f, type: 3}
+    - inputElementName: 4
+      sprite: {fileID: 21300000, guid: d09ebd56e35a228409e917633f67a1bc, type: 3}
+    - inputElementName: 5
+      sprite: {fileID: 21300000, guid: 8d9cfd6b1f7216b42895983b40727d98, type: 3}
+    - inputElementName: 6
+      sprite: {fileID: 21300000, guid: 0bf83af8a088c1d4d8df7d6257c5ea2f, type: 3}
+    - inputElementName: 7
+      sprite: {fileID: 21300000, guid: 121e12b203cbf8f43a10354b38585747, type: 3}
+    - inputElementName: 8
+      sprite: {fileID: 21300000, guid: 1576fb8324b232f4eaf0ea601de57853, type: 3}
+    - inputElementName: 9
+      sprite: {fileID: 21300000, guid: 8dd4eb701e64f84438f580c104e4b09e, type: 3}
+    - inputElementName: A
+      sprite: {fileID: 21300000, guid: 3a48291248364a3488fd228e91f25bbb, type: 3}
+    - inputElementName: B
+      sprite: {fileID: 21300000, guid: 875fcd4501ced56489f94eebd48fdc1e, type: 3}
+    - inputElementName: C
+      sprite: {fileID: 21300000, guid: 3f8a2533596d7984a87f896bb45f8beb, type: 3}
+    - inputElementName: D
+      sprite: {fileID: 21300000, guid: 9a4695d7af2aff744bb48af87b759a0e, type: 3}
+    - inputElementName: E
+      sprite: {fileID: 21300000, guid: 4ee3a66fa6e38544385da7c8af511db3, type: 3}
+    - inputElementName: Enter
+      sprite: {fileID: 21300000, guid: ee6a1e7f27af21e43b764669e07f794e, type: 3}
+    - inputElementName: Escape
+      sprite: {fileID: 21300000, guid: 6831afa31f12ba64aa937893117186dc, type: 3}
+    - inputElementName: F
+      sprite: {fileID: 21300000, guid: bcf562797b834824ca706108c5c02ba8, type: 3}
+    - inputElementName: G
+      sprite: {fileID: 21300000, guid: 638253338e6c22b4e9d9110e88684977, type: 3}
+    - inputElementName: H
+      sprite: {fileID: 21300000, guid: d8910d025e0218042bbe9289fda153eb, type: 3}
+    - inputElementName: I
+      sprite: {fileID: 21300000, guid: 9208657a5db6151449d5900a380385a2, type: 3}
+    - inputElementName: J
+      sprite: {fileID: 21300000, guid: cc8edbbed8b88cc4b82faf2898b3cce2, type: 3}
+    - inputElementName: K
+      sprite: {fileID: 21300000, guid: 6c7851aa39997ac4d8beecc059f47ed8, type: 3}
+    - inputElementName: L
+      sprite: {fileID: 21300000, guid: 343dfe8df780c3c4f8d6220f89cb86f7, type: 3}
+    - inputElementName: M
+      sprite: {fileID: 21300000, guid: b8180fcc275cf4f4fa709aa291534c53, type: 3}
+    - inputElementName: N
+      sprite: {fileID: 21300000, guid: dea5794b2db11884cabd24d93fa04e2b, type: 3}
+    - inputElementName: O
+      sprite: {fileID: 21300000, guid: 0ca273e0e77183c489139896f638d544, type: 3}
+    - inputElementName: P
+      sprite: {fileID: 21300000, guid: 71ffb46c43741b241ba0cd48678ada01, type: 3}
+    - inputElementName: Q
+      sprite: {fileID: 21300000, guid: 4f61e1b31f2486d46993859f0805d3af, type: 3}
+    - inputElementName: R
+      sprite: {fileID: 21300000, guid: e4cf13aabd4df2843a518d65495232d1, type: 3}
+    - inputElementName: S
+      sprite: {fileID: 21300000, guid: 6bf31c92d20efba44818fc19777fe472, type: 3}
+    - inputElementName: Space
+      sprite: {fileID: 21300000, guid: fe072ebf989aff342a92f6abc6a6804f, type: 3}
+    - inputElementName: T
+      sprite: {fileID: 21300000, guid: 5b1e10987dce114469cf441402cfb181, type: 3}
+    - inputElementName: U
+      sprite: {fileID: 21300000, guid: 403dc0b76481a20459dca5f21991ef03, type: 3}
+    - inputElementName: V
+      sprite: {fileID: 21300000, guid: d7aa511c11ca1914ca4253e0c761a829, type: 3}
+    - inputElementName: W
+      sprite: {fileID: 21300000, guid: 2120eea85cb4532459475ce9c186ada4, type: 3}
+    - inputElementName: X
+      sprite: {fileID: 21300000, guid: 0d94c24bc8d9b8e499531cffcb64fe61, type: 3}
+    - inputElementName: Y
+      sprite: {fileID: 21300000, guid: d582906cbc9ceef4d83389c848121c12, type: 3}
+    - inputElementName: Z
+      sprite: {fileID: 21300000, guid: 9f65bf2125f17c54190f1e9383a2bd25, type: 3}
+  - controllerType: 1
+    elementSpritePairs:
+    - inputElementName: Right Mouse Button
+      sprite: {fileID: -809758843, guid: a63bad125757bab4dad590bf9fd4090e, type: 3}
+    - inputElementName: Left Mouse Button
+      sprite: {fileID: 1061240842, guid: a63bad125757bab4dad590bf9fd4090e, type: 3}
