@@ -1,12 +1,28 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Rewired;
 
 public class ButtonRemapMenuItem : MenuItem
 {
+	#region Editor Fields
+
 	[SerializeField] private TextMeshProUGUI actionNameText;
+    [SerializeField] private TextMeshProUGUI controlText;
+
+	#endregion // Editor Fields
+
+	#region Private Fields
+
+	private ControlRemappingMenu controlParentMenu;
+    private InputMapper inputMapper;
+    private Player player;
+    private ControllerMap controllerMap;
+    private ActionElementMap actionElementMap;
+
+	#endregion // Private Fields
+
+	#region Properties
 
 	private InputAction m_action;
 	public InputAction action
@@ -15,86 +31,80 @@ public class ButtonRemapMenuItem : MenuItem
 		set
 		{
 			m_action = value;
-
-			/*
-			 * // Create the Action label
-            GameObject labelGo = Object.Instantiate<GameObject>(textPrefab);
-            labelGo.transform.SetParent(actionGroupTransform);
-            labelGo.transform.SetAsLastSibling();
-            labelGo.GetComponent<Text>().text = label;
-
-            // Create the input field button
-            GameObject buttonGo = Object.Instantiate<GameObject>(buttonPrefab);
-            buttonGo.transform.SetParent(fieldGroupTransform);
-            buttonGo.transform.SetAsLastSibling();
-
-            // Add the row to the rows list
-            rows.Add(
-                new Row() {
-                    action = action,
-                    actionRange = actionRange,
-                    button = buttonGo.GetComponent<Button>(),
-                    text = buttonGo.GetComponentInChildren<Text>()
-                }
-            );
-			 * */
+            actionNameText.text = action.descriptiveName;
 		}
 	}
 
-    /*
-	 * Row row = rows[i];
-        InputAction action = rows[i].action;
+	#endregion // Properties
 
-        string name = string.Empty;
-        int actionElementMapId = -1;
+	#region Unity Functions
 
-        // Find the first ActionElementMap that maps to this Action and is compatible with this field type
-        foreach(var actionElementMap in controllerMap.ElementMapsWithAction(action.id)) {
-            if(actionElementMap.ShowInField(row.actionRange)) {
-                name = actionElementMap.elementIdentifierName;
-                actionElementMapId = actionElementMap.id;
-                break;
-            }
-        }
+	new protected void Awake()
+	{
+        base.Awake();
+		controlParentMenu = GetComponentInParent<ControlRemappingMenu>();
+        inputMapper = new InputMapper();
+		inputMapper.options.defaultActionWhenConflictFound = InputMapper.ConflictResponse.Ignore;
+		inputMapper.InputMappedEvent += OnInputMapped;
+		inputMapper.StoppedEvent += OnInputMappingStopped;
+	}
 
-        // Set the label in the field button
-        row.text.text = name;
+	#endregion // Unity Functions
 
-        // Set the field button callback
-        row.button.onClick.RemoveAllListeners(); // clear the button event listeners first
-        int index = i; // copy variable for closure
-        row.button.onClick.AddListener(() => OnInputFieldClicked(index, actionElementMapId));
-	 * */
+	#region Public Functions
 
-    public override void RefreshDisplay(PlayerData data)
+	public void SetInfo(Player player, ControllerMap controllerMap, InputAction action, ActionElementMap actionElementMap)
+	{
+        this.player = player;
+        this.controllerMap = controllerMap;
+        this.action = action;
+        this.actionElementMap = actionElementMap;
+		controlText.text = actionElementMap.elementIdentifierName;
+	}
+
+	public override void RefreshDisplay(PlayerData data)
 	{
 		
 	}
 
 	public override void Select()
 	{
-        /**
-         * // Don't allow a binding for a short period of time after input field is activated
-            // to prevent button bound to UI Submit from binding instantly when input field is activated.
-            yield return new WaitForSeconds(0.1f);
-
-            // Start listening
-            inputMapper.Start(
-                new InputMapper.Context() {
-                    actionId = rows[index].action.id,
-                    controllerMap = controllerMap,
-                    actionRange = rows[index].actionRange,
-                    actionElementMapToReplace = controllerMap.GetElementMap(actionElementMapToReplaceId)
-                }
-            );
-
-            // Disable the UI Controller Maps while listening to prevent UI control and submissions.
-            player.controllers.maps.SetMapsEnabled(false, uiCategory);
-
-            // Update the UI text
-            statusUIText.text = "Listening...";
-         * */
-
-        throw new System.NotImplementedException();
+        StartCoroutine(RemapInput());
 	}
+
+	#endregion // Public Functions
+
+	#region Private Functions
+
+	private IEnumerator RemapInput()
+	{
+        yield return new WaitForSeconds(0.1f);
+
+        inputMapper.Start(
+            new InputMapper.Context()
+            {
+                actionId = action.id,
+                actionRange = AxisRange.Positive,
+                controllerMap = controllerMap,
+                actionElementMapToReplace = actionElementMap
+            }
+        );
+
+        player.controllers.maps.SetMapsEnabled(false, "Menu");
+		controlText.text = "...";
+	}
+
+	private void OnInputMapped(InputMapper.InputMappedEventData obj)
+	{
+		controlText.text = actionElementMap.elementIdentifierName;
+		controlParentMenu.Refresh();
+	}
+
+	private void OnInputMappingStopped(InputMapper.StoppedEventData obj)
+	{
+		controlText.text = actionElementMap.elementIdentifierName;
+		player.controllers.maps.SetMapsEnabled(true, "Menu");
+	}
+
+	#endregion // Private Functions
 }
