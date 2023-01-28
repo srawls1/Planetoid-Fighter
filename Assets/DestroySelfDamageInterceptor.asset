@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b69c12e5ba72fab498c149aed445ccb8, type: 3}
   m_Name: DestroySelfDamageInterceptor
   m_EditorClassIdentifier: 
-  m_priority: 0
+  m_priority: 1

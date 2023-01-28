@@ -1018,7 +1018,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weight: 1
-  radius: 4.3
+  radius: 5.5
   targetGroup: {fileID: 1567788429}
 --- !u!61 &1643844884
 BoxCollider2D:
@@ -1245,7 +1245,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weight: 1
-  radius: 4.3
+  radius: 5.5
   targetGroup: {fileID: 1567788429}
 --- !u!61 &2026353793
 BoxCollider2D:
