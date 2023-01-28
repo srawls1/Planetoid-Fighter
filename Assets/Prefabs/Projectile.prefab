@@ -314,7 +314,7 @@ MonoBehaviour:
   armorByTypeList: []
   poise: 0
   armorEffectObjects:
-  - {fileID: 11400000, guid: f3480943d20d18841b45c2ebd0c6bfc0, type: 2}
+  - {fileID: 11400000, guid: 1a8418e1fe937634d8381c9f53b95f3a, type: 2}
 --- !u!114 &8968671442940253833
 MonoBehaviour:
   m_ObjectHideFlags: 0

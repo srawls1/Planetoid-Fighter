@@ -9,10 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 529969c48a5bbb4499b0e12a658119b2, type: 3}
-  m_Name: DoubleJump
+  m_Script: {fileID: 11500000, guid: 70aa4b7db287b124ea18cce20f8f5b86, type: 3}
+  m_Name: ScreenshakeInterceptor
   m_EditorClassIdentifier: 
-  m_name: Double Jump
-  m_description: You can jump again in the air!
-  m_sprite: {fileID: 1729581368, guid: 90ab48df0b83aee41a1780ced707426e, type: 3}
-  m_exclusivePowerups: []
+  m_priority: 0
+  effectToAdd: {fileID: 11400000, guid: b262ba7126ca404499750776c2452370, type: 2}

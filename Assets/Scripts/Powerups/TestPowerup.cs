@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "Powerups/Test")]
 public class TestPowerup : Powerup
 {
     [SerializeField] private string logString;

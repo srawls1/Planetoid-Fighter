@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_name: Rapid Fire
   m_description: Shoot faster, and hold the shoot button to continue shooting.
-  m_sprite: {fileID: 21300008, guid: a117494ddac8d5842a628bc6639f2183, type: 3}
+  m_sprite: {fileID: -1173830062, guid: 90ab48df0b83aee41a1780ced707426e, type: 3}
+  m_exclusivePowerups: []
   newShotCooldown: 0.5

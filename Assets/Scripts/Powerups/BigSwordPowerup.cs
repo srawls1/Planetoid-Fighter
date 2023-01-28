@@ -9,7 +9,7 @@ public class ScaleUpChildSpec
 	public Vector3 translation;
 }
 
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "Powerups/Big sword")]
 public class BigSwordPowerup : Powerup
 {
 	[SerializeField] private List<ScaleUpChildSpec> scaleUpSpecs;

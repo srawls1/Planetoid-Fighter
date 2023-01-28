@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "Powerups/Quick Attacks")]
 public class QuickAttacksPowerup : Powerup
 {
 	[SerializeField] private float newAttackCooldownTime;

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "Powerups/Rapid Fire")]
 public class RapidFirePowerup : Powerup
 {
 	[SerializeField] private float newShotCooldown;

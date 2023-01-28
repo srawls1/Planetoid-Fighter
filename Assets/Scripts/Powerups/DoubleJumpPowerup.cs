@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "Powerups/Double Jump")]
 public class DoubleJumpPowerup : Powerup
 {
 	public override void ApplyPowerup(GameObject character)

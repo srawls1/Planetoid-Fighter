@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "Powerups/Tanky")]
 public class TankyPowerup : Powerup
 {
 	[SerializeField] private int amountToIncreaseHP;

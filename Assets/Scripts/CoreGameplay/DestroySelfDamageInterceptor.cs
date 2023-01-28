@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "Damage Interceptors/Destroy Self")]
 public class DestroySelfDamageInterceptor : DamageInterceptorScriptableObject
 {
 	public override void Process(Damage.Builder builder)
@@ -10,6 +10,6 @@ public class DestroySelfDamageInterceptor : DamageInterceptorScriptableObject
 
 	private void DestroySelfEffect(Damage damage)
 	{
-		Destroy(damage.hitbox.gameObject);
+		ObjectRecycler.instance.RecycleObject(damage.hitbox.gameObject);
 	}
 }

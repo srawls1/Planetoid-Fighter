@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_name: Tanky
   m_description: Take two hits to die instead of just 1.
-  m_sprite: {fileID: 21300000, guid: 02800fb9cff14da47a04572790384d8b, type: 3}
+  m_sprite: {fileID: 672851749, guid: 90ab48df0b83aee41a1780ced707426e, type: 3}
+  m_exclusivePowerups: []
   amountToIncreaseHP: 1

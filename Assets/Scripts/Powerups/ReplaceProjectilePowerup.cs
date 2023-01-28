@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "Powerups/Replace Projectile")]
 public class ReplaceProjectilePowerup : Powerup
 {
 	[SerializeField] private AbstractProjectile newProjectilePrefab;

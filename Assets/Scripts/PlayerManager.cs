@@ -129,6 +129,11 @@ public class PlayerManager : Singleton<PlayerManager>
 		}
 	}
 
+	public Coroutine EndGame()
+	{
+		return StartCoroutine(EndGameImpl());
+	}
+
 	#endregion // Public Functions
 
 	#region Private Functions
@@ -187,6 +192,12 @@ public class PlayerManager : Singleton<PlayerManager>
 		HUDManager.instance.ShowWinner(winner);
 
 		yield return new WaitForSeconds(returnToMenuDelay);
+
+		yield return StartCoroutine(EndGameImpl());
+	}
+
+	private IEnumerator EndGameImpl()
+	{
 		yield return PlanetoidSceneManager.instance.LoadStartMenu();
 
 		OnPlayersChanged?.Invoke(players);

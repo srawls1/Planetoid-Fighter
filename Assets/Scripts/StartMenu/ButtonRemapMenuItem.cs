@@ -83,6 +83,8 @@ public class ButtonRemapMenuItem : MenuItem
 	{
         yield return new WaitForSeconds(0.1f);
 
+		state = State.Pressed;
+
         inputMapper.Start(
             new InputMapper.Context()
             {
@@ -107,6 +109,10 @@ public class ButtonRemapMenuItem : MenuItem
 	{
 		RefreshInputSprite();
 		player.controllers.maps.SetMapsEnabled(true, "Menu");
+		if (state == State.Pressed)
+		{
+			state = State.Hovered;
+		}
 	}
 
 	private void RefreshInputSprite()
