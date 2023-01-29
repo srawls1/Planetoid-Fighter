@@ -22,13 +22,13 @@ public class ParticleDamageInterceptor : DamageInterceptorScriptableObject
 
 	private void DamageEffect(Damage damage)
 	{
-		PlayerCharacter character = damage.hurtbox.GetComponentInParent<PlayerCharacter>();
+		Color color = GetColor(damage);
 
 		ParticleSystem particle = Instantiate(contactParticle, damage.hurtbox.transform.position, Quaternion.identity);
 		ParticleSystem.MainModule main = particle.main;
-		main.startColor = character.player.color;
+		main.startColor = color;
 		ParticleSystem.TrailModule trail = particle.trails;
-		trail.colorOverTrail = character.player.color;
+		trail.colorOverTrail = color;
 		particle.Play();
 	}
 

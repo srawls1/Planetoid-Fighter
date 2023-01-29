@@ -2,11 +2,16 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(Animator), typeof(AudioSource))]
 public class PlayerCharacter : MonoBehaviour
 {
 	[SerializeField] private float invincibilityTimeOnSpawn;
+	[SerializeField] private AudioClip[] jumpSounds;
+	[SerializeField] private AudioClip[] landingSounds;
+	[SerializeField] private AudioClip[] deathSounds;
 
 	private Animator animator;
+	private AudioSource audioSource;
 
 	private PlayerData m_player;
 	public PlayerData player
@@ -31,9 +36,18 @@ public class PlayerCharacter : MonoBehaviour
 		}
 	}
 
+	public bool isDead
+	{
+		get; private set;
+
+	}
+
 	private void Awake()
 	{
 		animator = GetComponent<Animator>();
+		audioSource = GetComponent<AudioSource>();
+		audioSource.volume = SettingsManager.instance.GetVolume("Master") *
+			SettingsManager.instance.GetVolume("Sound Effects");
 		BasicDamageAcceptor damageAcceptor = GetComponent<BasicDamageAcceptor>();
 		damageAcceptor.OnDeath += DeathCallback;
 		HurtBox hurtBox = GetComponent<HurtBox>();
@@ -50,14 +64,30 @@ public class PlayerCharacter : MonoBehaviour
 	private void DeathCallback()
 	{
 		Debug.Log("DeathCallback: " + player.name);
+		isDead = true;
 		PlayerManager.instance.OnPlayerDied(gameObject, m_player);
 		animator.SetBool("Dead", true);
 		PlayDeathSound();
 		Juice.instance.DeathJuice();
 	}
 
+	public void PlayJumpSound()
+	{
+		PlayRandomSoundFromArray(jumpSounds);
+	}
+
+	public void PlayJumpLandingSound()
+	{
+		PlayRandomSoundFromArray(landingSounds);
+	}
+
 	private void PlayDeathSound()
 	{
-		// TODO
+		PlayRandomSoundFromArray(deathSounds);
+	}
+
+	private void PlayRandomSoundFromArray(AudioClip[] array)
+	{
+		audioSource.PlayOneShot(array[Random.Range(0, array.Length)]);
 	}
 }

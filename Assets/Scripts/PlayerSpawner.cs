@@ -54,7 +54,13 @@ public class PlayerSpawner : Singleton<PlayerSpawner>
 
 	public void RespawnPlayer(PlayerData player)
 	{
+		Debug.Log("RespawnPlayer: " + player.name);
 		int playerIndex = spawnedPlayerDatas.IndexOf(player);
+		if (!spawnedPlayerGameObjects[playerIndex].GetComponent<PlayerCharacter>().isDead)
+		{
+			return;
+		}
+
 		spawnedPlayerDatas.RemoveAt(playerIndex);
 		spawnedPlayerGameObjects.RemoveAt(playerIndex);
 		SpawnPoint farthestSpawnPoint = GetFarthestSpawnPoint();

@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1053374534905138, guid: 6d40f46ab60fe4e96b149371bcf1ae4e, type: 3}
       propertyPath: m_Name
-      value: StationaryProjectile
+      value: StationaryProjectile Variant
       objectReference: {fileID: 0}
     - target: {fileID: 4240563707257640, guid: 6d40f46ab60fe4e96b149371bcf1ae4e, type: 3}
       propertyPath: m_RootOrder
@@ -68,6 +68,16 @@ PrefabInstance:
       propertyPath: m_Radius
       value: 0.4
       objectReference: {fileID: 0}
+    - target: {fileID: 96542848068997520, guid: 6d40f46ab60fe4e96b149371bcf1ae4e,
+        type: 3}
+      propertyPath: m_Time
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 96542848068997520, guid: 6d40f46ab60fe4e96b149371bcf1ae4e,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3514103591232778119, guid: 6d40f46ab60fe4e96b149371bcf1ae4e,
         type: 3}
       propertyPath: speed
@@ -84,7 +94,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
-    - {fileID: 96542848068997520, guid: 6d40f46ab60fe4e96b149371bcf1ae4e, type: 3}
     - {fileID: 74073655392587752, guid: 6d40f46ab60fe4e96b149371bcf1ae4e, type: 3}
     - {fileID: 8968671442940253833, guid: 6d40f46ab60fe4e96b149371bcf1ae4e, type: 3}
     - {fileID: 7233879626175706287, guid: 6d40f46ab60fe4e96b149371bcf1ae4e, type: 3}

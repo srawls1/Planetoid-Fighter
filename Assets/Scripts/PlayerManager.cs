@@ -154,7 +154,8 @@ public class PlayerManager : Singleton<PlayerManager>
 			player.rewiredPlayer.controllers.maps.SetMapsEnabled(false, MENU_INPUT_MAP);
 			player.rewiredPlayer.controllers.maps.SetMapsEnabled(true, GAMEPLAY_INPUT_MAP);
 		}
-		
+
+		Debug.Log("HandlePowerupAndRespawn: " + player.name + "; About to call Respawn");
 		PlayerSpawner.instance.RespawnPlayer(player);
 	}
 

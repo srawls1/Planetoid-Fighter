@@ -21,7 +21,7 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "523943d761aa4f4ee96e29b61d60818ca20f6385"
+      "hash": "a2d97385883ad957e3b9811712f17a839fe0fde2"
     },
     "com.srawls1.my-package-manager": {
       "version": "https://github.com/srawls1/MyPackageManager.git",

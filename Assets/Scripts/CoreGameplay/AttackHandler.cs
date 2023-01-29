@@ -6,6 +6,7 @@ public class AttackHandler : MonoBehaviour
 	#region Editor Fields
 
 	[SerializeField] private float m_attackCooldownTime;
+	[SerializeField] private AudioClip[] meleeSounds;
 
 	#endregion // Editor Fields
 
@@ -15,6 +16,7 @@ public class AttackHandler : MonoBehaviour
 	private Animator animator;
 	private RelativeTime time;
 	private AbstractGun gun;
+	private AudioSource audioSource;
 	private bool attackInCooldown;
 
 	#endregion // Private Fields
@@ -40,6 +42,7 @@ public class AttackHandler : MonoBehaviour
 		animator = GetComponent<Animator>();
 		time = GetComponent<RelativeTime>();
 		gun = GetComponentInChildren<AbstractGun>(true);
+		audioSource = GetComponent<AudioSource>();
 	}
 
 	private void Update()
@@ -55,6 +58,11 @@ public class AttackHandler : MonoBehaviour
 	public void ShootAnimatorCallback()
 	{
 		gun.BeginAttack();
+	}
+
+	public void MeleeAnimatorCallback()
+	{
+		audioSource.PlayOneShot(meleeSounds[Random.Range(0, meleeSounds.Length)]);
 	}
 
 	#endregion // Public Functions

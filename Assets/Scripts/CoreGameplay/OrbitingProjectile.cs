@@ -17,6 +17,7 @@ public class OrbitingProjectile : AbstractProjectile
     private SpriteRenderer sprite;
     private TrailRenderer trail;
     private RelativeTime time;
+    private RelativeTime.Timer autoRecycleTimer;
 
 	#endregion // Private Fields
 
@@ -46,11 +47,16 @@ public class OrbitingProjectile : AbstractProjectile
 	public override void OnShoot()
 	{
         body.velocity = transform.right * speed;
-        time.SetTimer(lifeSpan, () => ObjectRecycler.instance.RecycleObject(gameObject));
+        autoRecycleTimer = time.SetTimer(lifeSpan, () => ObjectRecycler.instance.RecycleObject(gameObject));
         PlayerCharacter playerCharacter = instigator.GetComponentInParent<PlayerCharacter>();
         sprite.color = playerCharacter.player.color;
         trail.startColor = playerCharacter.player.color;
         trail.endColor = playerCharacter.player.color;
+	}
+
+    public void OnObjectRecycled()
+	{
+        time.CancelTimer(autoRecycleTimer);
 	}
 
 	#endregion // Projectile Implementation
