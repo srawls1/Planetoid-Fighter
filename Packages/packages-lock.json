@@ -14,7 +14,7 @@
       "dependencies": {
         "com.unity.inputsystem": "1.0.2"
       },
-      "hash": "d8294388e9b9cb3b203d2654aa08a1cb4d830c5f"
+      "hash": "41f71e243841d6725b1ad105acf39f625d5e5752"
     },
     "com.srawls1.hitboxes": {
       "version": "https://github.com/srawls1/HitBoxes.git",
@@ -28,7 +28,7 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "826bca7ebdbc4c9f1acb78406de7dc5df3becb6e"
+      "hash": "4a593b505157426dc26f06e94cb23dd00917988e"
     },
     "com.unity.2d.sprite": {
       "version": "1.0.0",

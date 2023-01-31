@@ -107,6 +107,7 @@ public class PlayerSpawner : Singleton<PlayerSpawner>
 		spawnedPlayerGameObjects.Add(character);
 		PlayerCharacter playerCharacter = character.GetComponent<PlayerCharacter>();
 		playerCharacter.player = player;
+		playerCharacter.PlaySpawnParticle();
 	}
 
 	#endregion // Private Functions

@@ -1,13 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(VariableDirection2DCharacterMover))]
 public class OrbittingRigidBody : MonoBehaviour
 {
+	#region Editor Fields
+
 	[SerializeField] private float accelerationDueToGravity;
 
+	#endregion // Editor Fields
+
+	#region Private Fields
+
 	private VariableDirection2DCharacterMover mover;
+
+	#endregion // Private Fields
+
+	#region Unity Functions
 
 	private void Awake()
 	{
@@ -17,6 +25,7 @@ public class OrbittingRigidBody : MonoBehaviour
 	private void FixedUpdate()
 	{
 		mover.velocity += accelerationDueToGravity * Time.deltaTime * Vector3.down;
-		//mover.Move(mover.down)
 	}
+
+	#endregion // Unity Functions
 }

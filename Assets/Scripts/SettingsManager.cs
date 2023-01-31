@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class SettingsManager : Singleton<SettingsManager>
 {
@@ -32,6 +33,7 @@ public class SettingsManager : Singleton<SettingsManager>
 	[SerializeField] private int m_lives = 3;
 	[SerializeField] private int m_maxPossibleLives;
 	[SerializeField] private List<Powerup> allPowerups;
+	[SerializeField] private UnityEvent<string, float> m_volumeChangedEvent;
 
 	#endregion // Editor Fields
 
@@ -58,6 +60,11 @@ public class SettingsManager : Singleton<SettingsManager>
 		get { return m_maxPossibleLives; }
 	}
 
+	public UnityEvent<string, float> volumeChangedEvent
+	{
+		get { return m_volumeChangedEvent; }
+	}
+
 	#endregion // Properties
 
 	#region Public Functions
@@ -70,6 +77,7 @@ public class SettingsManager : Singleton<SettingsManager>
 	public void SetVolume(string channel, float volume)
 	{
 		volumes[channel] = volume;
+		volumeChangedEvent.Invoke(channel, volume);
 	}
 
 	public bool IsPowerupEnabled(Powerup powerup)

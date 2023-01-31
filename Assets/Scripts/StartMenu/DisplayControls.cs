@@ -35,7 +35,7 @@ public class DisplayControls : MonoBehaviour
 			{
 				currentSelection = i;
 			}
-			resolutionTexts.Add($"{resolutions[i].width}x{resolutions[i].height}");
+			resolutionTexts.Add($"{resolutions[i].width}x{resolutions[i].height}, {resolutions[i].refreshRate} Hz");
 		}
 
 		resolutionDropdown.AddOptions(resolutionTexts);

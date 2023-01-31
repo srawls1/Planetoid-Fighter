@@ -1137,6 +1137,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 4bca4630507b47b48817718d4537330f, type: 3}
   - {fileID: 8300000, guid: 91a090a2f63db834bbb4637d43d8556b, type: 3}
   - {fileID: 8300000, guid: f23571fe275993c41a57b15b221ba0d8, type: 3}
+  spawnParticlePrefab: {fileID: 8517361354677576466, guid: 87cad4c8fb6f6ba49948651440fefcb1,
+    type: 3}
 --- !u!82 &369189411306704744
 AudioSource:
   m_ObjectHideFlags: 0

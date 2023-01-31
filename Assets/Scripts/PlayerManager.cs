@@ -33,6 +33,8 @@ public class PlayerManager : Singleton<PlayerManager>
 	[SerializeField] private int maxNumPlayers = 4;
 	[SerializeField] private float returnToMenuDelay = 1.5f;
 	[SerializeField] private int numberPowerupChoices = 3;
+	[SerializeField] private AudioClip fightStartVoice;
+	[SerializeField] private AudioClip winnerVoice;
 
 	#endregion // Editor Fields
 
@@ -99,6 +101,7 @@ public class PlayerManager : Singleton<PlayerManager>
 		}
 		HUDManager.instance.InitializeLivesDisplay(players, numberOfLives);
 		HUDManager.instance.ShowFightStart();
+		SoundManager.GetSoundManagerByChannel("Voice").PlaySound(fightStartVoice);
 	}
 
 	public void OnPlayerDied(GameObject character, PlayerData player)
@@ -191,6 +194,7 @@ public class PlayerManager : Singleton<PlayerManager>
 		yield return Juice.instance.GameEndJuice(player.transform);
 
 		HUDManager.instance.ShowWinner(winner);
+		SoundManager.GetSoundManagerByChannel("Voice").PlaySound(winnerVoice);
 
 		yield return new WaitForSeconds(returnToMenuDelay);
 
