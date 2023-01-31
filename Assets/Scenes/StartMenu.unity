@@ -8655,6 +8655,8 @@ MonoBehaviour:
     scenePath: Assets/Scenes/TunneledEarth.unity
   - sceneAsset: {fileID: 102900000, guid: 42be6f03965af9f4b919e188c183d456, type: 3}
     scenePath: Assets/Scenes/PillarsOfCreation.unity
+  - sceneAsset: {fileID: 102900000, guid: 45bb48ddaa692104aa0a969940911e6b, type: 3}
+    scenePath: Assets/Scenes/TeleportMaze.unity
 --- !u!1 &1294677207
 GameObject:
   m_ObjectHideFlags: 0

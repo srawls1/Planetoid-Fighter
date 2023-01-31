@@ -5,7 +5,7 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "c63d7419836ad8e1d76d03ff69d3801daa88d427"
+      "hash": "06bdd305a6c86224fc152036611ff13cf39a9d71"
     },
     "com.srawls1.core": {
       "version": "https://github.com/srawls1/core.git",
