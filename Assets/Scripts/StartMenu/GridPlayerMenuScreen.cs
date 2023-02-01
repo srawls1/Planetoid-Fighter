@@ -39,18 +39,22 @@ public class GridPlayerMenuScreen : MonoBehaviour
 
 	#region Unity Functions
 
-	private void OnEnable()
+	private void Awake()
 	{
 		parentMenu = GetComponentInParent<PlayerMenu>();
-		childItems = GetComponentsInChildren<MenuItem>();
+	}
+
+	private void OnEnable()
+	{
+		this.ExecuteAtEndOfFrame(() =>
+		{
+			childItems = GetComponentsInChildren<MenuItem>();
+			selectedChildIndex = 0;
+			Debug.Log($"{name} found {childItems.Length} on enable");
+		});
 	}
 
 	private void OnDisable()
-	{
-		selectedChildIndex = 0;
-	}
-
-	private void Start()
 	{
 		selectedChildIndex = 0;
 	}
@@ -91,6 +95,8 @@ public class GridPlayerMenuScreen : MonoBehaviour
 
 	private void NavigateRight()
 	{
+		int previouslySelectedChildIndex = selectedChildIndex;
+
 		GetCurrentGridCoordinates(out int x, out int y);
 		if (x == -1)
 		{
@@ -100,10 +106,14 @@ public class GridPlayerMenuScreen : MonoBehaviour
 		++x;
 		x %= numberColumns;
 		selectedChildIndex = y * numberColumns + x;
+
+		Debug.Log($"NavigateRight: previousSelected={previouslySelectedChildIndex}, newSelected={selectedChildIndex}");
 	}
 
 	private void NavigateLeft()
 	{
+		int previouslySelectedChildIndex = selectedChildIndex;
+
 		GetCurrentGridCoordinates(out int x, out int y);
 		if (x == -1)
 		{
@@ -116,10 +126,15 @@ public class GridPlayerMenuScreen : MonoBehaviour
 			x += numberColumns;
 		}
 		selectedChildIndex = y * numberColumns + x;
+
+		Debug.Log($"NavigateLeft: previousSelected={previouslySelectedChildIndex}, newSelected={selectedChildIndex}");
+
 	}
 
 	private void NavigateUp()
 	{
+		int previouslySelectedChildIndex = selectedChildIndex;
+
 		// If we're in the top row, wrap around to the end of the post-grid section
 		if (selectedChildIndex < numberColumns)
 		{
@@ -135,10 +150,14 @@ public class GridPlayerMenuScreen : MonoBehaviour
 		{
 			selectedChildIndex--;
 		}
+
+		Debug.Log($"NavigateUp: previousSelected={previouslySelectedChildIndex}, newSelected={selectedChildIndex}");
 	}
 
 	private void NavigateDown()
 	{
+		int previouslySelectedChildIndex = selectedChildIndex;
+
 		int numberOfGridItems = numberColumns * numberRows;
 		if (selectedChildIndex < numberOfGridItems)
 		{
@@ -166,6 +185,8 @@ public class GridPlayerMenuScreen : MonoBehaviour
 				selectedChildIndex++;
 			}
 		}
+
+		Debug.Log($"NavigateDown: previousSelected={previouslySelectedChildIndex}, newSelected={selectedChildIndex}");
 	}
 
 	private void GetCurrentGridCoordinates(out int x, out int y)

@@ -17,10 +17,12 @@ public class ControlRemappingMenu : MonoBehaviour
 	{
 		remapMenuItems = GetComponentsInChildren<ButtonRemapMenuItem>();
         parentMenu = GetComponentInParent<PlayerMenu>();
+		Debug.Log("ControlRemappingMenu Awake");
 	}
 
 	private void OnEnable()
 	{
+		Debug.Log("ControlRemappingMenu OnEnable");
 		Refresh();
 	}
 

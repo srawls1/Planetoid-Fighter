@@ -40,7 +40,6 @@ public class InputElementSpriteMapping : ScriptableObject, ISerializationCallbac
 
 	public Sprite GetSprite(ControllerType controllerType, string inputElementName)
 	{
-		Debug.Log($"GetSprite({controllerType}, {inputElementName})");
 		if (!controllerSpriteDictionary.TryGetValue(controllerType, out Dictionary<string, Sprite> elementSpriteDictionary))
 		{
 			return null;
